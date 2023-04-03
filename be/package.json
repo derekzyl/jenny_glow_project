@@ -1,0 +1,47 @@
+{
+  "name": "admin_fe",
+  "version": "1.0.0",
+  "description": "jenny glow backend",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/server.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "typescript"
+  ],
+  "author": "cybergenii",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "",
+    "cors": "",
+    "debug": "",
+    "dotenv": "",
+    "express": "",
+    "express-winston": "",
+    "jsonwebtoken": "",
+    "mongoose": "",
+    "nodemailer": "",
+    "winston": ""
+  },
+  "devDependencies": {
+    "@types/bcrypt": "",
+    "@types/cors": "",
+    "@types/debug": "",
+    "@types/express": "",
+    "@types/jsonwebtoken": "",
+    "@types/node": "",
+    "@types/nodemailer": "",
+    "c": "",
+    "concurrently": "^8.0.1",
+    "nodemon": "",
+    "source-map-support": "",
+    "ts-node-dev": "",
+    "tslint": "",
+    "typescript": ""
+  }
+}
