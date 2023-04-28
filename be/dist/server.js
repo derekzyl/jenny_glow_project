@@ -35,6 +35,7 @@ mongoose_1.default.connect(db);
 mongoose_1.default.connection.on("connected", () => console.log("hello database i'm crushing on  y🤭u   🍀🍀🍀 "));
 mongoose_1.default.connection.on("disconnected", () => console.log("you just broke my heart 💔💔"));
 const port = process.env.port || 3000;
+// app.on("", () => {});
 main_1.default.listen(port, () => {
     console.log(` server is running on port ${port} ⚡`);
 });
