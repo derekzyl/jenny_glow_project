@@ -4,7 +4,7 @@ import { RoleI } from "../interface_role/role";
 
 const role_model = new mongoose.Schema<RoleI>({
   name: {
-    type: String,
+    type:String,
     unique: true,
     required: true,
   },

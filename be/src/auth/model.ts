@@ -1,11 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { UserI, RoleE, UserProfileI } from "./interface/auth";
+import { UserI } from "./interface/auth";
 
 const UserSchema = new Schema<UserI>({
-  username: {
-    type: String,
-    unique: true,
-  },
   email: {
     type: String,
     unique: true,
@@ -13,16 +9,33 @@ const UserSchema = new Schema<UserI>({
   password: {
     type: String,
   },
-  role: {
-    type: String,
-    enum: RoleE,
-    default: RoleE.USER,
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
-});
-
-const UserProfileSchema = new Schema<UserProfileI>({
-  full_name: {
+  updatedAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  Token: {
     type: String,
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+  passwordChangedAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ROLE",
+    required: [true, "the user role is required"],
   },
 });
 

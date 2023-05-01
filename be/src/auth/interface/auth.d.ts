@@ -1,12 +1,24 @@
+import { Request } from "express";
 import mongoose from "mongoose";
 
 enum GenderE {
   MALE = "MALE",
   FEMALE = "FEMALE",
 }
-interface UserI extends mongoose.Document {
-  email: string;
-  username: string;
+
+export interface UserI extends mongoose.Document {
+  email: string | true;
   password: string;
-  role: mongoose.Types.ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date;
+  role?: mongoose.Types.ObjectId;
+  isEmailVerified?: boolean;
+  Token?: string;
+  TokenExpires?: any;
+  passwordChangedAt?: Date;
+  isDeleted?: boolean;
+}
+
+export interface RequestBody extends Request {
+  user: any;
 }

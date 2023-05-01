@@ -22,44 +22,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.USER = void 0;
-const mongoose_1 = __importStar(require("mongoose"));
-const UserSchema = new mongoose_1.Schema({
-    email: {
-        type: String,
-        unique: true,
-    },
-    password: {
-        type: String,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now(),
-    },
-    Token: {
-        type: String,
-    },
-    isEmailVerified: {
-        type: Boolean,
-        default: false,
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false,
-    },
-    passwordChangedAt: {
-        type: Date,
-        default: Date.now(),
-    },
-    role: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "ROLE",
-        required: [true, "the user role is required"],
-    },
-});
-exports.USER = mongoose_1.default.model("USER", UserSchema);
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
+class jwtUtils {
+    static generateToken(payload, options) {
+        return jsonwebtoken_1.default.sign(payload, this.secret, options);
+    }
+    static verifyToken(token, options) {
+        return jsonwebtoken_1.default.verify(token, this.secret, options);
+    }
+}
+jwtUtils.secret = process.env.JWT_SECRET;
+exports.default = jwtUtils;

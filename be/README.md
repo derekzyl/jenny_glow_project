@@ -1,15 +1,29 @@
 # **JENNY GLOW PROJECT**
 
-### *A beauty product company*
-### **FEATURES OF THE PROJECT**
-- Admin Backend
-- User Frontend
-- Admin Frontend
-- User App
+## **Admin Backend**
 
-### **SUMMARY OF THE PROJECT**
-- Online Store
-  - Display products on the app and website payment flow to dispatch
-  - campaigns and sales of products on the front end 
-  - blogs articles and promotions
-   
+### backend apis
+
+---
+
+- admin
+  - takes inventory
+  - distributes inventory to various branches
+  - creates branches
+  - creates manager
+  - creates staffs and role
+- product
+  - get product details:
+    - name
+    - category
+    - sub-category
+    - total available
+- branch
+  - name
+  - manager
+  - staffs
+  - total inventory gotten
+  - total daily, weekly, monthly, yearly sales
+
+- auth
+- frontend
