@@ -48,7 +48,7 @@ export const getAllRole = async (
     const get_all_role = await ROLE.find();
     response
       .status(HTTP_RESPONSE.OK)
-      .json(responseMessage("role created successfully", true, get_all_role));
+      .json(responseMessage("role gotten successfully", true, get_all_role));
   } catch (error) {
     next(error);
   }

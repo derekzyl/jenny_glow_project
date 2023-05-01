@@ -27,3 +27,17 @@
 
 - auth
 - frontend
+
+# **TODO**
+
+### **admin**
+
+- [x] create role api
+- [ ] create branch
+- [ ] create inventory
+
+### **user**
+
+- [x] add auth api
+
+- [ ] ***CRUD*** user function(create, read, update, delete)

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { UserI } from "./interface/auth";
+import { UserI } from "../interface_auth/auth";
 
 const UserSchema = new Schema<UserI>({
   email: {

@@ -45,7 +45,7 @@ const getAllRole = (request, response, next) => __awaiter(void 0, void 0, void 0
         const get_all_role = yield model_role_1.ROLE.find();
         response
             .status(http_response_1.HTTP_RESPONSE.OK)
-            .json((0, response_message_1.responseMessage)("role created successfully", true, get_all_role));
+            .json((0, response_message_1.responseMessage)("role gotten successfully", true, get_all_role));
     }
     catch (error) {
         next(error);

@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response, request } from "express";
-import { APP_ERROR } from "../utilities/custom_error";
-import BCRYPT from "../utilities/bcrypt";
-import { USER } from "./model";
+import { APP_ERROR } from "../../utilities/custom_error";
+import BCRYPT from "../../utilities/bcrypt";
+import { USER } from "./model.auth";
 import { createHash, randomBytes } from "crypto";
-import { dataI } from "../utilities/interface_utilities/mail";
-import JWT from "../utilities/jwt";
+import { dataI } from "../../utilities/interface_utilities/mail";
+import JWT from "../../utilities/jwt";
 
-import NodeMailer from "../utilities/mailer";
-import { RequestBody } from "./interface/auth";
+import NodeMailer from "../../utilities/mailer";
+import { RequestBody } from "../interface_auth/auth";
+import { ROLE } from "../../admin/role/main_role/model.role";
+import { HTTP_RESPONSE } from "../../utilities/http_response";
 
 export const signup = async (
   request: Request,
@@ -15,26 +17,31 @@ export const signup = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password, confirmPassword } = request.body;
+    const { email, password, confirm_password } = request.body;
+
+    const user_role = "";
     if (!email) {
-      throw APP_ERROR("Email is required", 400);
+      throw APP_ERROR("Email is required", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (!email.includes("@", ".")) {
-      throw APP_ERROR("Email is invalid", 400);
+      throw APP_ERROR("Email is invalid", HTTP_RESPONSE.BAD_REQUEST);
     }
     const user = await USER.findOne({ email });
 
     if (user) {
-      throw APP_ERROR("User already exists", 400);
+      throw APP_ERROR("User already exists", HTTP_RESPONSE.BAD_REQUEST);
     }
-    if (!password || !confirmPassword) {
-      throw APP_ERROR("Password is required", 400);
+    if (!password || !confirm_password) {
+      throw APP_ERROR("Password is required", HTTP_RESPONSE.BAD_REQUEST);
     }
-    if (password !== confirmPassword) {
-      throw APP_ERROR("Passwords do not match", 400);
+    if (password !== confirm_password) {
+      throw APP_ERROR("Passwords do not match", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (password.length < 8) {
-      throw APP_ERROR("Password must be at least 8 characters", 400);
+      throw APP_ERROR(
+        "Password must be at least 8 characters",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
     if (
       !password.match(/[a-z]/) ||
@@ -44,7 +51,7 @@ export const signup = async (
     ) {
       throw APP_ERROR(
         "Password must contain at least one lowercase letter, one uppercase letter, one number and one special character",
-        400
+        HTTP_RESPONSE.BAD_REQUEST
       );
     }
     const encryptedPassword = await BCRYPT.hash(password);
@@ -74,12 +81,13 @@ export const signup = async (
       password: encryptedPassword,
       Token: resetToken,
       TokenExpires,
+      role: "644da36acc996fe2be8239e9",
     });
     const newUSER = await newUser.save();
     const expire = process.env.JWT_EXPIRE || "1d";
     const token = JWT.generateToken({ id: newUSER._id }, { expiresIn: expire });
 
-    response.status(201).json({
+    response.status(HTTP_RESPONSE.CREATED).json({
       message:
         "User created successfully kindly check your inbox to verify your email",
       token,
@@ -98,11 +106,14 @@ export const verifyEmail = async (
     const { tokenReset } = request.params;
     const checker = tokenReset.split("-")[0];
     if (!tokenReset) {
-      throw APP_ERROR("error verifying email please try again", 400);
+      throw APP_ERROR(
+        "error verifying email please try again",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
 
     if (checker !== "email") {
-      throw APP_ERROR("error please try again", 400);
+      throw APP_ERROR("error please try again", HTTP_RESPONSE.BAD_REQUEST);
     }
     const resetPasswordToken: any = createHash("sha256")
       .update(tokenReset)
@@ -112,7 +123,7 @@ export const verifyEmail = async (
       Token: resetPasswordToken,
     });
     if (!user) {
-      throw APP_ERROR("Invalid verification link", 400);
+      throw APP_ERROR("Invalid verification link", HTTP_RESPONSE.BAD_REQUEST);
     }
     const userX = user.TokenExpires;
 
@@ -122,7 +133,7 @@ export const verifyEmail = async (
       user.Token = undefined;
       user.TokenExpires = undefined;
       await user.save();
-      throw APP_ERROR(" your link has expired", 400);
+      throw APP_ERROR(" your link has expired", HTTP_RESPONSE.BAD_REQUEST);
     }
     user.isEmailVerified = true;
     user.save();
@@ -139,7 +150,7 @@ export const verifyEmail = async (
       token,
     });
   } catch (err: any) {
-    response.status(500).json({ message: err.message });
+    next(err);
   }
 };
 // export const checkIsEmailVerified = async (
@@ -157,19 +168,19 @@ export const login = async (
 
   try {
     if (!email) {
-      throw APP_ERROR("Email is required", 400);
+      throw APP_ERROR("Email is required", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (!email.includes("@")) {
-      throw APP_ERROR("Email is invalid", 400);
+      throw APP_ERROR("Email is invalid", HTTP_RESPONSE.BAD_REQUEST);
     }
     const user = await USER.findOne({ email });
 
     if (!user) {
-      throw APP_ERROR("User does not exist", 400);
+      throw APP_ERROR("User does not exist", HTTP_RESPONSE.BAD_REQUEST);
     }
     const isPasswordMatch = await BCRYPT.compare(password, user.password);
     if (!isPasswordMatch) {
-      throw APP_ERROR("Password is incorrect", 400);
+      throw APP_ERROR("Password is incorrect", HTTP_RESPONSE.BAD_REQUEST);
     }
     const expire = process.env.JWT_EXPIRE || "1d";
     const token = JWT.generateToken({ id: user._id }, { expiresIn: expire });
@@ -180,11 +191,7 @@ export const login = async (
       data: token,
     });
   } catch (error) {
-    response.status(400).json({
-      success: false,
-      message: "failed to sign up",
-      data: error,
-    });
+    next(error);
   }
 };
 
@@ -196,20 +203,23 @@ export const protector = async (
   try {
     const token = request.headers.authorization;
     if (!token) {
-      throw APP_ERROR("Token is required", 400);
+      throw APP_ERROR("Token is required", HTTP_RESPONSE.BAD_REQUEST);
     }
     const tokenData = token.split(" ")[1];
     const decoded = await JWT.verifyToken(tokenData);
     if (!decoded) {
-      throw APP_ERROR("Token is invalid", 400);
+      throw APP_ERROR("Token is invalid", HTTP_RESPONSE.BAD_REQUEST);
     }
 
     const user = await USER.findById(decoded.id);
     if (!user) {
-      throw APP_ERROR("User does not exist", 400);
+      throw APP_ERROR("User does not exist", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (user.isDeleted) {
-      throw APP_ERROR("User does not exist, please kindly register   ", 400);
+      throw APP_ERROR(
+        "User does not exist, please kindly register   ",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
     if (!user.isEmailVerified) {
       throw APP_ERROR("email not verified, kindly go to your mail to verify");
@@ -230,16 +240,16 @@ export const logout = async (
   try {
     const token = request.headers.authorization;
     if (!token) {
-      throw APP_ERROR("Token is required", 400);
+      throw APP_ERROR("Token is required", HTTP_RESPONSE.BAD_REQUEST);
     }
     const tokenData = token.split(" ")[1];
     const decoded = await JWT.verifyToken(tokenData);
     if (!decoded) {
-      throw APP_ERROR("Token is invalid", 400);
+      throw APP_ERROR("Token is invalid", HTTP_RESPONSE.BAD_REQUEST);
     }
     const user = await USER.findById(decoded.id);
     if (!user) {
-      throw APP_ERROR("User does not exist", 400);
+      throw APP_ERROR("User does not exist", HTTP_RESPONSE.BAD_REQUEST);
     }
     response.status(200).json({
       message: "User logged out successfully",
@@ -257,7 +267,10 @@ export const forgotPassword = async (
   const { email } = request.body;
 
   if (!email) {
-    throw APP_ERROR("Please provide all the required fields", 400);
+    throw APP_ERROR(
+      "Please provide all the required fields",
+      HTTP_RESPONSE.BAD_REQUEST
+    );
   }
   const user = await USER.findOne({
     email,
@@ -295,24 +308,33 @@ export const forgotPassword = async (
     // user?.resetPasswordToken = undefined;
     // user?.resetPasswordTokenExpires = undefined;
     // await USER.save();
-    return next(APP_ERROR(err.message, 500));
-    response.status(500).json({ message: err.message });
+    return next(err);
   }
 };
 
-export const resetPassword = async (req: Request, response: Response) => {
+export const resetPassword = async (
+  req: Request,
+  response: Response,
+  next: NextFunction
+) => {
   try {
     const { tokenReset } = request.params;
-    const { password, confirmPassword } = request.body;
+    const { password, confirm_password } = request.body;
 
-    if (!tokenReset || !password || !confirmPassword) {
-      throw APP_ERROR("Please provide all the required fields", 400);
+    if (!tokenReset || !password || !confirm_password) {
+      throw APP_ERROR(
+        "Please provide all the required fields",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
-    if (password !== confirmPassword) {
-      throw APP_ERROR("Passwords do not match", 400);
+    if (password !== confirm_password) {
+      throw APP_ERROR("Passwords do not match", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (password.length < 6) {
-      throw APP_ERROR("Password must be at least 6 characters", 400);
+      throw APP_ERROR(
+        "Password must be at least 6 characters",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
     if (
       !password.match(/[a-z]/) ||
@@ -322,7 +344,7 @@ export const resetPassword = async (req: Request, response: Response) => {
     ) {
       throw APP_ERROR(
         "Password must contain at least one lowercase letter, one uppercase letter, one number and one special character",
-        400
+        HTTP_RESPONSE.BAD_REQUEST
       );
     }
     const resetPasswordToken: any = createHash("sha256")
@@ -332,14 +354,14 @@ export const resetPassword = async (req: Request, response: Response) => {
       Token: resetPasswordToken,
     });
     if (!user) {
-      throw APP_ERROR("Invalid token", 400);
+      throw APP_ERROR("Invalid token", HTTP_RESPONSE.BAD_REQUEST);
     }
     const userX = user.TokenExpires;
 
     const d = new Date(userX);
     const da = d.getTime();
     if (da < Date.now()) {
-      throw APP_ERROR(" your Token has expired", 400);
+      throw APP_ERROR(" your Token has expired", HTTP_RESPONSE.BAD_REQUEST);
     }
     user.password = await BCRYPT.hash(password);
     user.Token = undefined;
@@ -358,7 +380,7 @@ export const resetPassword = async (req: Request, response: Response) => {
       token,
     });
   } catch (err: any) {
-    response.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -368,15 +390,21 @@ export const updatePassword = async (
   next: NextFunction
 ) => {
   try {
-    const { currentPassword, password, confirmPassword } = request.body;
-    if (!password || !confirmPassword) {
-      throw APP_ERROR("Please provide all the required fields", 400);
+    const { currentPassword, password, confirm_password } = request.body;
+    if (!password || !confirm_password) {
+      throw APP_ERROR(
+        "Please provide all the required fields",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
-    if (password !== confirmPassword) {
-      throw APP_ERROR("Passwords do not match", 400);
+    if (password !== confirm_password) {
+      throw APP_ERROR("Passwords do not match", HTTP_RESPONSE.BAD_REQUEST);
     }
     if (password.length < 6) {
-      throw APP_ERROR("Password must be at least 6 characters", 400);
+      throw APP_ERROR(
+        "Password must be at least 6 characters",
+        HTTP_RESPONSE.BAD_REQUEST
+      );
     }
     if (
       !password.match(/[a-z]/) ||
@@ -386,7 +414,7 @@ export const updatePassword = async (
     ) {
       throw APP_ERROR(
         "Password must contain at least one lowercase letter, one uppercase letter, one number and one special character",
-        400
+        HTTP_RESPONSE.BAD_REQUEST
       );
     }
     let token;
@@ -404,7 +432,10 @@ export const updatePassword = async (
     const user = await USER.findById(decoded.id);
     if (user) {
       if (!BCRYPT.compare(currentPassword, user.password)) {
-        throw APP_ERROR("Current password is incorrect", 400);
+        throw APP_ERROR(
+          "Current password is incorrect",
+          HTTP_RESPONSE.BAD_REQUEST
+        );
       }
 
       user.password = await BCRYPT.hash(password);
@@ -418,6 +449,24 @@ export const updatePassword = async (
       token,
     });
   } catch (err: any) {
-    response.status(500).json({ message: err.message });
+    next(err);
+  }
+};
+
+export const getRole = async (
+  request: RequestBody,
+  response: Response,
+  next: NextFunction
+) => {
+  const user = request.user;
+  try {
+    if (!user) throw APP_ERROR("user not found", HTTP_RESPONSE.BAD_REQUEST);
+    const get_role_name = await ROLE.findById(user.role);
+
+    const gotten_role = get_role_name?.name;
+    request.role = gotten_role;
+    next();
+  } catch (error) {
+    next(error);
   }
 };

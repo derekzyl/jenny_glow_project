@@ -21,4 +21,5 @@ export interface UserI extends mongoose.Document {
 
 export interface RequestBody extends Request {
   user: any;
+  role: any;
 }
