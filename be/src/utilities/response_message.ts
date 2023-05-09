@@ -1,26 +1,27 @@
 import * as dotenv from "dotenv";
+import { customMessageI } from "./interface_utilities/response_message";
 dotenv.config();
-
-export function responseMessage(
-  message: string,
-  success_status: boolean,
-  data: any,
-  stack?: any
-) {
-  switch (success_status) {
+/**
+ *
+ * @param {customMessageI} msg
+ * @returns
+ */
+export function responseMessage(msg: customMessageI) {
+  switch (msg.success_status) {
     case true:
       return {
-        message,
-        data,
-        success_status,
+        message: msg.message,
+        data: msg.data,
+        success_status: msg.success_status,
+        doc_length: msg.doc_length,
       };
 
     case false:
       return {
-        message,
-        error: data,
-        success_status,
-        stack: process.env.NODE_ENV === "development" ? stack : {},
+        message: msg.message,
+        error: msg.data,
+        success_status: msg.success_status,
+        stack: process.env.NODE_ENV === "development" ? msg.stack : {},
       };
     default:
       break;

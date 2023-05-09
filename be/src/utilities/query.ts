@@ -1,7 +1,9 @@
+import { Model } from "mongoose";
+
 export class Queries {
   query: any;
   queryString: any;
-  constructor(query: any, queryString: any) {
+  constructor(query: Model<any>, queryString: any) {
     this.query = query;
     this.queryString = queryString;
   }

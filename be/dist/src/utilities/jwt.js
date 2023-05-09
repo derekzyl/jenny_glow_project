@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-class jwtUtils {
+class JWT {
     static generateToken(payload, options) {
         return jsonwebtoken_1.default.sign(payload, this.secret, options);
     }
@@ -37,5 +37,5 @@ class jwtUtils {
         return jsonwebtoken_1.default.verify(token, this.secret, options);
     }
 }
-jwtUtils.secret = process.env.JWT_SECRET;
-exports.default = jwtUtils;
+JWT.secret = process.env.JWT_SECRET;
+exports.default = JWT;

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-class Bcrypt {
+class BCRYPT {
     static hash(password) {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = yield bcrypt_1.default.genSalt(10);
@@ -26,4 +26,4 @@ class Bcrypt {
         });
     }
 }
-exports.default = Bcrypt;
+exports.default = BCRYPT;

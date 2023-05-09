@@ -46,6 +46,11 @@ const errorCenter = (error, request, response, next) => {
     const error_info = error.information;
     response
         .status(error_status)
-        .json((0, response_message_1.responseMessage)(error_info, false, error_message, error.stack));
+        .json((0, response_message_1.responseMessage)({
+        message: error_info,
+        success_status: false,
+        data: error_message,
+        stack: error.stack,
+    }));
 };
 exports.errorCenter = errorCenter;

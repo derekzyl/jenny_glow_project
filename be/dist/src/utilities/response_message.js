@@ -26,20 +26,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.responseMessage = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-function responseMessage(message, success_status, data, stack) {
-    switch (success_status) {
+/**
+ *
+ * @param {customMessageI} msg
+ * @returns
+ */
+function responseMessage(msg) {
+    switch (msg.success_status) {
         case true:
             return {
-                message,
-                data,
-                success_status,
+                message: msg.message,
+                data: msg.data,
+                success_status: msg.success_status,
+                doc_length: msg.doc_length,
             };
         case false:
             return {
-                message,
-                error: data,
-                success_status,
-                stack: process.env.NODE_ENV === "development" ? stack : {},
+                message: msg.message,
+                error: msg.data,
+                success_status: msg.success_status,
+                stack: process.env.NODE_ENV === "development" ? msg.stack : {},
             };
         default:
             break;

@@ -30,9 +30,11 @@ const createRole = (request, response, next) => __awaiter(void 0, void 0, void 0
         // }
         const create_role = new model_role_1.ROLE({ name });
         const role_created = yield create_role.save();
-        response
-            .status(http_response_1.HTTP_RESPONSE.CREATED)
-            .json((0, response_message_1.responseMessage)("role created successfully", true, role_created));
+        response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({
+            message: "role created successfully",
+            success_status: true,
+            data: role_created,
+        }));
     }
     catch (error) {
         error.information = "error encountered creating role";
@@ -45,7 +47,11 @@ const getAllRole = (request, response, next) => __awaiter(void 0, void 0, void 0
         const get_all_role = yield model_role_1.ROLE.find();
         response
             .status(http_response_1.HTTP_RESPONSE.OK)
-            .json((0, response_message_1.responseMessage)("role gotten successfully", true, get_all_role));
+            .json((0, response_message_1.responseMessage)({
+            message: "role gotten successfully",
+            success_status: true,
+            data: get_all_role,
+        }));
     }
     catch (error) {
         next(error);
@@ -62,7 +68,11 @@ const updateOneRole = (request, response, next) => __awaiter(void 0, void 0, voi
         const updated_role = yield model_role_1.ROLE.findByIdAndUpdate(role_id, name);
         response
             .status(http_response_1.HTTP_RESPONSE.OK)
-            .json((0, response_message_1.responseMessage)("role created successfully", true, updated_role));
+            .json((0, response_message_1.responseMessage)({
+            message: "role created successfully",
+            success_status: true,
+            data: updated_role,
+        }));
     }
     catch (error) {
         next(error);
@@ -78,7 +88,11 @@ const deleteOneRole = (request, response, next) => __awaiter(void 0, void 0, voi
         const deleted_role = yield model_role_1.ROLE.findByIdAndDelete(role_id);
         response
             .status(http_response_1.HTTP_RESPONSE.OK)
-            .json((0, response_message_1.responseMessage)("role created successfully", true, deleted_role));
+            .json((0, response_message_1.responseMessage)({
+            message: "role created successfully",
+            success_status: true,
+            data: deleted_role,
+        }));
     }
     catch (error) {
         next(error);

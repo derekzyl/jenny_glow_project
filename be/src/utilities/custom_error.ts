@@ -63,5 +63,12 @@ export const errorCenter: ErrorRequestHandler = (
 
   response
     .status(error_status)
-    .json(responseMessage(error_info, false, error_message, error.stack));
+    .json(
+      responseMessage({
+        message: error_info,
+        success_status: false,
+        data: error_message,
+        stack: error.stack,
+      })
+    );
 };
