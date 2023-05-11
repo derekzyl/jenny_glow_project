@@ -2,6 +2,7 @@ import { Response, NextFunction, Request } from "express";
 import { PermissionsE } from "./interface/general_factory";
 import { APP_ERROR } from "../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../utilities/http_response";
+import { LOG } from "../../utilities/console";
 
 export const getPermissions =
   (role_name: PermissionsE) =>

@@ -55,7 +55,7 @@ export const updateOne =
     try {
       const update_model = await MODEL.findByIdAndUpdate(
         request.params.id,
-        request.body,
+        { ...request.body, updated_at: Date.now() },
         { new: true, runValidators: true }
       );
 

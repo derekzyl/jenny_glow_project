@@ -441,7 +441,7 @@ const resetPassword = (req, response, next) =>
       }
       user.password = yield bcrypt_1.default.hash(password);
       user.Token = undefined;
-      user.TokenExpires = undefined;
+      user.token_expires = undefined;
       yield user.save();
       const token = jwt_1.default.generateToken(
         { id: user.id },

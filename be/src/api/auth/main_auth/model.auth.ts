@@ -10,28 +10,28 @@ const UserSchema = new Schema<UserI>({
   password: {
     type: String,
   },
-  createdAt: {
+  created_at: {
     type: Date,
     default: Date.now(),
   },
-  updatedAt: {
+  updated_at: {
     type: Date,
     default: Date.now(),
   },
   permissions: [{ type: String, enum: PermissionsE }],
-  TokenExpires: { type: String },
-  Token: {
+  token_expires: { type: String },
+  token: {
     type: String,
   },
-  isEmailVerified: {
+  is_email_verified: {
     type: Boolean,
     default: false,
   },
-  isDeleted: {
+  is_deleted: {
     type: Boolean,
     default: false,
   },
-  passwordChangedAt: {
+  password_changed_at: {
     type: Date,
     default: Date.now(),
   },

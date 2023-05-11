@@ -51,7 +51,7 @@ const deleteOne = (MODEL) => (request, response, next) => __awaiter(void 0, void
 exports.deleteOne = deleteOne;
 const updateOne = (MODEL) => (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const update_model = yield MODEL.findByIdAndUpdate(request.params.id, request.body, { new: true, runValidators: true });
+        const update_model = yield MODEL.findByIdAndUpdate(request.params.id, Object.assign(Object.assign({}, request.body), { updated_at: Date.now() }), { new: true, runValidators: true });
         if (!update_model) {
             throw (0, custom_error_1.APP_ERROR)(`${update_model}`, http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }

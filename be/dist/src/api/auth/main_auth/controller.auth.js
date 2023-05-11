@@ -12,11 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRole = exports.updatePassword = exports.resetPassword = exports.forgotPassword = exports.logout = exports.protector = exports.login = exports.verifyEmail = exports.signup = void 0;
+exports.updatePassword = exports.resetPassword = exports.forgotPassword = exports.logout = exports.protector = exports.login = exports.verifyEmail = exports.signup = void 0;
 const express_1 = require("express");
 const model_auth_1 = require("./model.auth");
 const crypto_1 = require("crypto");
-const model_role_1 = require("../../admin/role/main_role/model.role");
 const custom_error_1 = require("../../../utilities/custom_error");
 const http_response_1 = require("../../../utilities/http_response");
 const mailer_1 = __importDefault(require("../../../utilities/mailer"));
@@ -55,7 +54,7 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
         const pRT = "email-" + (0, crypto_1.randomBytes)(20).toString("hex");
         const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
         const resetToken = (0, crypto_1.createHash)("sha256").update(pRT).digest("hex");
-        const TokenExpires = new Date(resetTokenExpiry);
+        const token_expires = new Date(resetTokenExpiry);
         const url = `${request.protocol}://${request.get("host")}/api/v1/auth/verifyEmail/${pRT}`;
         const message = `You are receiving this email because you (or someone else) have requested the reset of a password. \n Please make a POST request to: ${url}`;
         const details = {
@@ -68,8 +67,8 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
         const newUser = new model_auth_1.USER({
             email,
             password: encryptedPassword,
-            Token: resetToken,
-            TokenExpires,
+            token: resetToken,
+            token_expires,
             role: "644da36acc996fe2be8239e9",
         });
         const newUSER = yield newUser.save();
@@ -99,21 +98,21 @@ const verifyEmail = (request, response, next) => __awaiter(void 0, void 0, void 
             .update(tokenReset)
             .digest("hex");
         const user = yield model_auth_1.USER.findOne({
-            Token: resetPasswordToken,
+            token: resetPasswordToken,
         });
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("Invalid verification link", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const userX = user.TokenExpires;
+        const userX = user.token_expires;
         const d = new Date(userX);
         const da = d.getTime();
         if (da < Date.now()) {
-            user.Token = undefined;
-            user.TokenExpires = undefined;
+            user.token = undefined;
+            user.token_expires = undefined;
             yield user.save();
             throw (0, custom_error_1.APP_ERROR)(" your link has expired", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        user.isEmailVerified = true;
+        user.is_email_verified = true;
         user.save();
         const token = jwt_1.default.generateToken({ id: user.id }, {
             expiresIn: process.env.JWT_EXPIRES_IN,
@@ -179,10 +178,10 @@ const protector = (request, response, next) => __awaiter(void 0, void 0, void 0,
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        if (user.isDeleted) {
+        if (user.is_deleted) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist, please kindly register   ", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        if (!user.isEmailVerified) {
+        if (!user.is_email_verified) {
             throw (0, custom_error_1.APP_ERROR)("email not verified, kindly go to your mail to verify");
         }
         request.user = user;
@@ -232,8 +231,8 @@ const forgotPassword = (request, response, next) => __awaiter(void 0, void 0, vo
         const pRT = "password-" + (0, crypto_1.randomBytes)(20).toString("hex");
         const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
         const resetToken = (0, crypto_1.createHash)("sha256").update(pRT).digest("hex");
-        user.Token = resetToken;
-        user.TokenExpires = new Date(resetTokenExpiry);
+        user.token = resetToken;
+        user.token_expires = new Date(resetTokenExpiry);
         yield user.save();
         const url = `${request.protocol}://${request.get("host")}/api/v1/auth/resetPassword/${pRT}`;
         const message = `You are receiving this email because you (or someone else) have requested the reset of a password. \n Please make a POST request to: ${url}`;
@@ -280,20 +279,20 @@ const resetPassword = (req, response, next) => __awaiter(void 0, void 0, void 0,
             .update(tokenReset)
             .digest("hex");
         const user = yield model_auth_1.USER.findOne({
-            Token: resetPasswordToken,
+            token: resetPasswordToken,
         });
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("Invalid token", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const userX = user.TokenExpires;
+        const userX = user.token_expires;
         const d = new Date(userX);
         const da = d.getTime();
         if (da < Date.now()) {
-            throw (0, custom_error_1.APP_ERROR)(" your Token has expired", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
+            throw (0, custom_error_1.APP_ERROR)(" yourtoken has expired", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         user.password = yield bcrypt_1.default.hash(password);
-        user.Token = undefined;
-        user.TokenExpires = undefined;
+        user.token = undefined;
+        user.token_expires = undefined;
         yield user.save();
         const token = jwt_1.default.generateToken({ id: user.id }, {
             expiresIn: process.env.JWT_EXPIRES_IN,
@@ -342,7 +341,7 @@ const updatePassword = (request, response, next) => __awaiter(void 0, void 0, vo
                 throw (0, custom_error_1.APP_ERROR)("Current password is incorrect", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
             }
             user.password = yield bcrypt_1.default.hash(password);
-            user.passwordChangedAt = new Date();
+            user.password_changed_at = new Date();
             yield user.save();
         }
         response.status(200).json({
@@ -356,18 +355,19 @@ const updatePassword = (request, response, next) => __awaiter(void 0, void 0, vo
     }
 });
 exports.updatePassword = updatePassword;
-const getRole = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = request.user;
-    try {
-        if (!user)
-            throw (0, custom_error_1.APP_ERROR)("user not found", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
-        const get_role_name = yield model_role_1.ROLE.findById(user.role);
-        const gotten_role = get_role_name === null || get_role_name === void 0 ? void 0 : get_role_name.name;
-        request.role = gotten_role;
-        next();
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.getRole = getRole;
+// export const getRole = async (
+//   request: RequestBody,
+//   response: Response,
+//   next: NextFunction
+// ) => {
+//   const user = request.user;
+//   try {
+//     if (!user) throw APP_ERROR("user not found", HTTP_RESPONSE.BAD_REQUEST);
+//     const get_role_name = await ROLE.findById(user.role);
+//     const gotten_role = get_role_name?.name;
+//     request.role = gotten_role;
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// };

@@ -12,7 +12,6 @@ class Auth {
         this.forgot_password = controller_auth_1.forgotPassword;
         this.reset_password = controller_auth_1.resetPassword;
         this.update_password = controller_auth_1.updatePassword;
-        this.get_role = controller_auth_1.getRole;
     }
 }
 exports.AuthIndex = new Auth();

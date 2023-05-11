@@ -1,6 +1,5 @@
 import {
   forgotPassword,
-  getRole,
   login,
   logout,
   protector,
@@ -19,6 +18,5 @@ class Auth {
   public forgot_password = forgotPassword;
   public reset_password = resetPassword;
   public update_password = updatePassword;
-  public get_role = getRole;
 }
 export const AuthIndex = new Auth();

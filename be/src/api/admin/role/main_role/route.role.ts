@@ -6,7 +6,7 @@ import { PermissionsE } from "../../../general_factory/interface/general_factory
 
 const roleRouter = Router();
 roleRouter
-  .route("/role/")
+  .route("/")
   .post(
     AuthIndex.protector,
     GeneralIndex.getUserPermissions(PermissionsE.CREATE_ROLE),
@@ -18,7 +18,7 @@ roleRouter
     RoleIndex.getAllRole
   );
 roleRouter
-  .route("/create/:id")
+  .route("/:id")
   .patch(
     AuthIndex.protector,
     GeneralIndex.getUserPermissions(PermissionsE.EDIT_ROLE),

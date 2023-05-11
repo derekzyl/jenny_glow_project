@@ -11,18 +11,20 @@ var PermissionsE;
     PermissionsE["VIEW_PRODUCT"] = "VIEW_PRODUCT";
     PermissionsE["EDIT_PRODUCT"] = "EDIT_PRODUCT";
     PermissionsE["DELETE_PRODUCT"] = "DELETE_PRODUCT";
-    // CRUD CATEGORY
+    // CRUD STAFF
     PermissionsE["CREATE_STAFF"] = "CREATE_STAFF";
     PermissionsE["VIEW_STAFF"] = "VIEW_STAFF";
     PermissionsE["EDIT_STAFF"] = "EDIT_STAFF";
     PermissionsE["DELETE_STAFF"] = "DELETE_STAFF";
-    // CREATE
     //CREATE ROLE
     PermissionsE["CREATE_ROLE"] = "CREATE_ROLE";
     PermissionsE["VIEW_ROLE"] = "VIEW_ROLE";
     PermissionsE["EDIT_ROLE"] = "EDIT_ROLE";
     PermissionsE["DELETE_ROLE"] = "DELETE_ROLE";
     //DISPATCH ROLE
-    //SALES
+    PermissionsE["CREATE_BRANCH"] = "CREATE_BRANCH";
+    PermissionsE["VIEW_BRANCH"] = "VIEW_BRANCH";
+    PermissionsE["EDIT_BRANCH"] = "EDIT_BRANCH";
+    PermissionsE["DELETE_BRANCH"] = "DELETE_BRANCH";
     //SHIPPING FEE MANAGER
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));

@@ -3,8 +3,6 @@ import { NextFunction, Request, Response, request } from "express";
 import { USER } from "./model.auth";
 import { createHash, randomBytes } from "crypto";
 
-import { RequestBody } from "../interface_auth/auth";
-import { ROLE } from "../../admin/role/main_role/model.role";
 import { APP_ERROR } from "../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../utilities/http_response";
 import { dataI } from "../../../utilities/interface_utilities/mail";
@@ -61,7 +59,7 @@ export const signup = async (
     const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
     const resetToken = createHash("sha256").update(pRT).digest("hex");
 
-    const TokenExpires = new Date(resetTokenExpiry);
+    const token_expires = new Date(resetTokenExpiry);
 
     const url = `${request.protocol}://${request.get(
       "host"
@@ -79,8 +77,8 @@ export const signup = async (
     const newUser = new USER({
       email,
       password: encryptedPassword,
-      Token: resetToken,
-      TokenExpires,
+      token: resetToken,
+      token_expires,
       role: "644da36acc996fe2be8239e9",
     });
     const newUSER = await newUser.save();
@@ -120,22 +118,22 @@ export const verifyEmail = async (
       .digest("hex");
 
     const user = await USER.findOne({
-      Token: resetPasswordToken,
+      token: resetPasswordToken,
     });
     if (!user) {
       throw APP_ERROR("Invalid verification link", HTTP_RESPONSE.BAD_REQUEST);
     }
-    const userX = user.TokenExpires;
+    const userX = user.token_expires;
 
     const d = new Date(userX);
     const da = d.getTime();
     if (da < Date.now()) {
-      user.Token = undefined;
-      user.TokenExpires = undefined;
+      user.token = undefined;
+      user.token_expires = undefined;
       await user.save();
       throw APP_ERROR(" your link has expired", HTTP_RESPONSE.BAD_REQUEST);
     }
-    user.isEmailVerified = true;
+    user.is_email_verified = true;
     user.save();
 
     const token = JWT.generateToken(
@@ -215,13 +213,13 @@ export const protector = async (
     if (!user) {
       throw APP_ERROR("User does not exist", HTTP_RESPONSE.BAD_REQUEST);
     }
-    if (user.isDeleted) {
+    if (user.is_deleted) {
       throw APP_ERROR(
         "User does not exist, please kindly register   ",
         HTTP_RESPONSE.BAD_REQUEST
       );
     }
-    if (!user.isEmailVerified) {
+    if (!user.is_email_verified) {
       throw APP_ERROR("email not verified, kindly go to your mail to verify");
     }
 
@@ -283,8 +281,8 @@ export const forgotPassword = async (
     const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
     const resetToken = createHash("sha256").update(pRT).digest("hex");
 
-    user.Token = resetToken;
-    user.TokenExpires = new Date(resetTokenExpiry);
+    user.token = resetToken;
+    user.token_expires = new Date(resetTokenExpiry);
     await user.save();
 
     const url = `${request.protocol}://${request.get(
@@ -351,21 +349,21 @@ export const resetPassword = async (
       .update(tokenReset)
       .digest("hex");
     const user = await USER.findOne({
-      Token: resetPasswordToken,
+      token: resetPasswordToken,
     });
     if (!user) {
       throw APP_ERROR("Invalid token", HTTP_RESPONSE.BAD_REQUEST);
     }
-    const userX = user.TokenExpires;
+    const userX = user.token_expires;
 
     const d = new Date(userX);
     const da = d.getTime();
     if (da < Date.now()) {
-      throw APP_ERROR(" your Token has expired", HTTP_RESPONSE.BAD_REQUEST);
+      throw APP_ERROR(" yourtoken has expired", HTTP_RESPONSE.BAD_REQUEST);
     }
     user.password = await BCRYPT.hash(password);
-    user.Token = undefined;
-    user.TokenExpires = undefined;
+    user.token = undefined;
+    user.token_expires = undefined;
     await user.save();
 
     const token = JWT.generateToken(
@@ -439,7 +437,7 @@ export const updatePassword = async (
       }
 
       user.password = await BCRYPT.hash(password);
-      user.passwordChangedAt = new Date();
+      user.password_changed_at = new Date();
       await user.save();
     }
 
@@ -453,20 +451,20 @@ export const updatePassword = async (
   }
 };
 
-export const getRole = async (
-  request: RequestBody,
-  response: Response,
-  next: NextFunction
-) => {
-  const user = request.user;
-  try {
-    if (!user) throw APP_ERROR("user not found", HTTP_RESPONSE.BAD_REQUEST);
-    const get_role_name = await ROLE.findById(user.role);
+// export const getRole = async (
+//   request: RequestBody,
+//   response: Response,
+//   next: NextFunction
+// ) => {
+//   const user = request.user;
+//   try {
+//     if (!user) throw APP_ERROR("user not found", HTTP_RESPONSE.BAD_REQUEST);
+//     const get_role_name = await ROLE.findById(user.role);
 
-    const gotten_role = get_role_name?.name;
-    request.role = gotten_role;
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
+//     const gotten_role = get_role_name?.name;
+//     request.role = gotten_role;
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// };

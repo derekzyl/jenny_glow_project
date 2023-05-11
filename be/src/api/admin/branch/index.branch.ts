@@ -7,7 +7,7 @@ import {
 } from "./main_branch/controller.branch";
 
 class Branch {
-  public created_branch = createBranch;
+  public create_branch = createBranch;
   public get_one_branch = getOneBranch;
   public update_branch = updateBranch;
   public delete_branch = deleteBranch;

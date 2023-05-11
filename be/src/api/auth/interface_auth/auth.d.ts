@@ -10,14 +10,14 @@ enum GenderE {
 export interface UserI extends mongoose.Document {
   email: string | true;
   password: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_at?: Date;
+  updated_at?: Date;
   role?: mongoose.Types.ObjectId;
-  isEmailVerified?: boolean;
-  Token?: string;
-  TokenExpires?: any;
-  passwordChangedAt?: Date;
-  isDeleted?: boolean;
+  is_email_verified?: boolean;
+  token?: string;
+  token_expires?: any;
+  password_changed_at?: Date;
+  is_deleted?: boolean;
   permissions: PermissionsE[];
 }
 
