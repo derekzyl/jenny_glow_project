@@ -15,9 +15,12 @@ export const signup = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password, confirm_password } = request.body;
+    const { email, password, confirm_password, phone } = request.body;
 
     const user_role = "";
+    const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
+    if (!phone_regex.test(phone))
+      throw APP_ERROR("invalid phone number", HTTP_RESPONSE.BAD_REQUEST);
     if (!email) {
       throw APP_ERROR("Email is required", HTTP_RESPONSE.BAD_REQUEST);
     }

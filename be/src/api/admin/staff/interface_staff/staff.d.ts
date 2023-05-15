@@ -23,6 +23,7 @@ interface StaffBodyI extends Document {
   email: string;
   password: string;
   first_name: string;
+  phone: string;
   last_name: string;
   role: Types.ObjectId;
   address: string;

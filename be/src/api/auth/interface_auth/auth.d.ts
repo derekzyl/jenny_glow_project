@@ -12,6 +12,7 @@ export interface UserI extends mongoose.Document {
   password: string;
   created_at?: Date;
   updated_at?: Date;
+  phone: string;
   role?: mongoose.Types.ObjectId;
   is_email_verified?: boolean;
   token?: string;

@@ -23,8 +23,11 @@ const bcrypt_1 = __importDefault(require("../../../utilities/bcrypt"));
 const jwt_1 = __importDefault(require("../../../utilities/jwt"));
 const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password, confirm_password } = request.body;
+        const { email, password, confirm_password, phone } = request.body;
         const user_role = "";
+        const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
+        if (!phone_regex.test(phone))
+            throw (0, custom_error_1.APP_ERROR)("invalid phone number", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         if (!email) {
             throw (0, custom_error_1.APP_ERROR)("Email is required", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }

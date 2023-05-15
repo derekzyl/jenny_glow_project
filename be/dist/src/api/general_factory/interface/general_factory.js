@@ -26,5 +26,10 @@ var PermissionsE;
     PermissionsE["VIEW_BRANCH"] = "VIEW_BRANCH";
     PermissionsE["EDIT_BRANCH"] = "EDIT_BRANCH";
     PermissionsE["DELETE_BRANCH"] = "DELETE_BRANCH";
+    // category and sub category
+    PermissionsE["CREATE_CATEGORY"] = "CREATE_CATEGORY";
+    PermissionsE["VIEW_CATEGORY"] = "VIEW_CATEGORY";
+    PermissionsE["EDIT_CATEGORY"] = "EDIT_CATEGORY";
+    PermissionsE["DELETE_CATEGORY"] = "DELETE_CATEGORY";
     //SHIPPING FEE MANAGER
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));

@@ -5,10 +5,10 @@ import {
   updateOneRole,
 } from "./main_role/controller.role";
 
-class RolIndex {
+class Role {
   public createRole = createRole;
   public getAllRole = getAllRole;
   public updateRole = updateOneRole;
   public deleteRole = deleteOneRole;
 }
-export const RoleIndex = new RolIndex();
+export const RoleIndex = new Role();

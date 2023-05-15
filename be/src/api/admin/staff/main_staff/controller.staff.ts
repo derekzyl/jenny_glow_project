@@ -13,10 +13,16 @@ import { getRole } from "../../../../utilities/get_role";
 import { responseMessage } from "../../../../utilities/response_message";
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
 
-export const createStaff = async (request: Request, response: Response) => {
+export const createStaff = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   const staff_body: StaffBodyI = request.body;
   const email_regex = /^[a-zA-Z0-9_-]{3,}@[a-zA-Z]{3,}.[a-zA-Z]{2,}$/g;
   const password_regex = /^[a-zA-Z0-9!@#><,-_*&]{8,}$/g;
+  const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
+
   try {
     const pRT = "email-" + randomBytes(20).toString("hex");
 
@@ -32,6 +38,8 @@ export const createStaff = async (request: Request, response: Response) => {
       );
     if (!password_regex.test(staff_body.password))
       throw APP_ERROR("password is not a valid one", HTTP_RESPONSE.BAD_REQUEST);
+    if (!phone_regex.test(staff_body.phone))
+      throw APP_ERROR("invalid phone number", HTTP_RESPONSE.BAD_REQUEST);
     const password = await BCRYPT.hash(staff_body.password);
     let check_if_user_exist = await USER.findOne({ email: staff_body.email });
     // if(check_if_email_exist){
@@ -48,6 +56,7 @@ export const createStaff = async (request: Request, response: Response) => {
         {
           permissions: staff_body.permissions,
           role: staff_body.role,
+          phone: staff_body.phone ?? check_if_user_exist.phone,
         }
       );
     } else {
@@ -57,6 +66,7 @@ export const createStaff = async (request: Request, response: Response) => {
         token: resetToken,
         token_expires,
         role: staff_body.role,
+        phone: staff_body.phone,
       });
       check_if_user_exist = await create_user.save();
 
@@ -96,13 +106,7 @@ export const createStaff = async (request: Request, response: Response) => {
       })
     );
   } catch (error) {
-    response.status(HTTP_RESPONSE.BAD_REQUEST).json(
-      responseMessage({
-        data: error,
-        message: "error occurred while creating staff",
-        success_status: false,
-      })
-    );
+    next(error);
   }
 };
 
@@ -120,6 +124,10 @@ export const updateStaff = async (
       throw APP_ERROR("the staff does'nt exist in the data base ");
     const find_staff_user_model = await USER.findById(find_staff.user);
     if (find_staff_user_model && user.id === find_staff_user_model.id) {
+      const update_user = await USER.findByIdAndUpdate(
+        find_staff_user_model?.id,
+        { phone: update_body.phone }
+      );
       const update_staff_data = await STAFF.findByIdAndUpdate(id, {
         first_name: update_body.first_name,
         last_name: update_body.last_name,
@@ -132,7 +140,7 @@ export const updateStaff = async (
         updated_at: Date.now(),
       });
 
-      if (!update_staff_data)
+      if (!update_staff_data || update_user)
         throw APP_ERROR("error updating staff", HTTP_RESPONSE.BAD_REQUEST);
     } else if (user?.permissions.includes(PermissionsE.EDIT_STAFF)) {
       const update_user = await USER.findByIdAndUpdate(
@@ -141,6 +149,7 @@ export const updateStaff = async (
           role: update_body.role ?? find_staff_user_model?.role,
           permissions:
             update_body.permissions ?? find_staff_user_model?.permissions,
+          phone: update_body.phone ?? find_staff_user_model?.phone,
           updated_at: Date.now(),
         }
       );
@@ -165,19 +174,39 @@ export const updateStaff = async (
       if (!update_staff_data || !update_user)
         throw APP_ERROR("error updating staff", HTTP_RESPONSE.BAD_REQUEST);
 
-      response
-        .status(HTTP_RESPONSE.OK)
-        .json(
-          responseMessage({
-            message: "update successful",
-            data: find_staff.first_name,
-            success_status: true,
-          })
-        );
+      response.status(HTTP_RESPONSE.OK).json(
+        responseMessage({
+          message: "update successful",
+          data: find_staff.first_name,
+          success_status: true,
+        })
+      );
     }
   } catch (error) {
     next(error);
   }
+};
+export const getMyStaffProfile = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const findStaff = await STAFF.findOne(
+    { user: request.user.id },
+    "first_name, last_name, address, bank_details, username branch"
+  ).populate("BRANCH");
+  if (!findStaff)
+    throw APP_ERROR(
+      "staff does not exist in database",
+      HTTP_RESPONSE.BAD_REQUEST
+    );
+  response.status(HTTP_RESPONSE.OK).json(
+    responseMessage({
+      message: "get staff profile successful",
+      data: {},
+      success_status: true,
+    })
+  );
 };
 
 export const getOneStaff = GeneralIndex.getOneFactory(STAFF);

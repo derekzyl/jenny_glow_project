@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStaff = exports.getAllStaff = exports.getOneStaff = exports.updateStaff = exports.createStaff = void 0;
+exports.deleteStaff = exports.getAllStaff = exports.getOneStaff = exports.getMyStaffProfile = exports.updateStaff = exports.createStaff = void 0;
 const index_factory_1 = require("../../../general_factory/index.factory");
 const model_staff_1 = require("./model.staff");
 const model_auth_1 = require("../../../auth/main_auth/model.auth");
@@ -24,10 +24,12 @@ const mailer_1 = __importDefault(require("../../../../utilities/mailer"));
 const get_role_1 = require("../../../../utilities/get_role");
 const response_message_1 = require("../../../../utilities/response_message");
 const general_factory_1 = require("../../../general_factory/interface/general_factory");
-const createStaff = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+const createStaff = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const staff_body = request.body;
     const email_regex = /^[a-zA-Z0-9_-]{3,}@[a-zA-Z]{3,}.[a-zA-Z]{2,}$/g;
     const password_regex = /^[a-zA-Z0-9!@#><,-_*&]{8,}$/g;
+    const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
     try {
         const pRT = "email-" + (0, crypto_1.randomBytes)(20).toString("hex");
         const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
@@ -37,6 +39,8 @@ const createStaff = (request, response) => __awaiter(void 0, void 0, void 0, fun
             throw (0, custom_error_1.APP_ERROR)("the email is not a valid one", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         if (!password_regex.test(staff_body.password))
             throw (0, custom_error_1.APP_ERROR)("password is not a valid one", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
+        if (!phone_regex.test(staff_body.phone))
+            throw (0, custom_error_1.APP_ERROR)("invalid phone number", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         const password = yield bcrypt_1.default.hash(staff_body.password);
         let check_if_user_exist = yield model_auth_1.USER.findOne({ email: staff_body.email });
         // if(check_if_email_exist){
@@ -50,6 +54,7 @@ const createStaff = (request, response) => __awaiter(void 0, void 0, void 0, fun
             check_if_user_exist = yield model_auth_1.USER.findByIdAndUpdate(check_if_user_exist.id, {
                 permissions: staff_body.permissions,
                 role: staff_body.role,
+                phone: (_a = staff_body.phone) !== null && _a !== void 0 ? _a : check_if_user_exist.phone,
             });
         }
         else {
@@ -59,6 +64,7 @@ const createStaff = (request, response) => __awaiter(void 0, void 0, void 0, fun
                 token: resetToken,
                 token_expires,
                 role: staff_body.role,
+                phone: staff_body.phone,
             });
             check_if_user_exist = yield create_user.save();
             const url = `${request.protocol}://${request.get("host")}/api/v1/auth/verifyEmail/${pRT}`;
@@ -93,16 +99,12 @@ const createStaff = (request, response) => __awaiter(void 0, void 0, void 0, fun
         }));
     }
     catch (error) {
-        response.status(http_response_1.HTTP_RESPONSE.BAD_REQUEST).json((0, response_message_1.responseMessage)({
-            data: error,
-            message: "error occurred while creating staff",
-            success_status: false,
-        }));
+        next(error);
     }
 });
 exports.createStaff = createStaff;
 const updateStaff = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     try {
         const user = request.user;
         const update_body = request.body;
@@ -112,6 +114,7 @@ const updateStaff = (request, response, next) => __awaiter(void 0, void 0, void 
             throw (0, custom_error_1.APP_ERROR)("the staff does'nt exist in the data base ");
         const find_staff_user_model = yield model_auth_1.USER.findById(find_staff.user);
         if (find_staff_user_model && user.id === find_staff_user_model.id) {
+            const update_user = yield model_auth_1.USER.findByIdAndUpdate(find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.id, { phone: update_body.phone });
             const update_staff_data = yield model_staff_1.STAFF.findByIdAndUpdate(id, {
                 first_name: update_body.first_name,
                 last_name: update_body.last_name,
@@ -123,32 +126,31 @@ const updateStaff = (request, response, next) => __awaiter(void 0, void 0, void 
                 },
                 updated_at: Date.now(),
             });
-            if (!update_staff_data)
+            if (!update_staff_data || update_user)
                 throw (0, custom_error_1.APP_ERROR)("error updating staff", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         else if (user === null || user === void 0 ? void 0 : user.permissions.includes(general_factory_1.PermissionsE.EDIT_STAFF)) {
             const update_user = yield model_auth_1.USER.findByIdAndUpdate(find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.id, {
-                role: (_a = update_body.role) !== null && _a !== void 0 ? _a : find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.role,
-                permissions: (_b = update_body.permissions) !== null && _b !== void 0 ? _b : find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.permissions,
+                role: (_b = update_body.role) !== null && _b !== void 0 ? _b : find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.role,
+                permissions: (_c = update_body.permissions) !== null && _c !== void 0 ? _c : find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.permissions,
+                phone: (_d = update_body.phone) !== null && _d !== void 0 ? _d : find_staff_user_model === null || find_staff_user_model === void 0 ? void 0 : find_staff_user_model.phone,
                 updated_at: Date.now(),
             });
             const update_staff_data = yield model_staff_1.STAFF.findByIdAndUpdate(id, {
-                first_name: (_c = update_body.first_name) !== null && _c !== void 0 ? _c : find_staff.first_name,
-                last_name: (_d = update_body.last_name) !== null && _d !== void 0 ? _d : find_staff.last_name,
-                address: (_e = update_body.address) !== null && _e !== void 0 ? _e : find_staff.address,
-                branch: (_f = update_body.branch) !== null && _f !== void 0 ? _f : find_staff.branch,
+                first_name: (_e = update_body.first_name) !== null && _e !== void 0 ? _e : find_staff.first_name,
+                last_name: (_f = update_body.last_name) !== null && _f !== void 0 ? _f : find_staff.last_name,
+                address: (_g = update_body.address) !== null && _g !== void 0 ? _g : find_staff.address,
+                branch: (_h = update_body.branch) !== null && _h !== void 0 ? _h : find_staff.branch,
                 bank_details: {
-                    bank_name: (_g = update_body.bank_details.bank_name) !== null && _g !== void 0 ? _g : find_staff.bank_details.bank_name,
-                    account_name: (_h = update_body.bank_details.account_name) !== null && _h !== void 0 ? _h : find_staff.bank_details.account_name,
-                    account_number: (_j = update_body.bank_details.account_number) !== null && _j !== void 0 ? _j : find_staff.bank_details.account_number,
+                    bank_name: (_j = update_body.bank_details.bank_name) !== null && _j !== void 0 ? _j : find_staff.bank_details.bank_name,
+                    account_name: (_k = update_body.bank_details.account_name) !== null && _k !== void 0 ? _k : find_staff.bank_details.account_name,
+                    account_number: (_l = update_body.bank_details.account_number) !== null && _l !== void 0 ? _l : find_staff.bank_details.account_number,
                 },
                 updated_at: Date.now(),
             });
             if (!update_staff_data || !update_user)
                 throw (0, custom_error_1.APP_ERROR)("error updating staff", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
-            response
-                .status(http_response_1.HTTP_RESPONSE.OK)
-                .json((0, response_message_1.responseMessage)({
+            response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
                 message: "update successful",
                 data: find_staff.first_name,
                 success_status: true,
@@ -160,6 +162,17 @@ const updateStaff = (request, response, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.updateStaff = updateStaff;
+const getMyStaffProfile = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const findStaff = yield model_staff_1.STAFF.findOne({ user: request.user.id }, "first_name, last_name, address, bank_details, username branch").populate("BRANCH");
+    if (!findStaff)
+        throw (0, custom_error_1.APP_ERROR)("staff does not exist in database", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
+    response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
+        message: "get staff profile successful",
+        data: {},
+        success_status: true,
+    }));
+});
+exports.getMyStaffProfile = getMyStaffProfile;
 exports.getOneStaff = index_factory_1.GeneralIndex.getOneFactory(model_staff_1.STAFF);
 exports.getAllStaff = index_factory_1.GeneralIndex.getAllFactory(model_staff_1.STAFF);
 exports.deleteStaff = index_factory_1.GeneralIndex.deleteOneFactory(model_staff_1.STAFF);

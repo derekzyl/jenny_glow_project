@@ -18,6 +18,7 @@ const UserSchema = new Schema<UserI>({
     type: Date,
     default: Date.now(),
   },
+  phone: { type: String, required: true },
   permissions: [{ type: String, enum: PermissionsE }],
   token_expires: { type: String },
   token: {

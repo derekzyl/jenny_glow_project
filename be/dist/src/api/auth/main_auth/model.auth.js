@@ -42,6 +42,7 @@ const UserSchema = new mongoose_1.Schema({
         type: Date,
         default: Date.now(),
     },
+    phone: { type: String, required: true },
     permissions: [{ type: String, enum: general_factory_1.PermissionsE }],
     token_expires: { type: String },
     token: {
