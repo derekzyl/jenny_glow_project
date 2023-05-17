@@ -184,9 +184,9 @@ const protector = (request, response, next) => __awaiter(void 0, void 0, void 0,
         if (user.is_deleted) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist, please kindly register   ", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        if (!user.is_email_verified) {
-            throw (0, custom_error_1.APP_ERROR)("email not verified, kindly go to your mail to verify");
-        }
+        // if (!user.is_email_verified) {
+        //   throw APP_ERROR("email not verified, kindly go to your mail to verify");
+        // }
         request.user = user;
         next();
     }

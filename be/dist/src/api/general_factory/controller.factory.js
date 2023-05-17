@@ -95,7 +95,7 @@ const getAll = (MODEL) => (request, response, next) => __awaiter(void 0, void 0,
         if (!get_all) {
             throw (0, custom_error_1.APP_ERROR)(`query error`, http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const get_all_data = yield get_all.query;
+        const get_all_data = yield get_all.model;
         return response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({
             message: "gotten one data successfully",
             success_status: true,

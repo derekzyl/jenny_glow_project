@@ -112,7 +112,7 @@ export const getAll =
       if (!get_all) {
         throw APP_ERROR(`query error`, HTTP_RESPONSE.BAD_REQUEST);
       }
-      const get_all_data = await get_all.query;
+      const get_all_data = await get_all.model;
 
       return response.status(HTTP_RESPONSE.CREATED).json(
         responseMessage({

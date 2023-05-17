@@ -12,7 +12,7 @@ export function responseMessage(msg: customMessageI) {
       return {
         message: msg.message,
         data: msg.data,
-        success_status: msg.success_status,
+        success: msg.success_status,
         doc_length: msg.doc_length,
       };
 
@@ -20,7 +20,7 @@ export function responseMessage(msg: customMessageI) {
       return {
         message: msg.message,
         error: msg.data,
-        success_status: msg.success_status,
+        success: msg.success_status,
         stack: process.env.NODE_ENV === "development" ? msg.stack : {},
       };
     default:

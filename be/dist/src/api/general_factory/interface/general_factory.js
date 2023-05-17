@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PermissionsE = void 0;
+exports.time_stamps = exports.PermissionsE = void 0;
 /**
  * THE AVAILABLE PERMISSIONS
  */
@@ -32,4 +32,13 @@ var PermissionsE;
     PermissionsE["EDIT_CATEGORY"] = "EDIT_CATEGORY";
     PermissionsE["DELETE_CATEGORY"] = "DELETE_CATEGORY";
     //SHIPPING FEE MANAGER
+    //review
+    PermissionsE["CREATE_REVIEW"] = "CREATE_REVIEW";
+    PermissionsE["VIEW_REVIEW"] = "VIEW_REVIEW";
+    PermissionsE["EDIT_REVIEW"] = "EDIT_REVIEW";
+    PermissionsE["DELETE_REVIEW"] = "DELETE_REVIEW";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
+exports.time_stamps = {
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+};

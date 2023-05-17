@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+
 /**
  * THE AVAILABLE PERMISSIONS
  */
@@ -28,4 +30,20 @@ export enum PermissionsE {
   EDIT_CATEGORY = "EDIT_CATEGORY",
   DELETE_CATEGORY = "DELETE_CATEGORY",
   //SHIPPING FEE MANAGER
+
+  //review
+  CREATE_REVIEW = "CREATE_REVIEW",
+  VIEW_REVIEW = "VIEW_REVIEW",
+  EDIT_REVIEW = "EDIT_REVIEW",
+  DELETE_REVIEW = "DELETE_REVIEW",
 }
+
+export interface CrudModelI {
+  model: Model<any>;
+  exempt: string;
+}
+
+export const time_stamps = {
+  createdAt: "created_at",
+  updatedAt: "updated_at",
+};

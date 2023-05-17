@@ -222,9 +222,9 @@ export const protector = async (
         HTTP_RESPONSE.BAD_REQUEST
       );
     }
-    if (!user.is_email_verified) {
-      throw APP_ERROR("email not verified, kindly go to your mail to verify");
-    }
+    // if (!user.is_email_verified) {
+    //   throw APP_ERROR("email not verified, kindly go to your mail to verify");
+    // }
 
     request.user = user;
     next();
