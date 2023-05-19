@@ -41,7 +41,7 @@ export interface PosI extends Document {
   sold_by: Types.objectId;
   sales_type: SalesTypeE;
   branch: Types.ObjectId;
-  vat: Types.ObjectId;
+  vat: number;
   original_amount: number;
   discount: number;
   total_amount: number;

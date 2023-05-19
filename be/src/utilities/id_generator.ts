@@ -1,4 +1,7 @@
-const id = new Date();
+
+
+export function generateId() {
+    const id = new Date();
 
 const i = id.toLocaleString();
 const j = i.split(",")[0];
@@ -12,6 +15,7 @@ const p = m.split(":")[2];
 const q = Math.round(Math.random() * 90000 + 10000);
 const r = k + n + o + "_" + p + o + n + "_" + q;
 
-// const c = id.getDate();
 
-console.log(k, "<----------------", r);
+return r
+
+}

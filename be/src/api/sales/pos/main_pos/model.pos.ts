@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { PosI } from "../interface_pos/pos";
 import {
   OrderStatusE,
@@ -49,7 +49,12 @@ const posSchema = new Schema<PosI>({
     ref: "BRANCH",
   },
   vat: {
-    type: Schema.Types.ObjectId,
-    ref: "VAT",
+    type: Number,
   },
+  original_amount: Number,
+  discount: Number,
+  total_amount: Number,
+  amount_sold: Number,
 });
+
+export const POS = model<PosI>("POS", posSchema);
