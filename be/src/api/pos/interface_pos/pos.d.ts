@@ -10,10 +10,21 @@ enum SalesTypeE {
   STORE_SALES = "STORE_SALES",
 }
 
-type MessageT = {
-  date: Date;
-  message: string;
+enum OrderTypeE {
+  WHOLESALE = "WHOLE_SALE",
+  RETAIL = "RETAIL",
+}
+
+type ProductT = {
+  product: Types.ObjectId;
+  quantity_of_product: number;
+  total: number;
 };
+
+// type MessageT = {
+//   date: Date;
+//   message: string;
+// };
 
 // interface PosI extends Document {
 //   order_id: string;
@@ -37,3 +48,17 @@ type MessageT = {
 //   is_delivered: boolean;
 //   message: MessageT[];
 // }
+
+export interface PosI extends Document {
+  product: ProductT[];
+  vat: number;
+  total_amount: number;
+  order_type: OrderTypeE;
+  order_id: string;
+  status: StatusE;
+  sold_by: Types.objectId;
+  type: SalesTypeE;
+  original_amount: number;
+  amount_sold: number;
+  discount: number;
+}
