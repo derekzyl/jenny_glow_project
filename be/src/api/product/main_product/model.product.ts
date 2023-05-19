@@ -48,6 +48,12 @@ const productSchema = new Schema<ProductI>(
       required: true,
     },
     other_image: [String],
+    weight: {
+      type: Number,
+      required: true,
+    },
+    featured: Boolean,
+    available: Boolean,
     review: [
       {
         type: Schema.Types.ObjectId,

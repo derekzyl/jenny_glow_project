@@ -9,6 +9,9 @@ interface ProductI extends Document {
   created_by: Types.ObjectId;
   price: number;
   image: string;
+  weight: number;
+  featured: boolean;
+  available: boolean;
   other_image: string[];
   number_in_stock: number;
   number_of_reviews: number;
