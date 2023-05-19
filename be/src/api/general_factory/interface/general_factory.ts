@@ -36,6 +36,19 @@ export enum PermissionsE {
   VIEW_REVIEW = "VIEW_REVIEW",
   EDIT_REVIEW = "EDIT_REVIEW",
   DELETE_REVIEW = "DELETE_REVIEW",
+
+  //VAT
+  CREATE_VAT = "CREATE_VAT",
+  VIEW_VAT = "VIEW_VAT",
+  EDIT_VAT = "EDIT_VAT",
+  DELETE_VAT = "DELETE_VAT",
+
+  //pos Sales
+
+  CREATE_POS = "CREATE_POS",
+  VIEW_POS = "VIEW_POS",
+  EDIT_POS = "EDIT_POS",
+  DELETE_POS = "DELETE_POS",
 }
 
 export interface CrudModelI {

@@ -1,4 +1,4 @@
-export enum StatusE {
+export enum OrderStatusE {
   SUCCESS = "SUCCESS",
   PENDING = "PENDING",
   FAILED = "FAILED",
@@ -24,3 +24,20 @@ export type MessageT = {
   date: Date;
   message: string;
 };
+
+export enum PaymentStatusE {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  DECLINED = "DECLINED",
+}
+
+export enum PaymentMethodE {
+  CASH = "CASH",
+  CREDIT_CARD = "CREDIT_CARD",
+  DEBIT_CARD = "DEBIT_CARD",
+  PAYPAL = "PAYPAL",
+  PAYONEER = "PAYONEER",
+  BANK_TRANSFERS = "BANK_TRANSFERS",
+  POS = "POS",
+}

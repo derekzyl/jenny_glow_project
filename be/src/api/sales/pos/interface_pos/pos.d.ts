@@ -1,5 +1,12 @@
 import { Document, Types } from "mongoose";
-import { OrderTypeE, ProductT, SalesTypeE } from "../../interface_sales/sales";
+import {
+  OrderTypeE,
+  PaymentMethodE,
+  ProductT,
+  SalesTypeE,
+  PaymentStatusE,
+  OrderStatusE,
+} from "../../interface_sales/sales";
 
 // interface PosI extends Document {
 //   order_id: string;
@@ -28,12 +35,13 @@ export interface PosI extends Document {
   order_id: string;
   product: ProductT[];
   order_type: OrderTypeE;
-
-  status: StatusE;
+  payment_method: PaymentMethodE;
+  order_status: OrderStatusE;
+  payment_status: PaymentStatusE;
   sold_by: Types.objectId;
-  type: SalesTypeE;
+  sales_type: SalesTypeE;
   branch: Types.ObjectId;
-  vat: number;
+  vat: Types.ObjectId;
   original_amount: number;
   discount: number;
   total_amount: number;

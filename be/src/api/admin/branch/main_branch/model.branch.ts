@@ -8,7 +8,10 @@ const branchSchema = new Schema<branchI>({
   number_of_staff: Number,
   product: [
     {
-      product: Schema.Types.ObjectId,
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: "PRODUCT",
+      },
       amount_in_stock: Number,
     },
   ],
