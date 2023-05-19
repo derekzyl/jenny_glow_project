@@ -1,30 +1,5 @@
 import { Document, Types } from "mongoose";
-enum StatusE {
-  SUCCESS = "SUCCESS",
-  PENDING = "PENDING",
-  FAILED = "FAILED",
-}
-
-enum SalesTypeE {
-  ONLINE_SALES = "ONLINE_SALES",
-  STORE_SALES = "STORE_SALES",
-}
-
-enum OrderTypeE {
-  WHOLESALE = "WHOLE_SALE",
-  RETAIL = "RETAIL",
-}
-
-type ProductT = {
-  product: Types.ObjectId;
-  quantity_of_product: number;
-  total: number;
-};
-
-// type MessageT = {
-//   date: Date;
-//   message: string;
-// };
+import { OrderTypeE, ProductT, SalesTypeE } from "../../interface_sales/sales";
 
 // interface PosI extends Document {
 //   order_id: string;
@@ -50,15 +25,17 @@ type ProductT = {
 // }
 
 export interface PosI extends Document {
-  product: ProductT[];
-  vat: number;
-  total_amount: number;
-  order_type: OrderTypeE;
   order_id: string;
+  product: ProductT[];
+  order_type: OrderTypeE;
+
   status: StatusE;
   sold_by: Types.objectId;
   type: SalesTypeE;
+  branch: Types.ObjectId;
+  vat: number;
   original_amount: number;
-  amount_sold: number;
   discount: number;
+  total_amount: number;
+  amount_sold: number;
 }

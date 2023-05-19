@@ -6,6 +6,12 @@ const branchSchema = new Schema<branchI>({
   location: { longitude: String, latitude: String },
   location_address: String,
   number_of_staff: Number,
+  product: [
+    {
+      product: Schema.Types.ObjectId,
+      amount_in_stock: Number,
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now(),
