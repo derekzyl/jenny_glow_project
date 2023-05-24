@@ -11,11 +11,16 @@ export const createReview = async (
   try {
     const body: ReviewBodyI = request.body;
     const review_data = { ...body, user: request.user.id };
+
     const crud_review = new Crud(request, response, next);
-    crud_review.create({ model: REVIEW, exempt: "" }, review_data, {
-      user: request.user.id,
-      product: body.product,
-    });
+    const created_review = crud_review.create(
+      { model: REVIEW, exempt: "" },
+      review_data,
+      {
+        user: request.user.id,
+        product: body.product,
+      }
+    );
   } catch (error) {
     next(error);
   }

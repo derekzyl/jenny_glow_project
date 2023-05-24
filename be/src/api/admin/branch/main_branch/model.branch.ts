@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { branchI } from "../interface_branch/branch";
+import { BranchTypeE, branchI } from "../interface_branch/branch";
 
 const branchSchema = new Schema<branchI>({
   name: { type: String, unique: true, required: true },
@@ -15,6 +15,11 @@ const branchSchema = new Schema<branchI>({
       amount_in_stock: Number,
     },
   ],
+  branch_type: {
+    type: String,
+    enum: BranchTypeE,
+    default: BranchTypeE.LOCAL,
+  },
   created_at: {
     type: Date,
     default: Date.now(),

@@ -4,7 +4,7 @@ import { time_stamps } from "../../../general_factory/interface/general_factory"
 
 const vatSchema = new Schema<VatI>(
   {
-    vat: Number,
+    vat_percentage: Number,
     vat_name: {
       enum: VatE,
       unique: true,

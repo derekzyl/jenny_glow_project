@@ -35,10 +35,15 @@ const productSchema = new Schema<ProductI>(
     },
     created_by: {
       type: Schema.Types.ObjectId,
-      ref: "USER",
+      ref: "STAFF",
       required: true,
     },
-    tags: [String],
+    search_tags: [
+      {
+        type: String,
+        lowercase: true,
+      },
+    ],
     number_of_reviews: {
       type: Number,
     },
@@ -52,6 +57,10 @@ const productSchema = new Schema<ProductI>(
       type: Number,
       required: true,
     },
+    discount_percentage: {
+      type: Number,
+      default: 0,
+    },
     featured: Boolean,
     available: Boolean,
     review: [
@@ -61,6 +70,7 @@ const productSchema = new Schema<ProductI>(
       },
     ],
   },
+
   { timestamps: time_stamps }
 );
 

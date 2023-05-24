@@ -38,7 +38,7 @@ const posSchema = new Schema<PosI>({
   },
   sold_by: {
     type: Schema.Types.ObjectId,
-    ref: "USER",
+    ref: "STAFF",
   },
   sales_type: {
     type: String,

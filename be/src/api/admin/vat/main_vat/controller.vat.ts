@@ -7,7 +7,6 @@ export const createVat = async (
   response: Response,
   next: NextFunction
 ) => {
-  //todo: send the images to aws or cloudinary
   try {
     const body = request.body;
 

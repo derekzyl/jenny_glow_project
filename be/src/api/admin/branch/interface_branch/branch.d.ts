@@ -10,10 +10,15 @@ type ProductCountT = {
   amount_in_stock: number;
 };
 
+export enum BranchTypeE {
+  ONLINE = "ONLINE",
+  LOCAL = "LOCAL",
+}
 interface branchI extends Document {
   name: string;
   location: locationI;
   location_address: string;
+  branch_type: BranchE;
   product: ProductCountT[];
   number_of_staff: number;
   created_at: Date;

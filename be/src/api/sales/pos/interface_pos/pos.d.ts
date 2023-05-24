@@ -47,3 +47,17 @@ export interface PosI extends Document {
   total_amount: number;
   amount_sold: number;
 }
+
+export interface PosBodyI {
+  product: ProductT[];
+  order_type: OrderTypeE;
+  payment_method: PaymentMethodE;
+  order_status: OrderStatusE;
+  payment_status: PaymentStatusE;
+
+  original_amount: number;
+  discount: number;
+  total_amount: number;
+
+  amount_sold: number;
+}

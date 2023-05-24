@@ -3,6 +3,7 @@ import { Types, Document } from "mongoose";
 interface ProductI extends Document {
   name: string;
   description: string;
+  discount_percentage: number;
   review: Types.ObjectId[];
   category: Types.ObjectId;
   sub_category: Types.ObjectId;
@@ -15,7 +16,7 @@ interface ProductI extends Document {
   other_image: string[];
   number_in_stock: number;
   number_of_reviews: number;
-  tags: string[];
+  search_tags: string[];
 }
 
 interface ProductBodyI extends Document {
@@ -29,5 +30,5 @@ interface ProductBodyI extends Document {
   other_image: string[];
   number_in_stock: number;
   number_of_reviews: number;
-  tags: string[];
+  search_tags: string[];
 }

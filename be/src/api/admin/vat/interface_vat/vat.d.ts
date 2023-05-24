@@ -4,6 +4,6 @@ export enum VatE {
 }
 
 export interface VatI {
-  vat: number;
+  vat_percentage: number;
   vat_name: VatE;
 }

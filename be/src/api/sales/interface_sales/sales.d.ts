@@ -29,6 +29,7 @@ export enum PaymentStatusE {
   APPROVED = "APPROVED",
   PENDING = "PENDING",
   PROCESSING = "PROCESSING",
+  DISPUTE = "DISPUTE",
   DECLINED = "DECLINED",
 }
 

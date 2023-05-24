@@ -7,6 +7,16 @@ import path from "path";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
 import { generateId } from "../../../../utilities/id_generator";
+import { PosBodyI } from "../interface_pos/pos";
+import {
+  PaymentStatusE,
+  ProductT,
+  SalesTypeE,
+} from "../../interface_sales/sales";
+import { VAT } from "../../../admin/vat/main_vat/model.vat";
+import { VatE } from "../../../admin/vat/interface_vat/vat";
+import { PRODUCT } from "../../../product/main_product/model.product";
+import { APP_ERROR } from "../../../../utilities/custom_error";
 
 // todo: get products for pos
 
@@ -17,12 +27,57 @@ export const createPos = async (
 ) => {
   try {
     const order_id = generateId();
-    const body = request.body;
+    const body: PosBodyI = request.body;
 
     const get_staff = await STAFF.findOne({ user: request.user.id });
     const get_branch = await BRANCH.findOne({
       id: get_staff?.branch.id,
     });
+    const payment_method = body.payment_method;
+    let payment_status = PaymentStatusE.APPROVED;
+    const get_vat = await VAT.findOne({ vat_name: VatE.LOCAL });
+    const sale_type = SalesTypeE.STORE_SALES;
+    const products = body.product;
+    let calculate_total_amount = 0;
+    const all_products: ProductT[] = [];
+    for (const product of products) {
+      await getProductsData(product);
+    }
+
+    // eslint-disable-next-line no-inner-declarations
+    async function getProductsData(product: ProductT) {
+      const get_product = await PRODUCT.findById(product.product.id);
+      if (!get_product) throw APP_ERROR("product not found in database");
+      const product_price = Number(get_product?.price);
+      const get_discount_of_product =
+        (get_product?.discount_percentage * product_price) / 100;
+      const product_quantity = Number(product.quantity_of_product);
+      if (product_quantity < 1) {
+        payment_status = PaymentStatusE.PROCESSING;
+        throw APP_ERROR(`less than 1 of ${get_product?.name} is selected `);
+      }
+      const get_total: number =
+        product_price * product_quantity - get_discount_of_product;
+      if (Number(product.total !== get_total)) {
+        payment_status = PaymentStatusE.DISPUTE;
+        throw APP_ERROR(
+          `${get_product.name} total doesn't tally with the expected total`
+        );
+      }
+      calculate_total_amount += get_total;
+
+      const one_product: ProductT = {
+        product: get_product.id,
+        quantity_of_product: product_quantity,
+        total: get_total,
+      };
+      all_products.push(one_product);
+    }
+
+    let vat = 0;
+    if (get_vat) {
+      vat = Number(get_vat.vat_percentage);
+    }
   } catch (error) {
     next(error);
   }
