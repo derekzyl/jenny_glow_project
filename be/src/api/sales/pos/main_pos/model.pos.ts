@@ -20,9 +20,14 @@ const posSchema = new Schema<PosI>({
       total: { type: Number, required: true },
     },
   ],
+  server_total: {
+    type: Number,
+    required: true,
+  },
   order_type: {
     type: String,
     enum: OrderTypeE,
+    default: OrderTypeE.RETAIL,
   },
   payment_method: {
     type: String,
@@ -35,6 +40,7 @@ const posSchema = new Schema<PosI>({
   payment_status: {
     type: String,
     enum: PaymentStatusE,
+    default: PaymentStatusE.PENDING,
   },
   sold_by: {
     type: Schema.Types.ObjectId,
@@ -55,6 +61,10 @@ const posSchema = new Schema<PosI>({
   discount: Number,
   total_amount: Number,
   amount_sold: Number,
+  server_amount_sold: {
+    type: Number,
+    required: true,
+  },
 });
 
 export const POS = model<PosI>("POS", posSchema);

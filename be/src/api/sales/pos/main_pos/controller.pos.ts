@@ -7,8 +7,9 @@ import path from "path";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
 import { generateId } from "../../../../utilities/id_generator";
-import { PosBodyI } from "../interface_pos/pos";
+import { PosBodyI, PosDbI, PosI } from "../interface_pos/pos";
 import {
+  OrderStatusE,
   PaymentStatusE,
   ProductT,
   SalesTypeE,
@@ -28,18 +29,23 @@ export const createPos = async (
   try {
     const order_id = generateId();
     const body: PosBodyI = request.body;
-
+    let order_status = OrderStatusE.PENDING;
     const get_staff = await STAFF.findOne({ user: request.user.id });
     const get_branch = await BRANCH.findOne({
       id: get_staff?.branch.id,
     });
     const payment_method = body.payment_method;
-    let payment_status = PaymentStatusE.APPROVED;
+    let payment_status = PaymentStatusE.PROCESSING;
+    let server_total = 0;
     const get_vat = await VAT.findOne({ vat_name: VatE.LOCAL });
-    const sale_type = SalesTypeE.STORE_SALES;
+    const sales_type = SalesTypeE.STORE_SALES;
     const products = body.product;
-    let calculate_total_amount = 0;
+    const total_amount = Number(body.total_amount);
+    const original_amount = Number(body.original_amount);
+    const order_type = body.order_type;
     const all_products: ProductT[] = [];
+    const discount = Number(body.discount);
+    const amount_sold = Number(body.amount_sold);
     for (const product of products) {
       await getProductsData(product);
     }
@@ -64,7 +70,7 @@ export const createPos = async (
           `${get_product.name} total doesn't tally with the expected total`
         );
       }
-      calculate_total_amount += get_total;
+      server_total += get_total;
 
       const one_product: ProductT = {
         product: get_product.id,
@@ -78,6 +84,34 @@ export const createPos = async (
     if (get_vat) {
       vat = Number(get_vat.vat_percentage);
     }
+    const vat_server_total = (server_total * vat) / 100;
+    const discount_server_total = (server_total * discount) / 100;
+    const server_amount_sold =
+      server_total + vat_server_total - discount_server_total;
+
+    order_status = OrderStatusE.SUCCESS;
+    payment_status = PaymentStatusE.APPROVED;
+    const pos_body: PosDbI = {
+      order_id,
+      product: all_products,
+      order_type,
+      order_status,
+      payment_method,
+      payment_status,
+      sold_by: get_staff?.id,
+      branch: get_branch?.id,
+      vat,
+      server_total,
+      original_amount,
+      sales_type,
+      total_amount,
+      discount,
+      amount_sold,
+      server_amount_sold,
+    };
+
+    const crud_pos = new Crud(request, response, next);
+    crud_pos.create({ model: POS, exempt: "" }, pos_body, { order_id });
   } catch (error) {
     next(error);
   }
