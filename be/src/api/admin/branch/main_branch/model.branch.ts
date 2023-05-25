@@ -5,6 +5,7 @@ const branchSchema = new Schema<branchI>({
   name: { type: String, unique: true, required: true },
   location: { longitude: String, latitude: String },
   location_address: String,
+  country:String,
   number_of_staff: Number,
   product: [
     {

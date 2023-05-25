@@ -3,11 +3,8 @@ import { Crud } from "../../../general_factory/crud";
 import { POS } from "./model.pos";
 import { BRANCH } from "../../../admin/branch/main_branch/model.branch";
 import { STAFF } from "../../../admin/staff/main_staff/model.staff";
-import path from "path";
-import { HTTP_RESPONSE } from "../../../../utilities/http_response";
-import { responseMessage } from "../../../../utilities/response_message";
 import { generateId } from "../../../../utilities/id_generator";
-import { PosBodyI, PosDbI, PosI } from "../interface_pos/pos";
+import { PosBodyI, PosDbI } from "../interface_pos/pos";
 import {
   OrderStatusE,
   PaymentStatusE,
@@ -18,6 +15,8 @@ import { VAT } from "../../../admin/vat/main_vat/model.vat";
 import { VatE } from "../../../admin/vat/interface_vat/vat";
 import { PRODUCT } from "../../../product/main_product/model.product";
 import { APP_ERROR } from "../../../../utilities/custom_error";
+import { HTTP_RESPONSE } from "../../../../utilities/http_response";
+import { responseMessage } from "../../../../utilities/response_message";
 
 // todo: get products for pos
 
@@ -78,6 +77,14 @@ export const createPos = async (
         total: get_total,
       };
       all_products.push(one_product);
+
+      // lets work on the  product count in the database
+      get_product.number_in_stock = get_product.number_in_stock - 1;
+      get_product.save();
+      get_branch?.product
+        .filter((prd) => prd.product.id === get_product.id)
+        .forEach((prd) => (prd.amount_in_stock = prd.amount_in_stock - 1));
+      get_branch?.save();
     }
 
     let vat = 0;
@@ -144,8 +151,7 @@ export const getManyPos = async (
 
 export const getManyPosProduct = async (
   request: Request,
-  response: Response,
-  next: NextFunction
+  response: Response
 ) => {
   try {
     const get_staff = await STAFF.findOne({ user: request.user.id });

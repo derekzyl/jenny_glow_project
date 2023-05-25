@@ -16,6 +16,7 @@ export enum BranchTypeE {
 }
 interface branchI extends Document {
   name: string;
+  country: string;
   location: locationI;
   location_address: string;
   branch_type: BranchE;
