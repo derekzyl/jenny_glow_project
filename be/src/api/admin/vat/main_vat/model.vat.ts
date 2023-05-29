@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { VatE, VatI } from "../interface_vat/vat";
+import { VatE, VatI } from "../interface_vat/interface.vat";
 import { time_stamps } from "../../../general_factory/interface/general_factory";
 
 const vatSchema = new Schema<VatI>(

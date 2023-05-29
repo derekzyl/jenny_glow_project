@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { ReviewBodyI, ReviewI } from "../interface_review/review";
+import { ReviewBodyI, ReviewI } from "../interface_review/interface.review";
 import { Crud } from "../../general_factory/crud";
 import { REVIEW } from "./model.review";
 

@@ -3,7 +3,7 @@ import { NextFunction, Response, Request } from "express";
 import { BRANCH_INVENTORY, INVENTORY } from "./model.inventory";
 import { Crud } from "../../general_factory/crud";
 import { generateId } from "../../../utilities/id_generator";
-import { InventoryBodyI } from "../interface_inventory/inventory";
+import { InventoryBodyI } from "../interface_inventory/interface.inventory";
 import { PRODUCT } from "../../product/main_product/model.product";
 import { APP_ERROR } from "../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../utilities/http_response";

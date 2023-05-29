@@ -1,5 +1,8 @@
 import { Schema, model } from "mongoose";
-import { categoryI, subCategoryI } from "../interface_category/category";
+import {
+  categoryI,
+  subCategoryI,
+} from "../interface_category/interface.category";
 
 const categorySchema = new Schema<categoryI>({
   name: { type: String, required: true },
@@ -34,4 +37,7 @@ subCategorySchema.pre("save", function () {
 });
 
 export const CATEGORY = model<categoryI>("CATEGORY", categorySchema);
-export const SUB_CATEGORY = model<subCategoryI>("SUB_CATEGORY", subCategorySchema);
+export const SUB_CATEGORY = model<subCategoryI>(
+  "SUB_CATEGORY",
+  subCategorySchema
+);

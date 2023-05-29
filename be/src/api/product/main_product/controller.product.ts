@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-import { ProductBodyI, ProductI } from "../interface_product/product";
+import { ProductBodyI, ProductI } from "../interface_product/interface.product";
 import { Crud } from "../../general_factory/crud";
 import { PRODUCT } from "./model.product";
 

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { RoleI } from "../interface_role/role";
+import { RoleI } from "../interface_role/interface.role";
 
 import { ROLE } from "./model.role";
 import { APP_ERROR } from "../../../../utilities/custom_error";

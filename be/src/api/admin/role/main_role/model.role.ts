@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { RoleI } from "../interface_role/role";
+import { RoleI } from "../interface_role/interface.role";
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
 
 const role_model = new mongoose.Schema<RoleI>({

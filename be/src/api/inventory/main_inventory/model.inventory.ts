@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import {
   DistributeInventoryI,
   InventoryI,
-} from "../interface_inventory/inventory";
+} from "../interface_inventory/interface.inventory";
 import { time_stamps } from "../../general_factory/interface/general_factory";
 
 const inventorySchema = new Schema<InventoryI>(

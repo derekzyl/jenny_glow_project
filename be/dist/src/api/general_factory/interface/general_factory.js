@@ -37,6 +37,16 @@ var PermissionsE;
     PermissionsE["VIEW_REVIEW"] = "VIEW_REVIEW";
     PermissionsE["EDIT_REVIEW"] = "EDIT_REVIEW";
     PermissionsE["DELETE_REVIEW"] = "DELETE_REVIEW";
+    //VAT
+    PermissionsE["CREATE_VAT"] = "CREATE_VAT";
+    PermissionsE["VIEW_VAT"] = "VIEW_VAT";
+    PermissionsE["EDIT_VAT"] = "EDIT_VAT";
+    PermissionsE["DELETE_VAT"] = "DELETE_VAT";
+    //pos Sales
+    PermissionsE["CREATE_POS"] = "CREATE_POS";
+    PermissionsE["VIEW_POS"] = "VIEW_POS";
+    PermissionsE["EDIT_POS"] = "EDIT_POS";
+    PermissionsE["DELETE_POS"] = "DELETE_POS";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
 exports.time_stamps = {
     createdAt: "created_at",

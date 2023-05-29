@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageUpdateHandler = exports.imageUploadHandler = void 0;
+exports.imageUploadHandler = void 0;
 /* eslint-disable no-case-declarations */
 const sharp_1 = __importDefault(require("sharp"));
 const dotenv = __importStar(require("dotenv"));
@@ -49,7 +49,7 @@ dotenv.config();
 cloudinary_1.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 class Image {
 }
@@ -102,10 +102,6 @@ function imageUploadHandler(image_file) {
     });
 }
 exports.imageUploadHandler = imageUploadHandler;
-function imageUpdateHandler(image_file) {
-    return __awaiter(this, void 0, void 0, function* () {
-    });
-}
-exports.imageUpdateHandler = imageUpdateHandler;
-const imageDeletehandler;
-(id) => { };
+// export async function imageUpdateHandler(image_file: ImageHandlerI) {
+// }
+// const imageDeletehandler(id:string){}

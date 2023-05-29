@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
-import { BranchTypeE, branchI } from "../interface_branch/branch";
+import { BranchTypeE, branchI } from "../interface_branch/interface.branch";
 
 const branchSchema = new Schema<branchI>({
   name: { type: String, unique: true, required: true },
   location: { longitude: String, latitude: String },
   location_address: String,
-  country:String,
+  country: String,
   number_of_staff: Number,
   product: [
     {

@@ -14,21 +14,12 @@ import { APP_ERROR } from "./custom_error";
 import { HTTP_RESPONSE } from "./http_response";
 dotenv.config();
 
-
-
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-class Image {
-
-
-
-
-
-}
+class Image {}
 
 export async function imageUploadHandler(image_file: ImageHandlerI) {
   const file_name =
@@ -83,11 +74,8 @@ export async function imageUploadHandler(image_file: ImageHandlerI) {
   }
 }
 
-export async function imageUpdateHandler(image_file: ImageHandlerI) {
+// export async function imageUpdateHandler(image_file: ImageHandlerI) {
 
+// }
 
-}
-
-
-
-const imageDeletehandler(id:string){}
+// const imageDeletehandler(id:string){}

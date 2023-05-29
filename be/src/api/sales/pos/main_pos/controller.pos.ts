@@ -4,15 +4,15 @@ import { POS } from "./model.pos";
 import { BRANCH } from "../../../admin/branch/main_branch/model.branch";
 import { STAFF } from "../../../admin/staff/main_staff/model.staff";
 import { generateId } from "../../../../utilities/id_generator";
-import { PosBodyI, PosDbI } from "../interface_pos/pos";
+import { PosBodyI, PosDbI } from "../interface_pos/interface.pos";
 import {
   OrderStatusE,
   PaymentStatusE,
   ProductT,
   SalesTypeE,
-} from "../../interface_sales/sales";
+} from "../../interface_sales/interface.sales";
 import { VAT } from "../../../admin/vat/main_vat/model.vat";
-import { VatE } from "../../../admin/vat/interface_vat/vat";
+import { VatE } from "../../../admin/vat/interface_vat/interface.vat";
 import { PRODUCT } from "../../../product/main_product/model.product";
 import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";

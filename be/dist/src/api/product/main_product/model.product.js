@@ -35,10 +35,15 @@ const productSchema = new mongoose_1.Schema({
     },
     created_by: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "USER",
+        ref: "STAFF",
         required: true,
     },
-    tags: [String],
+    search_tags: [
+        {
+            type: String,
+            lowercase: true,
+        },
+    ],
     number_of_reviews: {
         type: Number,
     },
@@ -48,6 +53,16 @@ const productSchema = new mongoose_1.Schema({
         required: true,
     },
     other_image: [String],
+    weight: {
+        type: Number,
+        required: true,
+    },
+    discount_percentage: {
+        type: Number,
+        default: 0,
+    },
+    featured: Boolean,
+    available: Boolean,
     review: [
         {
             type: mongoose_1.Schema.Types.ObjectId,

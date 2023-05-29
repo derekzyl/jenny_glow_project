@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { UserI } from "../interface_auth/auth";
+import { UserI } from "../interface_auth/interface.auth";
 import { PermissionsE } from "../../general_factory/interface/general_factory";
 
 const UserSchema = new Schema<UserI>({

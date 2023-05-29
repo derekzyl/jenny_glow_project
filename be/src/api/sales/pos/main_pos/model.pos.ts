@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import { PosI } from "../interface_pos/pos";
+import { PosI } from "../interface_pos/interface.pos";
 import {
   OrderStatusE,
   OrderTypeE,
   PaymentMethodE,
   PaymentStatusE,
   SalesTypeE,
-} from "../../interface_sales/sales";
+} from "../../interface_sales/interface.sales";
 
 const posSchema = new Schema<PosI>({
   order_id: { type: String },

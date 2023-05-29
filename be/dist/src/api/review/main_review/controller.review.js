@@ -17,7 +17,7 @@ const createReview = (request, response, next) => __awaiter(void 0, void 0, void
         const body = request.body;
         const review_data = Object.assign(Object.assign({}, body), { user: request.user.id });
         const crud_review = new crud_1.Crud(request, response, next);
-        crud_review.create({ model: model_review_1.REVIEW, exempt: "" }, review_data, {
+        const created_review = crud_review.create({ model: model_review_1.REVIEW, exempt: "" }, review_data, {
             user: request.user.id,
             product: body.product,
         });
