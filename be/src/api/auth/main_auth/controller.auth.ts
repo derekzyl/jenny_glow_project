@@ -9,6 +9,9 @@ import { dataI } from "../../../utilities/interface_utilities/mail";
 import NodeMailer from "../../../utilities/mailer";
 import BCRYPT from "../../../utilities/bcrypt";
 import JWT from "../../../utilities/jwt";
+import { responseMessage } from "../../../utilities/response_message";
+import { PROFILE } from "../../user/profile/main_profile/model.profile";
+import { WISHLIST } from "../../user/wishlist/main_wishlist/model.wishlist";
 export const signup = async (
   request: Request,
   response: Response,
@@ -85,14 +88,26 @@ export const signup = async (
       role: "644da36acc996fe2be8239e9",
     });
     const newUSER = await newUser.save();
+    const create_profile = new PROFILE({
+      user: newUSER.id,
+    });
+    const create_wishlist = new WISHLIST({
+      user: newUSER.id,
+      products: [],
+    });
+    await create_profile.save();
+    await create_wishlist.save();
     const expire = process.env.JWT_EXPIRE || "1d";
     const token = JWT.generateToken({ id: newUSER._id }, { expiresIn: expire });
 
-    response.status(HTTP_RESPONSE.CREATED).json({
-      message:
-        "User created successfully kindly check your inbox to verify your email",
-      token,
-    });
+    response.status(HTTP_RESPONSE.CREATED).json(
+      responseMessage({
+        message:
+          "User created successfully kindly check your inbox to verify your email",
+        data: token,
+        success_status: true,
+      })
+    );
   } catch (error: any) {
     next(error);
   }

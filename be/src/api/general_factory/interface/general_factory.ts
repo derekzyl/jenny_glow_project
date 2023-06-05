@@ -49,6 +49,17 @@ export enum PermissionsE {
   VIEW_POS = "VIEW_POS",
   EDIT_POS = "EDIT_POS",
   DELETE_POS = "DELETE_POS",
+
+
+  // user profile information
+
+  CREATE_USER_PROFILE = "CREATE_USER_PROFILE",
+  VIEW_USER_PROFILE = "VIEW_USER_PROFILE",
+  EDIT_USER_PROFILE = "EDIT_USER_PROFILE",
+  DELETE_USER_PROFILE = "DELETE_USER_PROFILE",
+
+
+  
 }
 
 export interface CrudModelI {

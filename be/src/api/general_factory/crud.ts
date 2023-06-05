@@ -1,27 +1,50 @@
 import { NextFunction, Response, Request } from "express";
 
-import mongoose, { model } from "mongoose";
 import { APP_ERROR } from "../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../utilities/http_response";
 import { Queries } from "../../utilities/query";
 import { responseMessage } from "../../utilities/response_message";
 import { CrudModelI } from "./interface/general_factory";
+import { AddressModelI } from "../user/address/interface_address/interface.address";
 
+/**
+ * Crud functionality
+ *
+ *
+ */
 export class Crud {
   request: Request;
   response: Response;
   next: NextFunction;
+  /**
+   *
+   * @param {Request} request express request object
+   * @param {Response} response express response object
+   * @param {NextFunction} next function
+   */
   constructor(request: Request, response: Response, next: NextFunction) {
     this.request = request;
     this.response = response;
     this.next = next;
   }
-
+  /**
+   * Create a new request
+   * ----------------------
+   * @method  create handles the creation
+   * @param {CrudModelI} MyModel model object and whats its exempting when returning a response
+   * @param {Record<string, any>} data request.body data object
+   * @param {Record<string, any> }finder object searches the database for existing data then throws error if it does exist
+   * @returns {Response | NextFunction}   a response message or passes errors to error center
+   *
+   * @example
+   * // returns a response
+   * create(MyModel, data, finder)
+   */
   async create(
     MyModel: CrudModelI,
     data: Record<string, any>,
     finder: Record<string, any>
-  ) {
+  ): Promise<Response | NextFunction | void> {
     try {
       const find = await MyModel.model.findOne(finder);
       if (find)
@@ -49,6 +72,13 @@ export class Crud {
       return this.next(error);
     }
   }
+  /**
+   *
+   * @param {CrudModelI | CrudModelI[]} MyModel model object or an array of model object and whats its exempting when returning a response
+   * @param {Record<string, any>} data this is the data to be used for updating the model
+   * @param {Record<string, any>} filter this is used to find the document that need to be filtered
+   * @returns
+   */
   async update(
     MyModel: CrudModelI | CrudModelI[],
     data: Record<string, any>,
@@ -92,11 +122,18 @@ export class Crud {
       return this.next(error);
     }
   }
-
+  /**
+   *
+   * @param {CrudModelI} MyModels the model and exempt are the object data
+   * @param {request.query} query
+   * @param {Record<string, any> | null } category the first filter before any other filters
+   * @param {Object} populate this takes the model field that needs to be populated
+   */
   async getMany(
     MyModels: CrudModelI | CrudModelI[],
     query: typeof this.request.query,
-    category: Record<string, any> | null = null
+    category: Record<string, any> | null = null,
+    populate: { model: string | undefined; fields?: string | undefined }
   ) {
     try {
       let data: any;
@@ -105,6 +142,8 @@ export class Crud {
         MyModels.forEach(async (model: CrudModelI) => {
           let modelFind = model.model.find({ category });
           if (model.exempt) modelFind = modelFind.select(model.exempt);
+          if (populate.model)
+            modelFind = modelFind.populate(populate.model, populate.fields);
 
           const queryf = new Queries(modelFind, query)
             .filter()
@@ -143,6 +182,11 @@ export class Crud {
       this.next(error);
     }
   }
+  /**
+   *
+   * @param MyModel
+   * @param data
+   */
   async delete(MyModel: CrudModelI | CrudModelI[], data: any) {
     try {
       if (Array.isArray(MyModel)) {
@@ -174,6 +218,12 @@ export class Crud {
       this.next(error);
     }
   }
+
+  /**
+   *
+   * @param MyModel
+   * @param data
+   */
   async getOne(MyModel: CrudModelI | CrudModelI[], data: any) {
     try {
       let get_one: any = [];

@@ -12,6 +12,7 @@ import NodeMailer from "../../../../utilities/mailer";
 import { getRole } from "../../../../utilities/get_role";
 import { responseMessage } from "../../../../utilities/response_message";
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
+import { checkPermissions } from "../../../general_factory/permission_handler";
 
 export const createStaff = async (
   request: Request,
@@ -22,6 +23,9 @@ export const createStaff = async (
   const email_regex = /^[a-zA-Z0-9_-]{3,}@[a-zA-Z]{3,}.[a-zA-Z]{2,}$/g;
   const password_regex = /^[a-zA-Z0-9!@#><,-_*&]{8,}$/g;
   const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
+  let role;
+  const get_role = await getRole(staff_body.role);
+  if (get_role) role = get_role;
 
   try {
     const pRT = "email-" + randomBytes(20).toString("hex");
@@ -54,7 +58,7 @@ export const createStaff = async (
       check_if_user_exist = await USER.findByIdAndUpdate(
         check_if_user_exist.id,
         {
-          permissions: staff_body.permissions,
+          permissions: staff_body.permissions.concat(role!.permissions!),
           role: staff_body.role,
           phone: staff_body.phone ?? check_if_user_exist.phone,
         }
@@ -119,55 +123,66 @@ export const updateStaff = async (
     const user = request.user;
     const update_body: Partial<StaffBodyI> = request.body;
     const { id } = request.params;
-    const find_staff = await STAFF.findById(id);
-    if (!find_staff)
+    const admin_find_staff = await STAFF.findById(id);
+    const staff_find_self = await STAFF.findOne({ user: request.user.id });
+
+    if (
+      checkPermissions(PermissionsE.EDIT_STAFF, request.user) &&
+      !admin_find_staff
+    )
       throw APP_ERROR("the staff does'nt exist in the data base ");
-    const find_staff_user_model = await USER.findById(find_staff.user);
-    if (find_staff_user_model && user.id === find_staff_user_model.id) {
-      const update_user = await USER.findByIdAndUpdate(
-        find_staff_user_model?.id,
-        { phone: update_body.phone }
-      );
-      const update_staff_data = await STAFF.findByIdAndUpdate(id, {
-        first_name: update_body.first_name,
-        last_name: update_body.last_name,
-        address: update_body.address,
-        bank_details: {
-          bank_name: update_body.bank_details.bank_name,
-          account_name: update_body.bank_details.account_name,
-          account_number: update_body.bank_details.account_number,
-        },
-        updated_at: Date.now(),
+    const find_staff_user_model_by_admin = await USER.findById(
+      admin_find_staff?.user.id
+    );
+
+    if (user.id === staff_find_self?.user.id) {
+      const update_user = await USER.findByIdAndUpdate(request.user?.id, {
+        phone: update_body.phone ?? user.phone,
       });
+      const update_staff_data = await STAFF.findOneAndUpdate(
+        { user: request.user.id },
+        {
+          first_name: update_body.first_name,
+          last_name: update_body.last_name,
+          address: update_body.address,
+          bank_details: {
+            bank_name: update_body.bank_details.bank_name,
+            account_name: update_body.bank_details.account_name,
+            account_number: update_body.bank_details.account_number,
+          },
+          updated_at: Date.now(),
+        }
+      );
 
       if (!update_staff_data || update_user)
         throw APP_ERROR("error updating staff", HTTP_RESPONSE.BAD_REQUEST);
     } else if (user?.permissions.includes(PermissionsE.EDIT_STAFF)) {
       const update_user = await USER.findByIdAndUpdate(
-        find_staff_user_model?.id,
+        find_staff_user_model_by_admin?.id,
         {
-          role: update_body.role ?? find_staff_user_model?.role,
+          role: update_body.role ?? find_staff_user_model_by_admin?.role,
           permissions:
-            update_body.permissions ?? find_staff_user_model?.permissions,
-          phone: update_body.phone ?? find_staff_user_model?.phone,
+            update_body.permissions ??
+            find_staff_user_model_by_admin?.permissions,
+          phone: update_body.phone ?? find_staff_user_model_by_admin?.phone,
           updated_at: Date.now(),
         }
       );
       const update_staff_data = await STAFF.findByIdAndUpdate(id, {
-        first_name: update_body.first_name ?? find_staff.first_name,
-        last_name: update_body.last_name ?? find_staff.last_name,
-        address: update_body.address ?? find_staff.address,
-        branch: update_body.branch ?? find_staff.branch,
+        first_name: update_body.first_name ?? admin_find_staff?.first_name,
+        last_name: update_body.last_name ?? admin_find_staff?.last_name,
+        address: update_body.address ?? admin_find_staff?.address,
+        branch: update_body.branch ?? admin_find_staff?.branch,
         bank_details: {
           bank_name:
             update_body.bank_details.bank_name ??
-            find_staff.bank_details.bank_name,
+            admin_find_staff?.bank_details.bank_name,
           account_name:
             update_body.bank_details.account_name ??
-            find_staff.bank_details.account_name,
+            admin_find_staff?.bank_details.account_name,
           account_number:
             update_body.bank_details.account_number ??
-            find_staff.bank_details.account_number,
+            admin_find_staff?.bank_details.account_number,
         },
         updated_at: Date.now(),
       });
@@ -177,7 +192,7 @@ export const updateStaff = async (
       response.status(HTTP_RESPONSE.OK).json(
         responseMessage({
           message: "update successful",
-          data: find_staff.first_name,
+          data: admin_find_staff?.first_name,
           success_status: true,
         })
       );

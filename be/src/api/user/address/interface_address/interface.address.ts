@@ -1,4 +1,4 @@
-import { Types, Document } from "mongoose";
+import { Types, Document, Model } from "mongoose";
 
 export interface AddressI {
   user: Types.ObjectId;
@@ -9,6 +9,12 @@ export interface AddressI {
   local_government: string;
   name: string;
   zip_code: string;
+  is_default: boolean;
 }
 
 export interface AddressDocI extends Document, AddressI {}
+export interface AddressModelI extends Model<AddressDocI> {
+  checkDefaultAddress(): void;
+}
+
+export type AddressBodyT = Omit<AddressI, "user">;
