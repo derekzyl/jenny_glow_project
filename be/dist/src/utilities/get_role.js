@@ -14,6 +14,20 @@ const model_role_1 = require("../api/admin/role/main_role/model.role");
 const response_message_1 = require("./response_message");
 const http_response_1 = require("./http_response");
 const custom_error_1 = require("./custom_error");
+/**
+ * GET THE USER ROLE
+ *
+ * ----------------
+ *
+ *
+ * @param {Types.ObjectId} id please note that the object coming in must be a role id from the user model
+ * @returns {(Model<RoleI> |   APP_ERROR)} a type of error if user role dosnt exist or a role model
+ *
+ * @example
+ * ```ts
+ * getRole(id: string): Model<RoleI>
+ * ```
+ */
 const getRole = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const get_role = yield model_role_1.ROLE.findById(id);

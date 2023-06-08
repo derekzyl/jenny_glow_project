@@ -1,8 +1,7 @@
 import { Router } from "express";
 import { AddressIndex } from "../index.address";
 import { AuthIndex } from "../../../auth/index.auth";
-import { GeneralIndex } from "../../../general_factory/index.factory";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
+import { ShippingIndex } from "../../../admin/shipping/index.shipping";
 
 const addressRouter = Router();
 addressRouter
@@ -13,4 +12,8 @@ addressRouter
   .route("/:id")
   .patch(AuthIndex.protector, AddressIndex.updateAddress)
   .delete(AuthIndex.protector, AddressIndex.deleteAddress);
+
+addressRouter
+  .route("/getCountryAndState")
+  .get(AuthIndex.protector, ShippingIndex.fetch_country_and_state);
 export default addressRouter;

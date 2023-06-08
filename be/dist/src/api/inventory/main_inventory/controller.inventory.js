@@ -49,12 +49,12 @@ const createInventory = (request, response, next) => __awaiter(void 0, void 0, v
 exports.createInventory = createInventory;
 const getOneInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_inventory = new crud_1.Crud(request, response, next);
-    crud_inventory.getOne({ model: model_inventory_1.INVENTORY, exempt: "-__v " }, { inventory_name: request.params.id });
+    crud_inventory.getOne({ model: model_inventory_1.INVENTORY, exempt: "-__v " }, { inventory_name: request.params.id }, {});
 });
 exports.getOneInventory = getOneInventory;
 const getManyInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.getMany({ model: model_inventory_1.INVENTORY, exempt: "-__v " }, request.query);
+    crud_review.getMany({ model: model_inventory_1.INVENTORY, exempt: "-__v " }, request.query, {}, {});
 });
 exports.getManyInventory = getManyInventory;
 const updateInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -101,12 +101,12 @@ const createBranchInventory = (request, response, next) => __awaiter(void 0, voi
 exports.createBranchInventory = createBranchInventory;
 const getOneBranchInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_inventory = new crud_1.Crud(request, response, next);
-    crud_inventory.getOne({ model: model_inventory_1.BRANCH_INVENTORY, exempt: "-__v " }, { inventory_name: request.params.id });
+    crud_inventory.getOne({ model: model_inventory_1.BRANCH_INVENTORY, exempt: "-__v " }, { inventory_name: request.params.id }, {});
 });
 exports.getOneBranchInventory = getOneBranchInventory;
 const getManyBranchInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.getMany({ model: model_inventory_1.BRANCH_INVENTORY, exempt: "-__v " }, request.query);
+    crud_review.getMany({ model: model_inventory_1.BRANCH_INVENTORY, exempt: "-__v " }, request.query, {}, { model: "products" });
 });
 exports.getManyBranchInventory = getManyBranchInventory;
 const updateBranchInventory = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {

@@ -28,12 +28,12 @@ const createVat = (request, response, next) => __awaiter(void 0, void 0, void 0,
 exports.createVat = createVat;
 const getOneVat = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_vat = new crud_1.Crud(request, response, next);
-    crud_vat.getOne({ model: model_vat_1.VAT, exempt: "-__v -created_at updated_at" }, { vat_name: request.params.id });
+    crud_vat.getOne({ model: model_vat_1.VAT, exempt: "-__v -created_at updated_at" }, { vat_name: request.params.id }, {});
 });
 exports.getOneVat = getOneVat;
 const getManyVat = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.getMany({ model: model_vat_1.VAT, exempt: "-__v -created_at -updated_at" }, request.query);
+    crud_review.getMany({ model: model_vat_1.VAT, exempt: "-__v -created_at -updated_at" }, request.query, {}, {});
 });
 exports.getManyVat = getManyVat;
 const updateVat = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {

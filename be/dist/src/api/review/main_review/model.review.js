@@ -2,9 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.REVIEW = void 0;
 const mongoose_1 = require("mongoose");
+const general_factory_1 = require("../../general_factory/interface/general_factory");
 const reviewSchema = new mongoose_1.Schema({
-    user: {
+    profile: {
         type: mongoose_1.Schema.Types.ObjectId,
+        ref: "PROFILE",
     },
     product: {
         type: mongoose_1.Schema.Types.ObjectId,
@@ -15,15 +17,7 @@ const reviewSchema = new mongoose_1.Schema({
     rating: {
         type: Number,
     },
-    created_at: {
-        type: Date,
-        default: Date.now(),
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+}, { timestamps: general_factory_1.time_stamps });
 // reviewSchema.pre("findOneAndUpdate", function () {
 //     this.updated_at
 // })

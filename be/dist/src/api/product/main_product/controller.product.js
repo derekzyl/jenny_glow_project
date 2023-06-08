@@ -29,12 +29,12 @@ const createProduct = (request, response, next) => __awaiter(void 0, void 0, voi
 exports.createProduct = createProduct;
 const getOneProduct = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_product = new crud_1.Crud(request, response, next);
-    crud_product.getOne({ model: model_product_1.PRODUCT, exempt: "-__v" }, { id: request.params.id });
+    crud_product.getOne({ model: model_product_1.PRODUCT, exempt: "-__v" }, { id: request.params.id }, {});
 });
 exports.getOneProduct = getOneProduct;
 const getManyProduct = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.getMany({ model: model_product_1.PRODUCT, exempt: "-__v -created_at -updated_at" }, request.query);
+    crud_review.getMany({ model: model_product_1.PRODUCT, exempt: "-__v -created_at -updated_at" }, request.query, {}, { model: "reviews" });
 });
 exports.getManyProduct = getManyProduct;
 const updateProduct = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {

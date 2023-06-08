@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { StaffI } from "../interface_staff/staff";
+import { StaffI } from "../interface_staff/interface.staff";
 
 const staffSchema = new Schema<StaffI>({
   user: {

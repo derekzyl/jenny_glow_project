@@ -78,7 +78,9 @@ export const getManyProfile = async (
   const crud_review = new Crud(request, response, next);
   crud_review.getMany(
     { model: PROFILE, exempt: "-__v, -user " },
-    request.query
+    request.query,
+    {},
+    {}
   );
 };
 

@@ -14,4 +14,19 @@ const r = k + n + o + "_" + p + o + n + "_" + q;
 
 // const c = id.getDate();
 
-console.log(k, "<----------------", r);
+// console.log(k, "<----------------", r);
+const b = true;
+const c = [
+  { name: "abj" },
+  { name: "love" },
+  { name: "sad" },
+  { name: "sail" },
+  { name: "sword" },
+  { name: "snare" },
+  { name: "soak" },
+];
+
+if (b) {
+  c.filter((s) => s.name === "abj").map((f) => (f["amount"] = 100));
+}
+console.log(c, "amount");

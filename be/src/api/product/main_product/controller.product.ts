@@ -30,7 +30,8 @@ export const getOneProduct = async (
   const crud_product = new Crud(request, response, next);
   crud_product.getOne(
     { model: PRODUCT, exempt: "-__v" },
-    { id: request.params.id }
+    { id: request.params.id },
+    {}
   );
 };
 
@@ -42,7 +43,9 @@ export const getManyProduct = async (
   const crud_review = new Crud(request, response, next);
   crud_review.getMany(
     { model: PRODUCT, exempt: "-__v -created_at -updated_at" },
-    request.query
+    request.query,
+    {},
+    { model: "reviews" }
   );
 };
 

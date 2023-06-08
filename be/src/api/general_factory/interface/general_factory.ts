@@ -50,7 +50,6 @@ export enum PermissionsE {
   EDIT_POS = "EDIT_POS",
   DELETE_POS = "DELETE_POS",
 
-
   // user profile information
 
   CREATE_USER_PROFILE = "CREATE_USER_PROFILE",
@@ -58,8 +57,12 @@ export enum PermissionsE {
   EDIT_USER_PROFILE = "EDIT_USER_PROFILE",
   DELETE_USER_PROFILE = "DELETE_USER_PROFILE",
 
+  // Create shipping fee
 
-  
+  CREATE_SHIPPING_FEE = "CREATE_SHIPPING_FEE",
+  VIEW_SHIPPING_FEE = "VIEW_SHIPPING_FEE",
+  EDIT_SHIPPING_FEE = "EDIT_SHIPPING_FEE",
+  DELETE_SHIPPING_FEE = "DELETE_SHIPPING_FEE",
 }
 
 export interface CrudModelI {

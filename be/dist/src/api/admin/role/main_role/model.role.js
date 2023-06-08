@@ -13,7 +13,7 @@ const role_model = new mongoose_1.default.Schema({
         required: true,
     },
     permissions: [{ type: String, enum: general_factory_1.PermissionsE }],
-});
+}, { timestamps: general_factory_1.time_stamps });
 role_model.pre("save", function () {
     this.name = String(this.name).toLocaleUpperCase();
 });

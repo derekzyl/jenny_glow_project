@@ -116,12 +116,12 @@ const createPos = (request, response, next) => __awaiter(void 0, void 0, void 0,
 exports.createPos = createPos;
 const getOnePos = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.getOne({ model: model_pos_1.POS, exempt: "-__v -created_at updated_at" }, { id: request.params.id });
+    crud_pos.getOne({ model: model_pos_1.POS, exempt: "-__v -created_at updated_at" }, { id: request.params.id }, {});
 });
 exports.getOnePos = getOnePos;
 const getManyPos = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.getMany({ model: model_pos_1.POS, exempt: "-__v -created_at -updated_at" }, request.query, {});
+    crud_pos.getMany({ model: model_pos_1.POS, exempt: "-__v -created_at -updated_at" }, request.query, {}, {});
 });
 exports.getManyPos = getManyPos;
 const getManyPosProduct = (request, response) => __awaiter(void 0, void 0, void 0, function* () {

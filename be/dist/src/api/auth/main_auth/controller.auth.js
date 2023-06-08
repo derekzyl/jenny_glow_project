@@ -21,6 +21,9 @@ const http_response_1 = require("../../../utilities/http_response");
 const mailer_1 = __importDefault(require("../../../utilities/mailer"));
 const bcrypt_1 = __importDefault(require("../../../utilities/bcrypt"));
 const jwt_1 = __importDefault(require("../../../utilities/jwt"));
+const response_message_1 = require("../../../utilities/response_message");
+const model_profile_1 = require("../../user/profile/main_profile/model.profile");
+const model_wishlist_1 = require("../../user/wishlist/main_wishlist/model.wishlist");
 const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, confirm_password, phone } = request.body;
@@ -69,18 +72,30 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
         nodeMailer.mailer(details);
         const newUser = new model_auth_1.USER({
             email,
+            phone,
             password: encryptedPassword,
             token: resetToken,
             token_expires,
             role: "644da36acc996fe2be8239e9",
         });
         const newUSER = yield newUser.save();
+        const create_profile = new model_profile_1.PROFILE({
+            user: newUSER.id,
+            profile_image: "testing 12343",
+        });
+        const create_wishlist = new model_wishlist_1.WISHLIST({
+            user: newUSER.id,
+            products: [],
+        });
+        yield create_profile.save();
+        yield create_wishlist.save();
         const expire = process.env.JWT_EXPIRE || "1d";
         const token = jwt_1.default.generateToken({ id: newUSER._id }, { expiresIn: expire });
-        response.status(http_response_1.HTTP_RESPONSE.CREATED).json({
+        response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({
             message: "User created successfully kindly check your inbox to verify your email",
-            token,
-        });
+            data: token,
+            success_status: true,
+        }));
     }
     catch (error) {
         next(error);

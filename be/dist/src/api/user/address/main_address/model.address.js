@@ -12,33 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ADDRESS = void 0;
 const mongoose_1 = require("mongoose");
 const custom_error_1 = require("../../../../utilities/custom_error");
+const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const addressSchema = new mongoose_1.Schema({
+    user: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: "USER" },
     address: { type: String, required: true },
     country: { type: String, required: true },
     local_government: { type: String, required: true },
     name: { type: String, required: true },
     phone: { type: Number, required: true },
     state: { type: String, required: true },
-    user: { type: mongoose_1.Schema.Types.ObjectId, required: true },
     zip_code: { type: String, minlength: 5, required: true },
     is_default: { type: Boolean, default: false },
-});
-// addressSchema.method("checkDefaultAddress", async function () {
-//   if (this.is_default === true) {
-//     const get_address = await this.model.findOne({
-//       user: this.user.id,
-//       is_default: true,
-//     });
-//     if (get_address) {
-//       get_address.is_default = false;
-//       get_address.save();
-//     }
-//   }
-// });
+}, { timestamps: general_factory_1.time_stamps });
 addressSchema.pre("save", function () {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (this.is_default === true) {
+            if (Boolean(this.is_default) === true) {
                 const get_address = yield exports.ADDRESS.findOne({
                     user: this.user,
                     is_default: true,

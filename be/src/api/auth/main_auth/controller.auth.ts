@@ -82,6 +82,7 @@ export const signup = async (
 
     const newUser = new USER({
       email,
+      phone,
       password: encryptedPassword,
       token: resetToken,
       token_expires,
@@ -90,6 +91,7 @@ export const signup = async (
     const newUSER = await newUser.save();
     const create_profile = new PROFILE({
       user: newUSER.id,
+      profile_image: "testing 12343",
     });
     const create_wishlist = new WISHLIST({
       user: newUSER.id,

@@ -56,7 +56,8 @@ export const getOneInventory = async (
   const crud_inventory = new Crud(request, response, next);
   crud_inventory.getOne(
     { model: INVENTORY, exempt: "-__v " },
-    { inventory_name: request.params.id }
+    { inventory_name: request.params.id },
+    {}
   );
 };
 
@@ -66,7 +67,12 @@ export const getManyInventory = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany({ model: INVENTORY, exempt: "-__v " }, request.query);
+  crud_review.getMany(
+    { model: INVENTORY, exempt: "-__v " },
+    request.query,
+    {},
+    {}
+  );
 };
 
 export const updateInventory = async (
@@ -146,7 +152,8 @@ export const getOneBranchInventory = async (
   const crud_inventory = new Crud(request, response, next);
   crud_inventory.getOne(
     { model: BRANCH_INVENTORY, exempt: "-__v " },
-    { inventory_name: request.params.id }
+    { inventory_name: request.params.id },
+    {}
   );
 };
 
@@ -158,7 +165,9 @@ export const getManyBranchInventory = async (
   const crud_review = new Crud(request, response, next);
   crud_review.getMany(
     { model: BRANCH_INVENTORY, exempt: "-__v " },
-    request.query
+    request.query,
+    {},
+    { model: "products" }
   );
 };
 

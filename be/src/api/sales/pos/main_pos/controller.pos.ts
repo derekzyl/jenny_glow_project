@@ -132,7 +132,7 @@ export const getOnePos = async (
   const crud_pos = new Crud(request, response, next);
   crud_pos.getOne(
     { model: POS, exempt: "-__v -created_at updated_at" },
-    { id: request.params.id }
+    { id: request.params.id },{}
   );
 };
 
@@ -145,7 +145,7 @@ export const getManyPos = async (
   crud_pos.getMany(
     { model: POS, exempt: "-__v -created_at -updated_at" },
     request.query,
-    {}
+    {},{}
   );
 };
 

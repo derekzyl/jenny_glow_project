@@ -28,7 +28,7 @@ export const getOneVat = async (
   const crud_vat = new Crud(request, response, next);
   crud_vat.getOne(
     { model: VAT, exempt: "-__v -created_at updated_at" },
-    { vat_name: request.params.id }
+    { vat_name: request.params.id },{}
   );
 };
 
@@ -40,7 +40,9 @@ export const getManyVat = async (
   const crud_review = new Crud(request, response, next);
   crud_review.getMany(
     { model: VAT, exempt: "-__v -created_at -updated_at" },
-    request.query
+    request.query,
+    {},
+    {}
   );
 };
 

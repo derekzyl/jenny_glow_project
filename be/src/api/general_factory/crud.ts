@@ -6,6 +6,7 @@ import { Queries } from "../../utilities/query";
 import { responseMessage } from "../../utilities/response_message";
 import { CrudModelI } from "./interface/general_factory";
 import { AddressModelI } from "../user/address/interface_address/interface.address";
+import { Model } from "mongoose";
 
 /**
  * Crud functionality
@@ -128,12 +129,19 @@ export class Crud {
    * @param {request.query} query
    * @param {Record<string, any> | null } category the first filter before any other filters
    * @param {Object} populate this takes the model field that needs to be populated
+   *
+   * ```ts
+   * CrudModelI {
+   * model: Model<any>;
+   *exempt: string;
+   *  }\
+   *   populate: { model?: string | undefined; fields?: string | undefined } ```
    */
   async getMany(
     MyModels: CrudModelI | CrudModelI[],
     query: typeof this.request.query,
     category: Record<string, any> | null = null,
-    populate: { model: string | undefined; fields?: string | undefined }
+    populate: { model?: string | undefined; fields?: string | undefined }
   ) {
     try {
       let data: any;
@@ -184,10 +192,10 @@ export class Crud {
   }
   /**
    *
-   * @param MyModel
-   * @param data
+   * @param {CrudModelI} MyModel -it takes a model and exempt field
+   * @param {Object} data it takes the field that is used to mďthď up the data to be deleted
    */
-  async delete(MyModel: CrudModelI | CrudModelI[], data: any) {
+  async delete(MyModel: CrudModelI | CrudModelI[], data: Record<string, any>) {
     try {
       if (Array.isArray(MyModel)) {
         MyModel.forEach(async (model: CrudModelI) => {
@@ -220,29 +228,55 @@ export class Crud {
   }
 
   /**
+   * Get One Crud Model
    *
-   * @param MyModel
-   * @param data
+   * -----------------
+   *
+   *
+   * @param MyModel - it takes object as parameter {model, exempt}
+   * @param data -data is the filter parameters and its an object  it takes `<key, value>`
+   * @param populate - takes the model name and the fields from the you want to populate
+   *
+   * @example
+   * ```ts
+   * CrudModelI {
+   * model: Model<any>;
+   *exempt: string;
+   *  }
+   *   populate: { model?: string | undefined; fields?: string | undefined } ```
    */
-  async getOne(MyModel: CrudModelI | CrudModelI[], data: any) {
+  async getOne(
+    MyModel: CrudModelI | CrudModelI[],
+    data: any,
+    populate: { model?: string | undefined; fields?: string | undefined }
+  ) {
     try {
-      let get_one: any = [];
+      const get_data = [];
+      let get_one: any;
       if (Array.isArray(MyModel)) {
         MyModel.forEach(async (model: CrudModelI) => {
           get_one = await model.model.findOne(data).select(model.exempt);
+          if (populate.model)
+            if (populate.fields)
+              get_one = get_one.populate(populate.model, populate.fields);
           if (!get_one)
             throw APP_ERROR(
               `${model} is not successfully fetched`,
               HTTP_RESPONSE.NOT_IMPLEMENTED
             );
+          get_data.push(get_one);
         });
       } else {
-        get_one.push(await MyModel.model.findOne(data).select(MyModel.exempt));
+        get_one = await MyModel.model.findOne(data).select(MyModel.exempt);
         if (!get_one)
           throw APP_ERROR(
             `${MyModel} is not successfully fetched`,
             HTTP_RESPONSE.NOT_FOUND
           );
+        if (populate.model)
+          if (populate.fields)
+            get_one = get_one.populate(populate.model, populate.fields);
+        get_data.push(get_one);
       }
 
       this.response.status(HTTP_RESPONSE.OK).json(

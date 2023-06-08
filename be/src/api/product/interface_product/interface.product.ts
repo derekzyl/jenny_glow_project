@@ -19,7 +19,7 @@ export interface ProductI extends Document {
   search_tags: string[];
 }
 
-export interface ProductBodyI extends Document {
+export interface ProductBodyI {
   name: string;
   description: string;
   review: Types.ObjectId[];

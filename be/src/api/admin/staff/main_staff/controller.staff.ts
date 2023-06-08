@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { GeneralIndex } from "../../../general_factory/index.factory";
 import { STAFF } from "./model.staff";
-import { StaffBodyI } from "../interface_staff/staff";
+import { StaffBodyI } from "../interface_staff/interface.staff";
 import { USER } from "../../../auth/main_auth/model.auth";
 import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
@@ -23,6 +23,7 @@ export const createStaff = async (
   const email_regex = /^[a-zA-Z0-9_-]{3,}@[a-zA-Z]{3,}.[a-zA-Z]{2,}$/g;
   const password_regex = /^[a-zA-Z0-9!@#><,-_*&]{8,}$/g;
   const phone_regex = /^[+][0-9]{1,4}-[0-9]{5,11}$/g;
+
   let role;
   const get_role = await getRole(staff_body.role);
   if (get_role) role = get_role;
@@ -69,7 +70,9 @@ export const createStaff = async (
         password,
         token: resetToken,
         token_expires,
+        permissions: role?.permissions.concat(staff_body.permissions),
         role: staff_body.role,
+
         phone: staff_body.phone,
       });
       check_if_user_exist = await create_user.save();
@@ -146,9 +149,9 @@ export const updateStaff = async (
           last_name: update_body.last_name,
           address: update_body.address,
           bank_details: {
-            bank_name: update_body.bank_details.bank_name,
-            account_name: update_body.bank_details.account_name,
-            account_number: update_body.bank_details.account_number,
+            bank_name: update_body.bank_details?.bank_name,
+            account_name: update_body.bank_details?.account_name,
+            account_number: update_body.bank_details?.account_number,
           },
           updated_at: Date.now(),
         }
@@ -175,14 +178,14 @@ export const updateStaff = async (
         branch: update_body.branch ?? admin_find_staff?.branch,
         bank_details: {
           bank_name:
-            update_body.bank_details.bank_name ??
-            admin_find_staff?.bank_details.bank_name,
+            update_body.bank_details?.bank_name ??
+            admin_find_staff?.bank_details?.bank_name,
           account_name:
-            update_body.bank_details.account_name ??
-            admin_find_staff?.bank_details.account_name,
+            update_body.bank_details?.account_name ??
+            admin_find_staff?.bank_details?.account_name,
           account_number:
-            update_body.bank_details.account_number ??
-            admin_find_staff?.bank_details.account_number,
+            update_body.bank_details?.account_number ??
+            admin_find_staff?.bank_details?.account_number,
         },
         updated_at: Date.now(),
       });

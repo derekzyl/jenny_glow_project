@@ -14,12 +14,36 @@ const custom_error_1 = require("../../utilities/custom_error");
 const http_response_1 = require("../../utilities/http_response");
 const query_1 = require("../../utilities/query");
 const response_message_1 = require("../../utilities/response_message");
+/**
+ * Crud functionality
+ *
+ *
+ */
 class Crud {
+    /**
+     *
+     * @param {Request} request express request object
+     * @param {Response} response express response object
+     * @param {NextFunction} next function
+     */
     constructor(request, response, next) {
         this.request = request;
         this.response = response;
         this.next = next;
     }
+    /**
+     * Create a new request
+     * ----------------------
+     * @method  create handles the creation
+     * @param {CrudModelI} MyModel model object and whats its exempting when returning a response
+     * @param {Record<string, any>} data request.body data object
+     * @param {Record<string, any> }finder object searches the database for existing data then throws error if it does exist
+     * @returns {Response | NextFunction}   a response message or passes errors to error center
+     *
+     * @example
+     * // returns a response
+     * create(MyModel, data, finder)
+     */
     create(MyModel, data, finder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -41,6 +65,13 @@ class Crud {
             }
         });
     }
+    /**
+     *
+     * @param {CrudModelI | CrudModelI[]} MyModel model object or an array of model object and whats its exempting when returning a response
+     * @param {Record<string, any>} data this is the data to be used for updating the model
+     * @param {Record<string, any>} filter this is used to find the document that need to be filtered
+     * @returns
+     */
     update(MyModel, data, filter) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -78,7 +109,21 @@ class Crud {
             }
         });
     }
-    getMany(MyModels, query, category = null) {
+    /**
+     *
+     * @param {CrudModelI} MyModels the model and exempt are the object data
+     * @param {request.query} query
+     * @param {Record<string, any> | null } category the first filter before any other filters
+     * @param {Object} populate this takes the model field that needs to be populated
+     *
+     * ```ts
+     * CrudModelI {
+     * model: Model<any>;
+     *exempt: string;
+     *  }\
+     *   populate: { model?: string | undefined; fields?: string | undefined } ```
+     */
+    getMany(MyModels, query, category = null, populate) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let data;
@@ -88,6 +133,8 @@ class Crud {
                         let modelFind = model.model.find({ category });
                         if (model.exempt)
                             modelFind = modelFind.select(model.exempt);
+                        if (populate.model)
+                            modelFind = modelFind.populate(populate.model, populate.fields);
                         const queryf = new query_1.Queries(modelFind, query)
                             .filter()
                             .limitFields()
@@ -120,6 +167,11 @@ class Crud {
             }
         });
     }
+    /**
+     *
+     * @param {CrudModelI} MyModel -it takes a model and exempt field
+     * @param {Object} data it takes the field that is used to mďthď up the data to be deleted
+     */
     delete(MyModel, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -146,21 +198,48 @@ class Crud {
             }
         });
     }
-    getOne(MyModel, data) {
+    /**
+     * Get One Crud Model
+     *
+     * -----------------
+     *
+     *
+     * @param MyModel - it takes object as parameter {model, exempt}
+     * @param data -data is the filter parameters and its an object  it takes `<key, value>`
+     * @param populate - takes the model name and the fields from the you want to populate
+     *
+     * @example
+     * ```ts
+     * CrudModelI {
+     * model: Model<any>;
+     *exempt: string;
+     *  }
+     *   populate: { model?: string | undefined; fields?: string | undefined } ```
+     */
+    getOne(MyModel, data, populate) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let get_one = [];
+                const get_data = [];
+                let get_one;
                 if (Array.isArray(MyModel)) {
                     MyModel.forEach((model) => __awaiter(this, void 0, void 0, function* () {
                         get_one = yield model.model.findOne(data).select(model.exempt);
+                        if (populate.model)
+                            if (populate.fields)
+                                get_one = get_one.populate(populate.model, populate.fields);
                         if (!get_one)
                             throw (0, custom_error_1.APP_ERROR)(`${model} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_IMPLEMENTED);
+                        get_data.push(get_one);
                     }));
                 }
                 else {
-                    get_one.push(yield MyModel.model.findOne(data).select(MyModel.exempt));
+                    get_one = yield MyModel.model.findOne(data).select(MyModel.exempt);
                     if (!get_one)
                         throw (0, custom_error_1.APP_ERROR)(`${MyModel} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_FOUND);
+                    if (populate.model)
+                        if (populate.fields)
+                            get_one = get_one.populate(populate.model, populate.fields);
+                    get_data.push(get_one);
                 }
                 this.response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
                     success_status: true,

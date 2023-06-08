@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.POS = void 0;
 const mongoose_1 = require("mongoose");
 const interface_sales_1 = require("../../interface_sales/interface.sales");
+const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const posSchema = new mongoose_1.Schema({
     order_id: { type: String },
     product: [
@@ -60,5 +61,5 @@ const posSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
-});
+}, { timestamps: general_factory_1.time_stamps });
 exports.POS = (0, mongoose_1.model)("POS", posSchema);

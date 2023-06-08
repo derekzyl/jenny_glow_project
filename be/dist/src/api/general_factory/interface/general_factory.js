@@ -47,6 +47,16 @@ var PermissionsE;
     PermissionsE["VIEW_POS"] = "VIEW_POS";
     PermissionsE["EDIT_POS"] = "EDIT_POS";
     PermissionsE["DELETE_POS"] = "DELETE_POS";
+    // user profile information
+    PermissionsE["CREATE_USER_PROFILE"] = "CREATE_USER_PROFILE";
+    PermissionsE["VIEW_USER_PROFILE"] = "VIEW_USER_PROFILE";
+    PermissionsE["EDIT_USER_PROFILE"] = "EDIT_USER_PROFILE";
+    PermissionsE["DELETE_USER_PROFILE"] = "DELETE_USER_PROFILE";
+    // Create shipping fee
+    PermissionsE["CREATE_SHIPPING_FEE"] = "CREATE_SHIPPING_FEE";
+    PermissionsE["VIEW_SHIPPING_FEE"] = "VIEW_SHIPPING_FEE";
+    PermissionsE["EDIT_SHIPPING_FEE"] = "EDIT_SHIPPING_FEE";
+    PermissionsE["DELETE_SHIPPING_FEE"] = "DELETE_SHIPPING_FEE";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
 exports.time_stamps = {
     createdAt: "created_at",
