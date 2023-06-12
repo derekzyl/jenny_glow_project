@@ -1,5 +1,9 @@
 import { NextFunction, Response, Request } from "express";
-import { ProductBodyI, ProductI } from "../interface_product/interface.product";
+import {
+  ProductBodyI,
+  ProductDocI,
+  ProductI,
+} from "../interface_product/interface.product";
 import { Crud } from "../../general_factory/crud";
 import { PRODUCT } from "./model.product";
 
@@ -14,9 +18,13 @@ export const createProduct = async (
 
     const gotten_body = { ...body, created_by: request.user.id };
     const crud_product = new Crud(request, response, next);
-    crud_product.create({ model: PRODUCT, exempt: "" }, gotten_body, {
-      name: gotten_body.name,
-    });
+    crud_product.create<ProductBodyI, ProductDocI>(
+      { model: PRODUCT, exempt: "" },
+      gotten_body,
+      {
+        name: gotten_body.name,
+      }
+    );
   } catch (error) {
     next(error);
   }
@@ -28,7 +36,7 @@ export const getOneProduct = async (
   next: NextFunction
 ) => {
   const crud_product = new Crud(request, response, next);
-  crud_product.getOne(
+  crud_product.getOne<ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
     { id: request.params.id },
     {}
@@ -40,12 +48,12 @@ export const getManyProduct = async (
   response: Response,
   next: NextFunction
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  const crud_product = new Crud(request, response, next);
+  crud_product.getMany<ProductDocI>(
     { model: PRODUCT, exempt: "-__v -created_at -updated_at" },
     request.query,
     {},
-    { model: "reviews" }
+    { model: "products" }
   );
 };
 
@@ -55,8 +63,8 @@ export const updateProduct = async (
   next: NextFunction
 ) => {
   const body = request.body;
-  const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  const crud_product = new Crud(request, response, next);
+  crud_product.update<ProductBodyI, ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
     { id: request.params.id },
     { ...body }
@@ -67,8 +75,8 @@ export const deleteProduct = async (
   response: Response,
   next: NextFunction
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  const crud_product = new Crud(request, response, next);
+  crud_product.delete<ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
     { id: request.params.id }
   );

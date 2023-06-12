@@ -24,12 +24,12 @@ var PaymentStatusE;
     PaymentStatusE["PROCESSING"] = "PROCESSING";
     PaymentStatusE["DISPUTE"] = "DISPUTE";
     PaymentStatusE["DECLINED"] = "DECLINED";
+    PaymentStatusE["INITIALIZED"] = "INITIALIZED";
 })(PaymentStatusE = exports.PaymentStatusE || (exports.PaymentStatusE = {}));
 var PaymentMethodE;
 (function (PaymentMethodE) {
     PaymentMethodE["CASH"] = "CASH";
     PaymentMethodE["CREDIT_CARD"] = "CREDIT_CARD";
-    PaymentMethodE["DEBIT_CARD"] = "DEBIT_CARD";
     PaymentMethodE["PAYPAL"] = "PAYPAL";
     PaymentMethodE["PAYONEER"] = "PAYONEER";
     PaymentMethodE["BANK_TRANSFERS"] = "BANK_TRANSFERS";

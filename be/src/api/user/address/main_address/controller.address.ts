@@ -2,10 +2,14 @@ import { NextFunction, Response, Request } from "express";
 
 import { ADDRESS } from "./model.address";
 
-import { AddressBodyT } from "../interface_address/interface.address";
+import {
+  AddressBodyT,
+  AddressDocI,
+} from "../interface_address/interface.address";
 import { Crud } from "../../../general_factory/crud";
 import { checkPermissions } from "../../../general_factory/permission_handler";
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
+import { Types } from "mongoose";
 
 //todo address receipt
 
@@ -20,7 +24,7 @@ export const createAddress = async (
     const body: AddressBodyT = request.body;
 
     const crud_address = new Crud(request, response, next);
-    crud_address.create(
+    crud_address.create<AddressBodyT & { user: Types.ObjectId }, AddressDocI>(
       { model: ADDRESS, exempt: "" },
       { ...body, user: user.id },
       {}
@@ -41,7 +45,7 @@ export const getOneAddress = async (
   );
   const user = check_user_clearance ? undefined : request.user.id;
   const crud_address = new Crud(request, response, next);
-  crud_address.getOne(
+  crud_address.getOne<AddressDocI>(
     { model: ADDRESS, exempt: "-__v -user " },
     { id: request.params.id, user },
     {}
@@ -54,7 +58,7 @@ export const getManyAddress = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  crud_review.getMany<AddressDocI>(
     { model: ADDRESS, exempt: "-__v, -user " },
     request.query,
     {},
@@ -69,7 +73,7 @@ export const updateAddress = async (
 ) => {
   const body = request.body;
   const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  crud_review.update<AddressBodyT, AddressDocI>(
     { model: ADDRESS, exempt: "-__v" },
     { id: request.params.id },
     { ...body }
@@ -81,7 +85,7 @@ export const deleteAddress = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  crud_review.delete<AddressDocI>(
     { model: ADDRESS, exempt: "-__v -created_at -updated_at" },
     { id: request.params.id }
   );

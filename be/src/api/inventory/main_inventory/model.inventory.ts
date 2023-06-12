@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 import {
-  DistributeInventoryI,
-  InventoryI,
+  DistributeInventoryDocI,
+  InventoryDocI,
 } from "../interface_inventory/interface.inventory";
 import { time_stamps } from "../../general_factory/interface/general_factory";
 
-const inventorySchema = new Schema<InventoryI>(
+const inventorySchema = new Schema<InventoryDocI>(
   {
     inventory_id: {
       type: String,
@@ -31,7 +31,7 @@ const inventorySchema = new Schema<InventoryI>(
   { timestamps: time_stamps }
 );
 
-const branchInventorySchema = new Schema<DistributeInventoryI>(
+const branchInventorySchema = new Schema<DistributeInventoryDocI>(
   {
     inventory_id: {
       type: String,
@@ -60,8 +60,8 @@ const branchInventorySchema = new Schema<DistributeInventoryI>(
   { timestamps: time_stamps }
 );
 
-export const INVENTORY = model<InventoryI>("INVENTORY", inventorySchema);
-export const BRANCH_INVENTORY = model<InventoryI>(
+export const INVENTORY = model<InventoryDocI>("INVENTORY", inventorySchema);
+export const BRANCH_INVENTORY = model<DistributeInventoryDocI>(
   "BRANCH_INVENTORY",
   branchInventorySchema
 );

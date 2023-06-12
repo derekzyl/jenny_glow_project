@@ -9,7 +9,7 @@ const branchSchema = new Schema<branchI>(
     location_address: String,
     country: String,
     number_of_staff: Number,
-    product: [
+    products: [
       {
         product: {
           type: Schema.Types.ObjectId,

@@ -10,7 +10,11 @@ import { ADDRESS } from "../../address/main_address/model.address";
 import { VAT } from "../../../admin/vat/main_vat/model.vat";
 import { VatE } from "../../../admin/vat/interface_vat/interface.vat";
 import { SHIPPING } from "../../../admin/shipping/main_shipping/model.shipping";
-import { ProductAndCount } from "../interface_cart/interface.cart";
+import {
+  CartBodyT,
+  CartDocI,
+  ProductAndCount,
+} from "../interface_cart/interface.cart";
 
 //todo address receipt
 
@@ -201,7 +205,7 @@ export const getCart = async (
 ) => {
   try {
     const get_crud = new Crud(request, response, next);
-    await get_crud.getOne(
+    await get_crud.getOne<CartDocI>(
       { model: CART, exempt: "-user" },
       { user: request.user.id },
       { model: "products" }

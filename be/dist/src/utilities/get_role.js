@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRole = void 0;
 const model_role_1 = require("../api/admin/role/main_role/model.role");
@@ -28,9 +19,9 @@ const custom_error_1 = require("./custom_error");
  * getRole(id: string): Model<RoleI>
  * ```
  */
-const getRole = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getRole = async (id) => {
     try {
-        const get_role = yield model_role_1.ROLE.findById(id);
+        const get_role = await model_role_1.ROLE.findById(id);
         if (get_role)
             return get_role;
         else {
@@ -44,5 +35,5 @@ const getRole = (id) => __awaiter(void 0, void 0, void 0, function* () {
             success_status: false,
         });
     }
-});
+};
 exports.getRole = getRole;

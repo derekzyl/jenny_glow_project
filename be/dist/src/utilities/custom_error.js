@@ -5,6 +5,7 @@ const console_1 = require("./console");
 const http_response_1 = require("./http_response");
 const response_message_1 = require("./response_message");
 class AppError extends Error {
+    statusCode;
     constructor(message, status) {
         super(message);
         //lets do some mongodb error management
@@ -35,8 +36,7 @@ function APP_ERROR(message, status) {
 }
 exports.APP_ERROR = APP_ERROR;
 const errorCenter = (error, request, response, next) => {
-    var _a;
-    const error_status = (_a = error.statusCode) !== null && _a !== void 0 ? _a : 500;
+    const error_status = error.statusCode ?? 500;
     let error_message = error.message;
     console_1.LOG.log(error.stack);
     //mongodb error

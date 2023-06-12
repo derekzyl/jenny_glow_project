@@ -5,8 +5,7 @@ import { HTTP_RESPONSE } from "../../utilities/http_response";
 import { Queries } from "../../utilities/query";
 import { responseMessage } from "../../utilities/response_message";
 import { CrudModelI } from "./interface/general_factory";
-import { AddressModelI } from "../user/address/interface_address/interface.address";
-import { Model } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 
 /**
  * Crud functionality
@@ -31,6 +30,10 @@ export class Crud {
   /**
    * Create a new request
    * ----------------------
+   *
+   *
+   *  @summary please insert the literal value create <T>
+   *
    * @method  create handles the creation
    * @param {CrudModelI} MyModel model object and whats its exempting when returning a response
    * @param {Record<string, any>} data request.body data object
@@ -39,12 +42,12 @@ export class Crud {
    *
    * @example
    * // returns a response
-   * create(MyModel, data, finder)
+   * create< T{ for the body}, U {for the model} >(MyModel, data, finder)
    */
-  async create(
+  async create<T, U>(
     MyModel: CrudModelI,
-    data: Record<string, any>,
-    finder: Record<string, any>
+    data: T,
+    finder: FilterQuery<U>
   ): Promise<Response | NextFunction | void> {
     try {
       const find = await MyModel.model.findOne(finder);
@@ -74,16 +77,24 @@ export class Crud {
     }
   }
   /**
+   * Update
+   *
+   * ---------
+   *  @summary please insert the literal value update <T>
    *
    * @param {CrudModelI | CrudModelI[]} MyModel model object or an array of model object and whats its exempting when returning a response
    * @param {Record<string, any>} data this is the data to be used for updating the model
    * @param {Record<string, any>} filter this is used to find the document that need to be filtered
    * @returns
+   *
+   * @example
+   * // returns a response
+   * update< T{ for the body}, U{ for the model }>(MyModel, data<T>, filter<U>)
    */
-  async update(
+  async update<T, U>(
     MyModel: CrudModelI | CrudModelI[],
-    data: Record<string, any>,
-    filter: Record<string, any>
+    data: UpdateQuery<T>,
+    filter: FilterQuery<U>
   ) {
     try {
       const dataF: Array<any> = [];
@@ -136,11 +147,15 @@ export class Crud {
    *exempt: string;
    *  }\
    *   populate: { model?: string | undefined; fields?: string | undefined } ```
+   *
+   * @example
+   * // returns a response
+   * getMany< T the model >(MyModel, query category<T>, populate: { model?: string | undefined; fields?: string | undefined)
    */
-  async getMany(
+  async getMany<T>(
     MyModels: CrudModelI | CrudModelI[],
     query: typeof this.request.query,
-    category: Record<string, any> | null = null,
+    category: FilterQuery<T> | null = null,
     populate: { model?: string | undefined; fields?: string | undefined }
   ) {
     try {
@@ -194,8 +209,11 @@ export class Crud {
    *
    * @param {CrudModelI} MyModel -it takes a model and exempt field
    * @param {Object} data it takes the field that is used to mďthď up the data to be deleted
+   * @example
+   * // returns a response
+   * delete< T the model >(MyModel,category<T>,)
    */
-  async delete(MyModel: CrudModelI | CrudModelI[], data: Record<string, any>) {
+  async delete<T>(MyModel: CrudModelI | CrudModelI[], data: FilterQuery<T>) {
     try {
       if (Array.isArray(MyModel)) {
         MyModel.forEach(async (model: CrudModelI) => {
@@ -244,10 +262,14 @@ export class Crud {
    *exempt: string;
    *  }
    *   populate: { model?: string | undefined; fields?: string | undefined } ```
+   *
+   *   @example
+   * // returns a response
+   * getOne< T the model >(MyModel, category<T>, populate: { model?: string | undefined; fields?: string | undefined)})
    */
-  async getOne(
+  async getOne<T>(
     MyModel: CrudModelI | CrudModelI[],
-    data: any,
+    data: FilterQuery<T>,
     populate: { model?: string | undefined; fields?: string | undefined }
   ) {
     try {

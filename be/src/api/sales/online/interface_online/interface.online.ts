@@ -1,5 +1,6 @@
 import { Model, Types } from "mongoose";
 import { SalesI } from "../../interface_sales/interface.sales";
+import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
 
 type MessageT = {
   title: string;
@@ -7,16 +8,24 @@ type MessageT = {
   created_at: Date;
   updated_at: Date;
 };
-
-export interface OnlineI extends SalesI {
+export enum DeliveryStatusE {
+  RECEIVED_BY_CUSTOMER = "RECEIVED_BY_CUSTOMER",
+  DISPATCHED = "DISPATCHED",
+  ON_TRANSIT = "ON_TRANSIT",
+  PENDING = "PENDING",
+}
+export interface OnlineI extends Omit<SalesI, "products"> {
+  products: ProductAndCount[];
   address: Types.ObjectId;
   dispatch: {
+    tracking_id: string;
     is_dispatched: boolean;
     dispatched_by: Types.ObjectId;
     dispatched_at: Date;
+    received_at: Date;
+    delivery_status: DeliveryStatusE;
   };
 
-  is_delivered: boolean;
   message: MessageT[];
 }
 

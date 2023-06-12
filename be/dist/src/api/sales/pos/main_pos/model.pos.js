@@ -6,7 +6,7 @@ const interface_sales_1 = require("../../interface_sales/interface.sales");
 const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const posSchema = new mongoose_1.Schema({
     order_id: { type: String },
-    product: [
+    products: [
         {
             product: {
                 type: mongoose_1.Schema.Types.ObjectId,

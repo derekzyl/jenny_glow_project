@@ -1,9 +1,9 @@
 import { Types, Document, Model } from "mongoose";
-import { ProductI } from "../../../product/interface_product/interface.product";
+import { ProductDocI } from "../../../product/interface_product/interface.product";
 
 export interface WishlistI {
   user: Types.ObjectId;
-  products: ProductI[];
+  products: ProductDocI[];
 }
 
 export interface WishlistDocI extends Document, WishlistI {}

@@ -4,8 +4,12 @@ import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
 import { Crud } from "../../../general_factory/crud";
-import { ShippingBodyT } from "../interface_shipping/interface.shipping";
+import {
+  ShippingBodyT,
+  ShippingDocI,
+} from "../interface_shipping/interface.shipping";
 import { SHIPPING } from "./model.shipping";
+
 
 export const fetchCountryAndState = async (
   request: Request,
@@ -164,9 +168,11 @@ export const deleteShippingFee = async (
   try {
     const shipping_crud = new Crud(request, response, next);
 
-    await shipping_crud.delete(
+    await shipping_crud.delete<ShippingDocI>(
       { model: SHIPPING, exempt: "" },
-      { id: request.params.id }
+      {
+        id: request.params.id,
+      }
     );
   } catch (error) {
     next(error);
@@ -182,7 +188,7 @@ export const getAllShippingFee = async (
     const { state, country }: { state: string; country: string } = request.body;
 
     const get_many_shipping_fee = new Crud(request, response, next);
-    get_many_shipping_fee.getMany(
+    get_many_shipping_fee.getMany<ShippingBodyT>(
       { model: SHIPPING, exempt: "" },
       request.query,
       {},

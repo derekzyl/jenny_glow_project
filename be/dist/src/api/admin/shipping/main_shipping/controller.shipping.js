@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,7 +10,7 @@ const http_response_1 = require("../../../../utilities/http_response");
 const response_message_1 = require("../../../../utilities/response_message");
 const crud_1 = require("../../../general_factory/crud");
 const model_shipping_1 = require("./model.shipping");
-const fetchCountryAndState = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchCountryAndState = async (request, response, next) => {
     try {
         response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
             data: countries_states_json_1.default,
@@ -30,12 +21,12 @@ const fetchCountryAndState = (request, response, next) => __awaiter(void 0, void
     catch (error) {
         next(error);
     }
-});
+};
 exports.fetchCountryAndState = fetchCountryAndState;
-const getOneShippingFee = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneShippingFee = async (request, response, next) => {
     try {
         const { state, country } = request.body;
-        const get_shipping_fee = yield model_shipping_1.SHIPPING.findOne({
+        const get_shipping_fee = await model_shipping_1.SHIPPING.findOne({
             country: country.toUpperCase(),
         });
         if (!get_shipping_fee)
@@ -55,12 +46,12 @@ const getOneShippingFee = (request, response, next) => __awaiter(void 0, void 0,
     catch (error) {
         next(error);
     }
-});
+};
 exports.getOneShippingFee = getOneShippingFee;
-const addShippingFee = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const addShippingFee = async (request, response, next) => {
     try {
         const { country, country_shipping_fee, states, use_country_shipping_fee_as_default, } = request.body;
-        const find_country_in_db = yield model_shipping_1.SHIPPING.findOne({
+        const find_country_in_db = await model_shipping_1.SHIPPING.findOne({
             country: country.toUpperCase(),
         });
         if (!find_country_in_db) {
@@ -82,7 +73,7 @@ const addShippingFee = (request, response, next) => __awaiter(void 0, void 0, vo
             if (use_country_shipping_fee_as_default) {
                 states.map((state) => (state.state_shipping_fee = country_shipping_fee));
             }
-            const update_shipping = yield model_shipping_1.SHIPPING.updateOne({ country: find_country_in_db.country }, {
+            const update_shipping = await model_shipping_1.SHIPPING.updateOne({ country: find_country_in_db.country }, {
                 $addToSet: {
                     states: { $each: states },
                 },
@@ -101,40 +92,42 @@ const addShippingFee = (request, response, next) => __awaiter(void 0, void 0, vo
     catch (error) {
         next(error);
     }
-});
+};
 exports.addShippingFee = addShippingFee;
-const updateShippingFee = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const updateShippingFee = async (request, response, next) => {
     try {
         const { country_shipping_fee, states, use_country_shipping_fee_as_default, } = request.body;
         const country = request.params.id;
-        yield model_shipping_1.SHIPPING.updateOne({ country }, { $addToSet: { states: { $each: states } } });
-        const find_country_in_db = yield model_shipping_1.SHIPPING.findOne({ country });
+        await model_shipping_1.SHIPPING.updateOne({ country }, { $addToSet: { states: { $each: states } } });
+        const find_country_in_db = await model_shipping_1.SHIPPING.findOne({ country });
         if (find_country_in_db) {
             if (use_country_shipping_fee_as_default) {
-                find_country_in_db === null || find_country_in_db === void 0 ? void 0 : find_country_in_db.states.map((state) => (state.state_shipping_fee =
-                    country_shipping_fee !== null && country_shipping_fee !== void 0 ? country_shipping_fee : find_country_in_db.country_shipping_fee));
+                find_country_in_db?.states.map((state) => (state.state_shipping_fee =
+                    country_shipping_fee ?? find_country_in_db.country_shipping_fee));
                 find_country_in_db.use_country_shipping_fee_as_default =
                     use_country_shipping_fee_as_default;
             }
-            yield find_country_in_db.save();
+            await find_country_in_db.save();
         }
     }
     catch (error) {
         next(error);
     }
-});
+};
 exports.updateShippingFee = updateShippingFee;
-const deleteShippingFee = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteShippingFee = async (request, response, next) => {
     try {
         const shipping_crud = new crud_1.Crud(request, response, next);
-        yield shipping_crud.delete({ model: model_shipping_1.SHIPPING, exempt: "" }, { id: request.params.id });
+        await shipping_crud.delete({ model: model_shipping_1.SHIPPING, exempt: "" }, {
+            id: request.params.id,
+        });
     }
     catch (error) {
         next(error);
     }
-});
+};
 exports.deleteShippingFee = deleteShippingFee;
-const getAllShippingFee = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllShippingFee = async (request, response, next) => {
     try {
         const { state, country } = request.body;
         const get_many_shipping_fee = new crud_1.Crud(request, response, next);
@@ -143,5 +136,5 @@ const getAllShippingFee = (request, response, next) => __awaiter(void 0, void 0,
     catch (error) {
         next(error);
     }
-});
+};
 exports.getAllShippingFee = getAllShippingFee;

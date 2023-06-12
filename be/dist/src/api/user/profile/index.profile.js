@@ -3,12 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileIndex = void 0;
 const controller_profile_1 = require("./main_profile/controller.profile");
 class Profile {
-    constructor() {
-        this.create_profile = controller_profile_1.createProfile;
-        this.get_all_profile = controller_profile_1.getManyProfile;
-        this.get_one_profile = controller_profile_1.getOneProfile;
-        this.update_profile = controller_profile_1.updateProfile;
-        this.delete_profile = controller_profile_1.deleteProfile;
-    }
+    create_profile = controller_profile_1.createProfile;
+    get_all_profile = controller_profile_1.getManyProfile;
+    get_one_profile = controller_profile_1.getOneProfile;
+    update_profile = controller_profile_1.updateProfile;
+    delete_profile = controller_profile_1.deleteProfile;
 }
 exports.ProfileIndex = new Profile();

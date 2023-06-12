@@ -7,7 +7,7 @@ import {
   SalesI,
 } from "../../interface_sales/interface.sales";
 
-export interface PosI extends Document, SalesI {}
+export interface PosDocI extends Document, SalesI {}
 
 export type PosDbI = SalesI;
 

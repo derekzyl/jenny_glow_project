@@ -3,10 +3,16 @@ import { NextFunction, Response, Request } from "express";
 import { BRANCH_INVENTORY, INVENTORY } from "./model.inventory";
 import { Crud } from "../../general_factory/crud";
 import { generateId } from "../../../utilities/id_generator";
-import { InventoryBodyI } from "../interface_inventory/interface.inventory";
+import {
+  DistributeInventoryBodyI,
+  DistributeInventoryDocI,
+  InventoryBodyI,
+  InventoryDocI,
+} from "../interface_inventory/interface.inventory";
 import { PRODUCT } from "../../product/main_product/model.product";
 import { APP_ERROR } from "../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../utilities/http_response";
+import { IdGenE } from "../../../utilities/interface_utilities/id_gen.interface";
 
 //todo inventory receipt
 export const createInventory = async (
@@ -15,7 +21,7 @@ export const createInventory = async (
   next: NextFunction
 ) => {
   try {
-    const inventory_id = generateId();
+    const inventory_id = generateId(IdGenE.INVENTORY);
     const inventory_receipt = "todo";
     const body: InventoryBodyI = request.body;
     const products = body.products;
@@ -40,9 +46,13 @@ export const createInventory = async (
     }
 
     const crud_inventory = new Crud(request, response, next);
-    crud_inventory.create({ model: INVENTORY, exempt: "" }, inventory_body, {
-      inventory_id: inventory_id,
-    });
+    crud_inventory.create<InventoryBodyI, InventoryDocI>(
+      { model: INVENTORY, exempt: "" },
+      inventory_body,
+      {
+        inventory_id: inventory_id,
+      }
+    );
   } catch (error) {
     next(error);
   }
@@ -54,7 +64,7 @@ export const getOneInventory = async (
   next: NextFunction
 ) => {
   const crud_inventory = new Crud(request, response, next);
-  crud_inventory.getOne(
+  crud_inventory.getOne<InventoryDocI>(
     { model: INVENTORY, exempt: "-__v " },
     { inventory_name: request.params.id },
     {}
@@ -67,7 +77,7 @@ export const getManyInventory = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  crud_review.getMany<InventoryDocI>(
     { model: INVENTORY, exempt: "-__v " },
     request.query,
     {},
@@ -82,7 +92,7 @@ export const updateInventory = async (
 ) => {
   const body = request.body;
   const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  crud_review.update<InventoryBodyI, InventoryDocI>(
     { model: INVENTORY, exempt: "-__v" },
     { inventory_name: request.params.id },
     { ...body }
@@ -94,7 +104,7 @@ export const deleteInventory = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  crud_review.delete<InventoryDocI>(
     { model: INVENTORY, exempt: "-__v -created_at -updated_at" },
     { inventory_name: request.params.id }
   );
@@ -107,12 +117,14 @@ export const createBranchInventory = async (
   next: NextFunction
 ) => {
   try {
-    const inventory_id = generateId();
+    const inventory_id = generateId(IdGenE.INVENTORY);
     const inventory_receipt = "todo";
-    const body: InventoryBodyI = request.body;
+    const body: DistributeInventoryBodyI = request.body;
     const products = body.products;
 
-    const inventory_body: InventoryBodyI = {
+    const inventory_body: DistributeInventoryBodyI = {
+      name: body.name,
+      branch: body.branch,
       inventory_id,
       products,
       inventory_receipt,
@@ -132,7 +144,7 @@ export const createBranchInventory = async (
     }
 
     const crud_inventory = new Crud(request, response, next);
-    crud_inventory.create(
+    crud_inventory.create<DistributeInventoryBodyI, DistributeInventoryDocI>(
       { model: BRANCH_INVENTORY, exempt: "" },
       inventory_body,
       {
@@ -150,9 +162,9 @@ export const getOneBranchInventory = async (
   next: NextFunction
 ) => {
   const crud_inventory = new Crud(request, response, next);
-  crud_inventory.getOne(
+  crud_inventory.getOne<DistributeInventoryDocI>(
     { model: BRANCH_INVENTORY, exempt: "-__v " },
-    { inventory_name: request.params.id },
+    { name: request.params.id },
     {}
   );
 };
@@ -163,7 +175,7 @@ export const getManyBranchInventory = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  crud_review.getMany<DistributeInventoryDocI>(
     { model: BRANCH_INVENTORY, exempt: "-__v " },
     request.query,
     {},
@@ -176,9 +188,9 @@ export const updateBranchInventory = async (
   response: Response,
   next: NextFunction
 ) => {
-  const body = request.body;
+  const body: Partial<DistributeInventoryBodyI> = request.body;
   const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  crud_review.update<DistributeInventoryBodyI, DistributeInventoryDocI>(
     { model: BRANCH_INVENTORY, exempt: "-__v" },
     { inventory_name: request.params.id },
     { ...body }
@@ -190,7 +202,7 @@ export const deleteBranchInventory = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  crud_review.delete<DistributeInventoryDocI>(
     { model: BRANCH_INVENTORY, exempt: "-__v -created_at -updated_at" },
     { inventory_name: request.params.id }
   );

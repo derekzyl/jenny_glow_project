@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { PosI } from "../interface_pos/interface.pos";
+import { PosDocI } from "../interface_pos/interface.pos";
 import {
   OrderStatusE,
   OrderTypeE,
@@ -9,7 +9,7 @@ import {
 } from "../../interface_sales/interface.sales";
 import { time_stamps } from "../../../general_factory/interface/general_factory";
 
-const posSchema = new Schema<PosI>(
+const posSchema = new Schema<PosDocI>(
   {
     order_id: { type: String },
     products: [
@@ -71,4 +71,4 @@ const posSchema = new Schema<PosI>(
   { timestamps: time_stamps }
 );
 
-export const POS = model<PosI>("POS", posSchema);
+export const POS = model<PosDocI>("POS", posSchema);

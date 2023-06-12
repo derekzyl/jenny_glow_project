@@ -63,7 +63,7 @@ const productSchema = new mongoose_1.Schema({
     },
     featured: Boolean,
     available: Boolean,
-    review: [
+    reviews: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "REVIEW",

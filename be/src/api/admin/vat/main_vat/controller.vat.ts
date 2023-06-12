@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { Crud } from "../../../general_factory/crud";
 import { VAT } from "./model.vat";
+import { VatDocI, VatI } from "../interface_vat/interface.vat";
 
 export const createVat = async (
   request: Request,
@@ -12,7 +13,7 @@ export const createVat = async (
 
     const gotten_body = { ...body };
     const crud_vat = new Crud(request, response, next);
-    crud_vat.create({ model: VAT, exempt: "" }, gotten_body, {
+    crud_vat.create<VatI, VatDocI>({ model: VAT, exempt: "" }, gotten_body, {
       name: gotten_body.name,
     });
   } catch (error) {
@@ -26,9 +27,10 @@ export const getOneVat = async (
   next: NextFunction
 ) => {
   const crud_vat = new Crud(request, response, next);
-  crud_vat.getOne(
+  crud_vat.getOne<VatDocI>(
     { model: VAT, exempt: "-__v -created_at updated_at" },
-    { vat_name: request.params.id },{}
+    { vat_name: request.params.id },
+    {}
   );
 };
 
@@ -37,8 +39,8 @@ export const getManyVat = async (
   response: Response,
   next: NextFunction
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  const crud_vat = new Crud(request, response, next);
+  crud_vat.getMany<VatDocI>(
     { model: VAT, exempt: "-__v -created_at -updated_at" },
     request.query,
     {},
@@ -52,8 +54,8 @@ export const updateVat = async (
   next: NextFunction
 ) => {
   const body = request.body;
-  const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  const crud_vat = new Crud(request, response, next);
+  crud_vat.update(
     { model: VAT, exempt: "-__v" },
     { vat_name: request.params.id },
     { ...body }
@@ -64,8 +66,8 @@ export const deleteVat = async (
   response: Response,
   next: NextFunction
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  const crud_vat = new Crud(request, response, next);
+  crud_vat.delete<VatDocI>(
     { model: VAT, exempt: "-__v -created_at -updated_at" },
     { vat_name: request.params.id }
   );

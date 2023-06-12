@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Queries = void 0;
 class Queries {
+    model;
+    request_query;
     constructor(model, request_query) {
         this.model = model;
         this.request_query = request_query;
     }
     filter() {
-        const queryObj = Object.assign({}, this.request_query);
+        const queryObj = { ...this.request_query };
         const excludedFields = ["page", "sort", "limit", "fields"];
         excludedFields.forEach((el) => delete queryObj[el]);
         let queryStr = JSON.stringify(queryObj);

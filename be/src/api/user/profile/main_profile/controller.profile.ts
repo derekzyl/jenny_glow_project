@@ -2,10 +2,12 @@ import { NextFunction, Response, Request } from "express";
 
 import { PROFILE } from "./model.profile";
 
-import { ProfileBodyT } from "../interface_profile/interface.profile";
+import {
+  ProfileBodyT,
+  ProfileDocI,
+} from "../interface_profile/interface.profile";
 import { Crud } from "../../../general_factory/crud";
 import { getRole } from "../../../../utilities/get_role";
-import { profile } from "console";
 import {
   checkPermissions,
   getPermissions,
@@ -13,6 +15,7 @@ import {
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
+import { Types } from "mongoose";
 
 //todo profile receipt
 
@@ -26,7 +29,7 @@ export const createProfile = async (
 
     const body: ProfileBodyT = request.body;
     const crud_profile = new Crud(request, response, next);
-    crud_profile.create(
+    crud_profile.create<ProfileBodyT & { user: Types.ObjectId }, ProfileDocI>(
       { model: PROFILE, exempt: "" },
       { ...body, user: body.user_id },
       {}
@@ -76,7 +79,7 @@ export const getManyProfile = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  crud_review.getMany<ProfileDocI>(
     { model: PROFILE, exempt: "-__v, -user " },
     request.query,
     {},
@@ -99,7 +102,11 @@ export const updateProfile = async (
     id: check_permissions ? request.params.id : undefined,
   };
   const crud_review = new Crud(request, response, next);
-  crud_review.update({ model: PROFILE, exempt: "-__v" }, data, { ...body });
+  crud_review.update<ProfileBodyT, ProfileDocI>(
+    { model: PROFILE, exempt: "-__v" },
+    data,
+    { ...body }
+  );
 };
 
 export const deleteProfile = async (
@@ -116,7 +123,7 @@ export const deleteProfile = async (
     id: check_permissions ? request.params.id : undefined,
   };
   const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  crud_review.delete<ProfileDocI>(
     { model: PROFILE, exempt: "-__v -created_at -updated_at" },
     data
   );

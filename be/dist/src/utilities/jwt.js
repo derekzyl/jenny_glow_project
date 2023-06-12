@@ -30,6 +30,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 class JWT {
+    static secret = process.env.JWT_SECRET;
     static generateToken(payload, options) {
         return jsonwebtoken_1.default.sign(payload, this.secret, options);
     }
@@ -37,5 +38,4 @@ class JWT {
         return jsonwebtoken_1.default.verify(token, this.secret, options);
     }
 }
-JWT.secret = process.env.JWT_SECRET;
 exports.default = JWT;

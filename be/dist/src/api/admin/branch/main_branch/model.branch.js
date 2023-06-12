@@ -3,13 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BRANCH = void 0;
 const mongoose_1 = require("mongoose");
 const interface_branch_1 = require("../interface_branch/interface.branch");
+const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const branchSchema = new mongoose_1.Schema({
     name: { type: String, unique: true, required: true },
     location: { longitude: String, latitude: String },
     location_address: String,
     country: String,
     number_of_staff: Number,
-    product: [
+    products: [
         {
             product: {
                 type: mongoose_1.Schema.Types.ObjectId,
@@ -23,15 +24,8 @@ const branchSchema = new mongoose_1.Schema({
         enum: interface_branch_1.BranchTypeE,
         default: interface_branch_1.BranchTypeE.LOCAL,
     },
-    created_at: {
-        type: Date,
-        default: Date.now(),
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+    state: { type: String },
+}, { timestamps: general_factory_1.time_stamps });
 branchSchema.pre("save", function () {
     this.name = String(this.name).toLocaleUpperCase();
 });

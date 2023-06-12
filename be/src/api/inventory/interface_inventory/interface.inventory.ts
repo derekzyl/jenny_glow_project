@@ -5,15 +5,15 @@ type ProductT = {
   quantity: number;
 };
 
-export interface InventoryI extends Document {
+export interface InventoryI {
   name: string;
-  date_created: Date;
   inventory_id: string;
   products: ProductT[];
   inventory_receipt?: string;
 }
 
-export interface DistributeInventoryI extends Document, InventoryI {
+export interface InventoryDocI extends InventoryI, Document {}
+export interface DistributeInventoryDocI extends Document, InventoryI {
   branch: Types.ObjectId;
 }
 

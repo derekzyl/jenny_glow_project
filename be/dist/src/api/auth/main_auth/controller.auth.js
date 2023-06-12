@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -24,7 +15,7 @@ const jwt_1 = __importDefault(require("../../../utilities/jwt"));
 const response_message_1 = require("../../../utilities/response_message");
 const model_profile_1 = require("../../user/profile/main_profile/model.profile");
 const model_wishlist_1 = require("../../user/wishlist/main_wishlist/model.wishlist");
-const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const signup = async (request, response, next) => {
     try {
         const { email, password, confirm_password, phone } = request.body;
         const user_role = "";
@@ -37,7 +28,7 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
         if (!email.includes("@", ".")) {
             throw (0, custom_error_1.APP_ERROR)("Email is invalid", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const user = yield model_auth_1.USER.findOne({ email });
+        const user = await model_auth_1.USER.findOne({ email });
         if (user) {
             throw (0, custom_error_1.APP_ERROR)("User already exists", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
@@ -56,7 +47,7 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
             !password.match(/[!@#$%^&*]/)) {
             throw (0, custom_error_1.APP_ERROR)("Password must contain at least one lowercase letter, one uppercase letter, one number and one special character", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const encryptedPassword = yield bcrypt_1.default.hash(password);
+        const encryptedPassword = await bcrypt_1.default.hash(password);
         const pRT = "email-" + (0, crypto_1.randomBytes)(20).toString("hex");
         const resetTokenExpiry = Date.now() + 1 * 60 * 60 * 1000;
         const resetToken = (0, crypto_1.createHash)("sha256").update(pRT).digest("hex");
@@ -78,7 +69,7 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
             token_expires,
             role: "644da36acc996fe2be8239e9",
         });
-        const newUSER = yield newUser.save();
+        const newUSER = await newUser.save();
         const create_profile = new model_profile_1.PROFILE({
             user: newUSER.id,
             profile_image: "testing 12343",
@@ -87,8 +78,8 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
             user: newUSER.id,
             products: [],
         });
-        yield create_profile.save();
-        yield create_wishlist.save();
+        await create_profile.save();
+        await create_wishlist.save();
         const expire = process.env.JWT_EXPIRE || "1d";
         const token = jwt_1.default.generateToken({ id: newUSER._id }, { expiresIn: expire });
         response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({
@@ -100,9 +91,9 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
     catch (error) {
         next(error);
     }
-});
+};
 exports.signup = signup;
-const verifyEmail = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyEmail = async (request, response, next) => {
     try {
         const { tokenReset } = request.params;
         const checker = tokenReset.split("-")[0];
@@ -115,7 +106,7 @@ const verifyEmail = (request, response, next) => __awaiter(void 0, void 0, void 
         const resetPasswordToken = (0, crypto_1.createHash)("sha256")
             .update(tokenReset)
             .digest("hex");
-        const user = yield model_auth_1.USER.findOne({
+        const user = await model_auth_1.USER.findOne({
             token: resetPasswordToken,
         });
         if (!user) {
@@ -127,7 +118,7 @@ const verifyEmail = (request, response, next) => __awaiter(void 0, void 0, void 
         if (da < Date.now()) {
             user.token = undefined;
             user.token_expires = undefined;
-            yield user.save();
+            await user.save();
             throw (0, custom_error_1.APP_ERROR)(" your link has expired", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         user.is_email_verified = true;
@@ -144,14 +135,14 @@ const verifyEmail = (request, response, next) => __awaiter(void 0, void 0, void 
     catch (err) {
         next(err);
     }
-});
+};
 exports.verifyEmail = verifyEmail;
 // export const checkIsEmailVerified = async (
 //   request: Request,
 //   response: Response,
 //   next: NextFunction
 // ) => {};
-const login = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const login = async (request, response, next) => {
     const { email, password } = request.body;
     try {
         if (!email) {
@@ -160,11 +151,11 @@ const login = (request, response, next) => __awaiter(void 0, void 0, void 0, fun
         if (!email.includes("@")) {
             throw (0, custom_error_1.APP_ERROR)("Email is invalid", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const user = yield model_auth_1.USER.findOne({ email });
+        const user = await model_auth_1.USER.findOne({ email });
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const isPasswordMatch = yield bcrypt_1.default.compare(password, user.password);
+        const isPasswordMatch = await bcrypt_1.default.compare(password, user.password);
         if (!isPasswordMatch) {
             throw (0, custom_error_1.APP_ERROR)("Password is incorrect", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
@@ -179,20 +170,20 @@ const login = (request, response, next) => __awaiter(void 0, void 0, void 0, fun
     catch (error) {
         next(error);
     }
-});
+};
 exports.login = login;
-const protector = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const protector = async (request, response, next) => {
     try {
         const token = request.headers.authorization;
         if (!token) {
             throw (0, custom_error_1.APP_ERROR)("Token is required", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         const tokenData = token.split(" ")[1];
-        const decoded = yield jwt_1.default.verifyToken(tokenData);
+        const decoded = await jwt_1.default.verifyToken(tokenData);
         if (!decoded) {
             throw (0, custom_error_1.APP_ERROR)("Token is invalid", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const user = yield model_auth_1.USER.findById(decoded.id);
+        const user = await model_auth_1.USER.findById(decoded.id);
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
@@ -208,20 +199,20 @@ const protector = (request, response, next) => __awaiter(void 0, void 0, void 0,
     catch (err) {
         next(err);
     }
-});
+};
 exports.protector = protector;
-const logout = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const logout = async (request, response, next) => {
     try {
         const token = request.headers.authorization;
         if (!token) {
             throw (0, custom_error_1.APP_ERROR)("Token is required", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         const tokenData = token.split(" ")[1];
-        const decoded = yield jwt_1.default.verifyToken(tokenData);
+        const decoded = await jwt_1.default.verifyToken(tokenData);
         if (!decoded) {
             throw (0, custom_error_1.APP_ERROR)("Token is invalid", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        const user = yield model_auth_1.USER.findById(decoded.id);
+        const user = await model_auth_1.USER.findById(decoded.id);
         if (!user) {
             throw (0, custom_error_1.APP_ERROR)("User does not exist", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
@@ -232,14 +223,14 @@ const logout = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
     catch (err) {
         next(err);
     }
-});
+};
 exports.logout = logout;
-const forgotPassword = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const forgotPassword = async (request, response, next) => {
     const { email } = request.body;
     if (!email) {
         throw (0, custom_error_1.APP_ERROR)("Please provide all the required fields", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
     }
-    const user = yield model_auth_1.USER.findOne({
+    const user = await model_auth_1.USER.findOne({
         email,
     });
     try {
@@ -251,7 +242,7 @@ const forgotPassword = (request, response, next) => __awaiter(void 0, void 0, vo
         const resetToken = (0, crypto_1.createHash)("sha256").update(pRT).digest("hex");
         user.token = resetToken;
         user.token_expires = new Date(resetTokenExpiry);
-        yield user.save();
+        await user.save();
         const url = `${request.protocol}://${request.get("host")}/api/v1/auth/resetPassword/${pRT}`;
         const message = `You are receiving this email because you (or someone else) have requested the reset of a password. \n Please make a POST request to: ${url}`;
         const details = {
@@ -272,9 +263,9 @@ const forgotPassword = (request, response, next) => __awaiter(void 0, void 0, vo
         // await USER.save();
         return next(err);
     }
-});
+};
 exports.forgotPassword = forgotPassword;
-const resetPassword = (req, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const resetPassword = async (req, response, next) => {
     try {
         const { tokenReset } = express_1.request.params;
         const { password, confirm_password } = express_1.request.body;
@@ -296,7 +287,7 @@ const resetPassword = (req, response, next) => __awaiter(void 0, void 0, void 0,
         const resetPasswordToken = (0, crypto_1.createHash)("sha256")
             .update(tokenReset)
             .digest("hex");
-        const user = yield model_auth_1.USER.findOne({
+        const user = await model_auth_1.USER.findOne({
             token: resetPasswordToken,
         });
         if (!user) {
@@ -308,10 +299,10 @@ const resetPassword = (req, response, next) => __awaiter(void 0, void 0, void 0,
         if (da < Date.now()) {
             throw (0, custom_error_1.APP_ERROR)(" yourtoken has expired", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
-        user.password = yield bcrypt_1.default.hash(password);
+        user.password = await bcrypt_1.default.hash(password);
         user.token = undefined;
         user.token_expires = undefined;
-        yield user.save();
+        await user.save();
         const token = jwt_1.default.generateToken({ id: user.id }, {
             expiresIn: process.env.JWT_EXPIRES_IN,
         });
@@ -324,9 +315,9 @@ const resetPassword = (req, response, next) => __awaiter(void 0, void 0, void 0,
     catch (err) {
         next(err);
     }
-});
+};
 exports.resetPassword = resetPassword;
-const updatePassword = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+const updatePassword = async (request, response, next) => {
     try {
         const { currentPassword, password, confirm_password } = request.body;
         if (!password || !confirm_password) {
@@ -353,14 +344,14 @@ const updatePassword = (request, response, next) => __awaiter(void 0, void 0, vo
             return next((0, custom_error_1.APP_ERROR)("You are not logged in", 401));
         }
         const decoded = jwt_1.default.verifyToken(token);
-        const user = yield model_auth_1.USER.findById(decoded.id);
+        const user = await model_auth_1.USER.findById(decoded.id);
         if (user) {
             if (!bcrypt_1.default.compare(currentPassword, user.password)) {
                 throw (0, custom_error_1.APP_ERROR)("Current password is incorrect", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
             }
-            user.password = yield bcrypt_1.default.hash(password);
+            user.password = await bcrypt_1.default.hash(password);
             user.password_changed_at = new Date();
-            yield user.save();
+            await user.save();
         }
         response.status(200).json({
             status: "success",
@@ -371,7 +362,7 @@ const updatePassword = (request, response, next) => __awaiter(void 0, void 0, vo
     catch (err) {
         next(err);
     }
-});
+};
 exports.updatePassword = updatePassword;
 // export const getRole = async (
 //   request: RequestBody,

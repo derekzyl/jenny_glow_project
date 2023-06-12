@@ -6,6 +6,7 @@ import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
 import { Crud } from "../../../general_factory/crud";
+import { WishlistDocI } from "../interface_wishlist/interface.wishlist";
 
 //todo address receipt
 
@@ -78,7 +79,7 @@ export const getWishlist = async (
 ) => {
   try {
     const get_crud = new Crud(request, response, next);
-    await get_crud.getMany(
+    await get_crud.getMany<WishlistDocI>(
       { model: WISHLIST, exempt: "-user" },
       request.query,
       { user: request.user.id },

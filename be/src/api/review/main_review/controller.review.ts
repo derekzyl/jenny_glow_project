@@ -1,5 +1,9 @@
 import { NextFunction, Response, Request } from "express";
-import { ReviewBodyT, ReviewI } from "../interface_review/interface.review";
+import {
+  ReviewBodyT,
+  ReviewDocI,
+  ReviewI,
+} from "../interface_review/interface.review";
 import { Crud } from "../../general_factory/crud";
 import { REVIEW } from "./model.review";
 import { USER } from "../../auth/main_auth/model.auth";
@@ -20,10 +24,14 @@ export const createReview = async (
     const review_data: ReviewI = { ...body, profile: find_profile.id };
 
     const crud_review = new Crud(request, response, next);
-    crud_review.create({ model: REVIEW, exempt: "" }, review_data, {
-      user: request.user.id,
-      product: body.product,
-    });
+    crud_review.create<ReviewBodyT, ReviewDocI>(
+      { model: REVIEW, exempt: "" },
+      review_data,
+      {
+        user: request.user.id,
+        product: body.product,
+      }
+    );
   } catch (error) {
     next(error);
   }
@@ -35,10 +43,32 @@ export const getOneReview = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getOne(
+  crud_review.getOne<ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
     { id: request.params.id },
-    {}
+    { model: "profile", fields: "-user" }
+  );
+};
+
+export const getUserReviews = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const crud_review = new Crud(request, response, next);
+  const profile = await PROFILE.findOne({ user: request.user.id });
+  if (!profile)
+    throw APP_ERROR(
+      "i wonder why this user is'nt found in the database",
+      HTTP_RESPONSE.FORBIDDEN
+    );
+
+  crud_review.getMany<ReviewDocI>(
+    { model: REVIEW, exempt: "-__v -created_at -updated_at" },
+
+    request.query,
+    { profile: profile.id },
+    { model: "profile", fields: "-user" }
   );
 };
 
@@ -48,11 +78,11 @@ export const getManyReview = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.getMany(
+  crud_review.getMany<ReviewDocI>(
     { model: REVIEW, exempt: "-__v -created_at -updated_at" },
     request.query,
     {},
-    { model: "profile" }
+    { model: "profile", fields: "-user" }
   );
 };
 
@@ -67,7 +97,7 @@ export const updateReview = async (
     updated_at: Date.now,
   };
   const crud_review = new Crud(request, response, next);
-  crud_review.update(
+  crud_review.update<ReviewBodyT, ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
     { id: request.params.id },
     { ...body }
@@ -79,7 +109,7 @@ export const deleteReview = async (
   next: NextFunction
 ) => {
   const crud_review = new Crud(request, response, next);
-  crud_review.delete(
+  crud_review.delete<ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
     { id: request.params.id }
   );

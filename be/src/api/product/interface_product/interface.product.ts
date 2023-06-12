@@ -1,10 +1,10 @@
 import { Types, Document } from "mongoose";
 
-export interface ProductI extends Document {
+export interface ProductI  {
   name: string;
   description: string;
   discount_percentage: number;
-  review: Types.ObjectId[];
+  reviews: Types.ObjectId[];
   category: Types.ObjectId;
   sub_category: Types.ObjectId;
   created_by: Types.ObjectId;
@@ -19,10 +19,11 @@ export interface ProductI extends Document {
   search_tags: string[];
 }
 
+export interface ProductDocI extends  ProductI, Document{}
 export interface ProductBodyI {
   name: string;
   description: string;
-  review: Types.ObjectId[];
+  reviews: Types.ObjectId[];
   category: Types.ObjectId;
   sub_category: Types.ObjectId;
   price: number;

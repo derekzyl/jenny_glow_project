@@ -21,6 +21,6 @@ export interface branchI extends Document {
   location: locationI;
   location_address: string;
   branch_type: BranchTypeE;
-  product: ProductCountT[];
+  products: ProductCountT[];
   number_of_staff: number;
 }

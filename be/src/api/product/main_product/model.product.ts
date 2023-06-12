@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import { ProductI } from "../interface_product/interface.product";
+import { ProductDocI } from "../interface_product/interface.product";
 import { time_stamps } from "../../general_factory/interface/general_factory";
 
-const productSchema = new Schema<ProductI>(
+const productSchema = new Schema<ProductDocI>(
   {
     name: {
       type: String,
@@ -63,7 +63,7 @@ const productSchema = new Schema<ProductI>(
     },
     featured: Boolean,
     available: Boolean,
-    review: [
+    reviews: [
       {
         type: Schema.Types.ObjectId,
         ref: "REVIEW",
@@ -74,4 +74,4 @@ const productSchema = new Schema<ProductI>(
   { timestamps: time_stamps }
 );
 
-export const PRODUCT = model<ProductI>("PRODUCT", productSchema);
+export const PRODUCT = model<ProductDocI>("PRODUCT", productSchema);

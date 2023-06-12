@@ -4,7 +4,7 @@ import { POS } from "./model.pos";
 import { BRANCH } from "../../../admin/branch/main_branch/model.branch";
 import { STAFF } from "../../../admin/staff/main_staff/model.staff";
 import { generateId } from "../../../../utilities/id_generator";
-import { PosBodyI, PosDbI } from "../interface_pos/interface.pos";
+import { PosBodyI, PosDbI, PosDocI } from "../interface_pos/interface.pos";
 import {
   OrderStatusE,
   PaymentStatusE,
@@ -17,16 +17,17 @@ import { PRODUCT } from "../../../product/main_product/model.product";
 import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
+import { IdGenE } from "../../../../utilities/interface_utilities/id_gen.interface";
 
 // todo: get products for pos
-
+//! remove original amount
 export const createPos = async (
   request: Request,
   response: Response,
   next: NextFunction
 ) => {
   try {
-    const order_id = generateId();
+    const order_id = generateId(IdGenE.POS_SALES);
     const body: PosBodyI = request.body;
     let order_status = OrderStatusE.PENDING;
     const get_staff = await STAFF.findOne({ user: request.user.id });
@@ -35,6 +36,9 @@ export const createPos = async (
     });
     const payment_method = body.payment_method;
     let payment_status = PaymentStatusE.PROCESSING;
+    /**
+     * server total is the total for the products ordered when the discount has been removed
+     */
     let server_total = 0;
     const get_vat = await VAT.findOne({ vat_name: VatE.LOCAL });
     const sales_type = SalesTypeE.STORE_SALES;
@@ -62,7 +66,7 @@ export const createPos = async (
         throw APP_ERROR(`less than 1 of ${get_product?.name} is selected `);
       }
       const get_total: number =
-        product_price * product_quantity - get_discount_of_product;
+        product_price * product_quantity - (get_discount_of_product ?? 0);
       if (Number(product.total !== get_total)) {
         payment_status = PaymentStatusE.DISPUTE;
         throw APP_ERROR(
@@ -79,20 +83,29 @@ export const createPos = async (
       all_products.push(one_product);
 
       // lets work on the  product count in the database
+      // updated the total stock from product count
       get_product.number_in_stock = get_product.number_in_stock - 1;
       get_product.save();
-      get_branch?.product
+
+      // updated the total stock from branch product count
+      get_branch?.products
         .filter((prd) => prd.product.id === get_product.id)
         .forEach((prd) => (prd.amount_in_stock = prd.amount_in_stock - 1));
       get_branch?.save();
     }
 
+    // getting the vat ( value added tax)
     let vat = 0;
     if (get_vat) {
       vat = Number(get_vat.vat_percentage);
     }
     const vat_server_total = (server_total * vat) / 100;
+    // total amount and server total are same we are just trying to make sure we check the sales our selves
+    // Note: this is the product price sum checking for product discount too
     const discount_server_total = (server_total * discount) / 100;
+
+    // server amount sold is server total  + (plus) vat and a general discount if there is any discount from sales
+
     const server_amount_sold =
       server_total + vat_server_total - discount_server_total;
 
@@ -118,7 +131,9 @@ export const createPos = async (
     };
 
     const crud_pos = new Crud(request, response, next);
-    crud_pos.create({ model: POS, exempt: "" }, pos_body, { order_id });
+    crud_pos.create<PosBodyI, PosDocI>({ model: POS, exempt: "" }, pos_body, {
+      order_id,
+    });
   } catch (error) {
     next(error);
   }
@@ -130,7 +145,7 @@ export const getOnePos = async (
   next: NextFunction
 ) => {
   const crud_pos = new Crud(request, response, next);
-  crud_pos.getOne(
+  crud_pos.getOne<PosDocI>(
     { model: POS, exempt: "-__v -created_at updated_at" },
     { id: request.params.id },
     {}
@@ -143,7 +158,7 @@ export const getManyPos = async (
   next: NextFunction
 ) => {
   const crud_pos = new Crud(request, response, next);
-  crud_pos.getMany(
+  crud_pos.getMany<PosDocI>(
     { model: POS, exempt: "-__v -created_at -updated_at" },
     request.query,
     {},
@@ -159,8 +174,8 @@ export const getManyPosProduct = async (
     const get_staff = await STAFF.findOne({ user: request.user.id });
     const get_branch = await BRANCH.findOne({
       id: get_staff?.branch.id,
-    }).populate({ path: "PRODUCT", match: { name: request.query.name } });
-    let get_branch_product = get_branch?.product;
+    }).populate({ path: "product", match: { name: request.query.name } });
+    let get_branch_product = get_branch?.products;
     if (get_branch_product) {
       get_branch_product = get_branch_product.filter(
         (product) => product.amount_in_stock > 0
@@ -193,7 +208,7 @@ export const updatePos = async (
 ) => {
   const body = request.body;
   const crud_pos = new Crud(request, response, next);
-  crud_pos.update(
+  crud_pos.update<PosBodyI, PosDocI>(
     { model: POS, exempt: "-__v" },
     { id: request.params.id },
     { ...body }
@@ -205,8 +220,8 @@ export const deletePos = async (
   next: NextFunction
 ) => {
   const crud_pos = new Crud(request, response, next);
-  crud_pos.delete(
+  crud_pos.delete<PosDocI>(
     { model: POS, exempt: "-__v -created_at -updated_at" },
-    { IDBCursorWithValue: request.params.id }
+    { id: request.params.id }
   );
 };

@@ -33,6 +33,7 @@ export enum PaymentStatusE {
   PROCESSING = "PROCESSING",
   DISPUTE = "DISPUTE",
   DECLINED = "DECLINED",
+  INITIALIZED = "INITIALIZED",
 }
 
 export enum PaymentMethodE {
@@ -55,10 +56,10 @@ export interface SalesI {
   sales_type: SalesTypeE;
   branch: Types.ObjectId;
   vat: number;
-  server_total: number;
-  original_amount: number;
   discount: number;
+  original_amount: number;
   total_amount: number;
   amount_sold: number;
+  server_total: number;
   server_amount_sold: number;
 }
