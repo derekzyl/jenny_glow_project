@@ -17,11 +17,10 @@ export enum BranchTypeE {
 export interface branchI extends Document {
   name: string;
   country: string;
+  state: string;
   location: locationI;
   location_address: string;
   branch_type: BranchTypeE;
   product: ProductCountT[];
   number_of_staff: number;
-  created_at: Date;
-  updated_at: Date;
 }

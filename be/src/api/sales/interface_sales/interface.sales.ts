@@ -38,7 +38,6 @@ export enum PaymentStatusE {
 export enum PaymentMethodE {
   CASH = "CASH",
   CREDIT_CARD = "CREDIT_CARD",
-  DEBIT_CARD = "DEBIT_CARD",
   PAYPAL = "PAYPAL",
   PAYONEER = "PAYONEER",
   BANK_TRANSFERS = "BANK_TRANSFERS",
@@ -47,7 +46,7 @@ export enum PaymentMethodE {
 
 export interface SalesI {
   order_id: string;
-  product: ProductT[];
+  products: ProductT[];
   order_type: OrderTypeE;
   payment_method: PaymentMethodE;
   order_status: OrderStatusE;

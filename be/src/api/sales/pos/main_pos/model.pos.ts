@@ -12,7 +12,7 @@ import { time_stamps } from "../../../general_factory/interface/general_factory"
 const posSchema = new Schema<PosI>(
   {
     order_id: { type: String },
-    product: [
+    products: [
       {
         product: {
           type: Schema.Types.ObjectId,

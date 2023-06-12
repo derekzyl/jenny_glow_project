@@ -7,7 +7,7 @@ import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { randomBytes, createHash } from "crypto";
 import BCRYPT from "../../../../utilities/bcrypt";
-import { dataI } from "../../../../utilities/interface_utilities/mail";
+import { dataI } from "../../../../utilities/interface_utilities/mail.interface";
 import NodeMailer from "../../../../utilities/mailer";
 import { getRole } from "../../../../utilities/get_role";
 import { responseMessage } from "../../../../utilities/response_message";

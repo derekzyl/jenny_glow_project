@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import "dotenv/config";
 
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { dataI } from "./interface_utilities/mail";
+import { dataI } from "./interface_utilities/mail.interface";
 
 type NodeMailerI = {
   mailer: (data: dataI) => Promise<any>;

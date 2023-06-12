@@ -5,7 +5,7 @@ import { createHash, randomBytes } from "crypto";
 
 import { APP_ERROR } from "../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../utilities/http_response";
-import { dataI } from "../../../utilities/interface_utilities/mail";
+import { dataI } from "../../../utilities/interface_utilities/mail.interface";
 import NodeMailer from "../../../utilities/mailer";
 import BCRYPT from "../../../utilities/bcrypt";
 import JWT from "../../../utilities/jwt";
@@ -106,7 +106,7 @@ export const signup = async (
       responseMessage({
         message:
           "User created successfully kindly check your inbox to verify your email",
-        data: token,
+        data: { token },
         success_status: true,
       })
     );

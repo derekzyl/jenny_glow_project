@@ -93,7 +93,7 @@ const signup = (request, response, next) => __awaiter(void 0, void 0, void 0, fu
         const token = jwt_1.default.generateToken({ id: newUSER._id }, { expiresIn: expire });
         response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({
             message: "User created successfully kindly check your inbox to verify your email",
-            data: token,
+            data: { token },
             success_status: true,
         }));
     }

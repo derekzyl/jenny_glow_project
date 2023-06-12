@@ -1,5 +1,6 @@
 import { Model, Types } from "mongoose";
 import { SalesI } from "../../interface_sales/interface.sales";
+
 type MessageT = {
   title: string;
   text: string;
@@ -21,6 +22,8 @@ export interface OnlineI extends SalesI {
 
 export interface OnlineDocI extends OnlineI, Document {}
 
-export interface OnlineModel extends Model<OnlineDocI> {
+export interface OnlineModelI extends Model<OnlineDocI> {
   paymentStatus(): boolean;
 }
+
+// export type OnlineBodyT = Pick<OnlineI,  "address"| ""  |||||||||    >

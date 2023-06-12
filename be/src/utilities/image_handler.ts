@@ -9,7 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 import {
   ImageHandlerI,
   StorageTypeE,
-} from "./interface_utilities/image.handler";
+} from "./interface_utilities/image.handler.interface";
 import { APP_ERROR } from "./custom_error";
 import { HTTP_RESPONSE } from "./http_response";
 dotenv.config();

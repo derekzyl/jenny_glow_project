@@ -201,9 +201,8 @@ export const getCart = async (
 ) => {
   try {
     const get_crud = new Crud(request, response, next);
-    await get_crud.getMany(
+    await get_crud.getOne(
       { model: CART, exempt: "-user" },
-      request.query,
       { user: request.user.id },
       { model: "products" }
     );

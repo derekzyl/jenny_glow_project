@@ -12,7 +12,7 @@ export interface PosI extends Document, SalesI {}
 export type PosDbI = SalesI;
 
 export interface PosBodyI {
-  product: ProductT[];
+  products: ProductT[];
   order_type: OrderTypeE;
   payment_method: PaymentMethodE;
 

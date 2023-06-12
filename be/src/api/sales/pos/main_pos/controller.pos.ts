@@ -38,7 +38,7 @@ export const createPos = async (
     let server_total = 0;
     const get_vat = await VAT.findOne({ vat_name: VatE.LOCAL });
     const sales_type = SalesTypeE.STORE_SALES;
-    const products = body.product;
+    const products = body.products;
     const total_amount = Number(body.total_amount);
     const original_amount = Number(body.original_amount);
     const order_type = body.order_type;
@@ -100,7 +100,7 @@ export const createPos = async (
     payment_status = PaymentStatusE.APPROVED;
     const pos_body: PosDbI = {
       order_id,
-      product: all_products,
+      products: all_products,
       order_type,
       order_status,
       payment_method,
@@ -132,7 +132,8 @@ export const getOnePos = async (
   const crud_pos = new Crud(request, response, next);
   crud_pos.getOne(
     { model: POS, exempt: "-__v -created_at updated_at" },
-    { id: request.params.id },{}
+    { id: request.params.id },
+    {}
   );
 };
 
@@ -145,7 +146,8 @@ export const getManyPos = async (
   crud_pos.getMany(
     { model: POS, exempt: "-__v -created_at -updated_at" },
     request.query,
-    {},{}
+    {},
+    {}
   );
 };
 
