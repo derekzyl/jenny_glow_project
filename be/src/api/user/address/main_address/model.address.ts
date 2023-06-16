@@ -38,4 +38,11 @@ addressSchema.pre("save", async function () {
   }
 });
 
+// addressSchema.post("save", async function () {
+//   try {
+//   } catch (error: any) {
+//     throw APP_ERROR(error);
+//   }
+// });
+
 export const ADDRESS = model("ADDRESS", addressSchema);

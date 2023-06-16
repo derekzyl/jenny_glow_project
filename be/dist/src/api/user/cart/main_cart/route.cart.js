@@ -10,5 +10,8 @@ cartRouter
 cartRouter.route("add/:id").patch(index_auth_1.AuthIndex.protector, index_cart_1.CartIndex.add_cart);
 cartRouter
     .route("remove/:id")
-    .patch(index_auth_1.AuthIndex.protector, index_cart_1.CartIndex.remove_cart);
+    .delete(index_auth_1.AuthIndex.protector, index_cart_1.CartIndex.remove_cart);
+cartRouter
+    .route("update-cart-with-address/:get_address_id")
+    .patch(index_auth_1.AuthIndex.protector, index_cart_1.CartIndex.update_cart_with_address);
 exports.default = cartRouter;

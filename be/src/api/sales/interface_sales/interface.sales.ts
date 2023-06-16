@@ -22,11 +22,6 @@ export type ProductT = {
   total: number;
 };
 
-export type MessageT = {
-  date: Date;
-  message: string;
-};
-
 export enum PaymentStatusE {
   APPROVED = "APPROVED",
   PENDING = "PENDING",
@@ -42,6 +37,7 @@ export enum PaymentMethodE {
   PAYPAL = "PAYPAL",
   PAYONEER = "PAYONEER",
   BANK_TRANSFERS = "BANK_TRANSFERS",
+  USSD = "USSD",
   POS = "POS",
 }
 

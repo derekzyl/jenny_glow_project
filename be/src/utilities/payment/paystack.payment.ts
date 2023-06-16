@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import * as dotenv from "dotenv";
 import { PaystackPayI } from "../interface_utilities/payment.interface";
+import { createHmac } from "node:crypto";
 dotenv.config();
 export class Paystack {
   key: string;
@@ -10,16 +11,24 @@ export class Paystack {
     this.instance = this.axiosInstance();
   }
 
-  protected axiosInstance() {
+  axiosInstance() {
     const instance = axios.create({
-      baseURL: "api.paystack.co",
-      timeout: 1000,
+      baseURL: "https://api.paystack.co",
+      timeout: 5000,
       headers: {
         Authorization: `Bearer ${this.key}`,
         "Content-Type": "application/json",
       },
     });
+    console.log(instance, "instance created");
     return instance;
+  }
+  verifyPaystackHash(request_headers: any, request_body: any) {
+    const hash = createHmac("sha512", this.key)
+      .update(JSON.stringify(request_body))
+      .digest("hex");
+    if (hash == request_headers["x-paystack-signature"]) return true;
+    else return false;
   }
   async initialize(data: PaystackPayI) {
     const init = await this.instance.post("/transaction/initialize", {

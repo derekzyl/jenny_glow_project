@@ -8,11 +8,13 @@ import reviewRouter from "./src/api/review/main_review/route.review";
 import productRouter from "./src/api/product/main_product/route.product";
 import salesRouter from "./src/api/sales/index.sales";
 import userRouter from "./src/api/user/index.user";
+import testRouter from "./src/api/test/main_test/route.t";
 
 const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/test", testRouter);
 app.use("/admin", adminRouter);
 app.use("/auth", authRouter);
 app.use("/review", reviewRouter);

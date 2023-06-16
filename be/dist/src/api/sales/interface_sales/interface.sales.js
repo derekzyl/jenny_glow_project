@@ -33,5 +33,6 @@ var PaymentMethodE;
     PaymentMethodE["PAYPAL"] = "PAYPAL";
     PaymentMethodE["PAYONEER"] = "PAYONEER";
     PaymentMethodE["BANK_TRANSFERS"] = "BANK_TRANSFERS";
+    PaymentMethodE["USSD"] = "USSD";
     PaymentMethodE["POS"] = "POS";
 })(PaymentMethodE = exports.PaymentMethodE || (exports.PaymentMethodE = {}));

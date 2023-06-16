@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Paystack = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv = __importStar(require("dotenv"));
+const node_crypto_1 = require("node:crypto");
 dotenv.config();
 class Paystack {
     key;
@@ -39,14 +40,24 @@ class Paystack {
     }
     axiosInstance() {
         const instance = axios_1.default.create({
-            baseURL: "api.paystack.co",
-            timeout: 1000,
+            baseURL: "https://api.paystack.co",
+            timeout: 5000,
             headers: {
                 Authorization: `Bearer ${this.key}`,
                 "Content-Type": "application/json",
             },
         });
+        console.log(instance, "instance created");
         return instance;
+    }
+    verifyPaystackHash(request_headers, request_body) {
+        const hash = (0, node_crypto_1.createHmac)("sha512", this.key)
+            .update(JSON.stringify(request_body))
+            .digest("hex");
+        if (hash == request_headers["x-paystack-signature"])
+            return true;
+        else
+            return false;
     }
     async initialize(data) {
         const init = await this.instance.post("/transaction/initialize", {

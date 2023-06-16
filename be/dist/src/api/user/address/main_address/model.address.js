@@ -32,4 +32,10 @@ addressSchema.pre("save", async function () {
         throw (0, custom_error_1.APP_ERROR)(error);
     }
 });
+// addressSchema.post("save", async function () {
+//   try {
+//   } catch (error: any) {
+//     throw APP_ERROR(error);
+//   }
+// });
 exports.ADDRESS = (0, mongoose_1.model)("ADDRESS", addressSchema);

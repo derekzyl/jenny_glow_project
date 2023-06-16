@@ -15,6 +15,7 @@ const jwt_1 = __importDefault(require("../../../utilities/jwt"));
 const response_message_1 = require("../../../utilities/response_message");
 const model_profile_1 = require("../../user/profile/main_profile/model.profile");
 const model_wishlist_1 = require("../../user/wishlist/main_wishlist/model.wishlist");
+const model_cart_1 = require("../../user/cart/main_cart/model.cart");
 const signup = async (request, response, next) => {
     try {
         const { email, password, confirm_password, phone } = request.body;
@@ -78,8 +79,12 @@ const signup = async (request, response, next) => {
             user: newUSER.id,
             products: [],
         });
+        const create_cart = new model_cart_1.CART({
+            user: newUSER.id,
+        });
         await create_profile.save();
         await create_wishlist.save();
+        await create_cart.save();
         const expire = process.env.JWT_EXPIRE || "1d";
         const token = jwt_1.default.generateToken({ id: newUSER._id }, { expiresIn: expire });
         response.status(http_response_1.HTTP_RESPONSE.CREATED).json((0, response_message_1.responseMessage)({

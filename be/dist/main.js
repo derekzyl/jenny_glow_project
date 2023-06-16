@@ -11,9 +11,11 @@ const route_review_1 = __importDefault(require("./src/api/review/main_review/rou
 const route_product_1 = __importDefault(require("./src/api/product/main_product/route.product"));
 const index_sales_1 = __importDefault(require("./src/api/sales/index.sales"));
 const index_user_1 = __importDefault(require("./src/api/user/index.user"));
+const route_t_1 = __importDefault(require("./src/api/test/main_test/route.t"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use("/test", route_t_1.default);
 app.use("/admin", index_admin_1.default);
 app.use("/auth", route_auth_1.default);
 app.use("/review", route_review_1.default);

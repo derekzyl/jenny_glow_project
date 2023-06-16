@@ -185,7 +185,11 @@ export class Crud {
         let modelFind = MyModels.model.find({ category });
         if (MyModels.exempt) modelFind = modelFind.select(MyModels.exempt);
 
-        const queryf = new Queries(modelFind, query);
+        const queryf = new Queries(modelFind, query)
+          .filter()
+          .limitFields()
+          .sort()
+          .paginate();
         const queryG = await queryf.model;
         if (!queryG)
           throw APP_ERROR(

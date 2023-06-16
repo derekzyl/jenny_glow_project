@@ -12,7 +12,7 @@ function generateId(order_type) {
     const o = m.split(":")[1];
     const p = m.split(":")[2];
     const q = Math.round(Math.random() * 90000 + 10000);
-    const r = order_type.toUpperCase() + k + n + o + "_" + p + o + n + "_" + q;
+    const r = order_type.toUpperCase() + "_" + k + n + o + "_" + p + o + n + "_" + q;
     return r;
 }
 exports.generateId = generateId;

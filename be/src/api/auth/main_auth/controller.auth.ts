@@ -12,6 +12,8 @@ import JWT from "../../../utilities/jwt";
 import { responseMessage } from "../../../utilities/response_message";
 import { PROFILE } from "../../user/profile/main_profile/model.profile";
 import { WISHLIST } from "../../user/wishlist/main_wishlist/model.wishlist";
+import { CART } from "../../user/cart/main_cart/model.cart";
+
 export const signup = async (
   request: Request,
   response: Response,
@@ -97,8 +99,12 @@ export const signup = async (
       user: newUSER.id,
       products: [],
     });
+    const create_cart = new CART({
+      user: newUSER.id,
+    });
     await create_profile.save();
     await create_wishlist.save();
+    await create_cart.save();
     const expire = process.env.JWT_EXPIRE || "1d";
     const token = JWT.generateToken({ id: newUSER._id }, { expiresIn: expire });
 

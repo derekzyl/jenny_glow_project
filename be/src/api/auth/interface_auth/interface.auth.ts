@@ -8,7 +8,7 @@ enum GenderE {
 }
 
 export interface UserI extends mongoose.Document {
-  email: string | true;
+  email: string;
   password: string;
   created_at?: Date;
   updated_at?: Date;

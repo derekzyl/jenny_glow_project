@@ -10,6 +10,11 @@ const createAddress = async (request, response, next) => {
     try {
         const user = request.user;
         const body = request.body;
+        // find the  user address length
+        const get_addresses = await model_address_1.ADDRESS.find({ user: request.user.id });
+        if (!get_addresses || get_addresses.length < 1) {
+            body.is_default = true;
+        }
         const crud_address = new crud_1.Crud(request, response, next);
         crud_address.create({ model: model_address_1.ADDRESS, exempt: "" }, { ...body, user: user.id }, {});
     }

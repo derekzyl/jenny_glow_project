@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeliveryStatusE = void 0;
+exports.DeliveryStatusE = exports.MessageTypeE = void 0;
+var MessageTypeE;
+(function (MessageTypeE) {
+    MessageTypeE["TEXT"] = "TEXT";
+    MessageTypeE["URL"] = "URL";
+    MessageTypeE["IMAGE"] = "IMAGE";
+    MessageTypeE["VIDEO"] = "VIDEO";
+})(MessageTypeE = exports.MessageTypeE || (exports.MessageTypeE = {}));
 var DeliveryStatusE;
 (function (DeliveryStatusE) {
     DeliveryStatusE["RECEIVED_BY_CUSTOMER"] = "RECEIVED_BY_CUSTOMER";

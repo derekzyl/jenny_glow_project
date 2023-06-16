@@ -6,6 +6,7 @@ const interface_online_1 = require("../interface_online/interface.online");
 const interface_sales_1 = require("../../interface_sales/interface.sales");
 const general_factory_1 = require("../../../general_factory/interface/general_factory");
 exports.onlineSchema = new mongoose_1.Schema({
+    user: { type: mongoose_1.Schema.Types.ObjectId, ref: "USER" },
     order_id: { type: String, required: true, unique: true },
     products: [
         {
@@ -41,13 +42,13 @@ exports.onlineSchema = new mongoose_1.Schema({
     sold_by: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "USER",
-        required: true,
     },
     sales_type: {
         type: String,
         enum: interface_sales_1.SalesTypeE,
         default: interface_sales_1.SalesTypeE.ONLINE_SALES,
     },
+    date_ordered: Date,
     vat: { type: Number },
     discount: { type: Number },
     total_amount: { type: Number },
@@ -66,6 +67,12 @@ exports.onlineSchema = new mongoose_1.Schema({
             text: { type: String },
             created_at: { type: Date },
             updated_at: { type: Date },
+            read_receipt: { type: Boolean, default: false },
+            message_type: {
+                type: String,
+                enum: interface_online_1.MessageTypeE,
+                default: interface_online_1.MessageTypeE.TEXT,
+            },
         },
     ],
     dispatch: {

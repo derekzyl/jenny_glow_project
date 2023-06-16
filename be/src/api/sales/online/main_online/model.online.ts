@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import {
   DeliveryStatusE,
+  MessageTypeE,
   OnlineDocI,
   OnlineModelI,
 } from "../interface_online/interface.online";
@@ -14,6 +15,8 @@ import { time_stamps } from "../../../general_factory/interface/general_factory"
 
 export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
   {
+    user: { type: Schema.Types.ObjectId, ref: "USER" },
+
     order_id: { type: String, required: true, unique: true },
     products: [
       {
@@ -49,13 +52,13 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
     sold_by: {
       type: Schema.Types.ObjectId,
       ref: "USER",
-      required: true,
     },
     sales_type: {
       type: String,
       enum: SalesTypeE,
       default: SalesTypeE.ONLINE_SALES,
     },
+    date_ordered: Date,
 
     vat: { type: Number },
     discount: { type: Number },
@@ -76,6 +79,12 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
         text: { type: String },
         created_at: { type: Date },
         updated_at: { type: Date },
+        read_receipt: { type: Boolean, default: false },
+        message_type: {
+          type: String,
+          enum: MessageTypeE,
+          default: MessageTypeE.TEXT,
+        },
       },
     ],
     dispatch: {

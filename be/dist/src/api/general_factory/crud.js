@@ -155,7 +155,11 @@ class Crud {
                 let modelFind = MyModels.model.find({ category });
                 if (MyModels.exempt)
                     modelFind = modelFind.select(MyModels.exempt);
-                const queryf = new query_1.Queries(modelFind, query);
+                const queryf = new query_1.Queries(modelFind, query)
+                    .filter()
+                    .limitFields()
+                    .sort()
+                    .paginate();
                 const queryG = await queryf.model;
                 if (!queryG)
                     throw (0, custom_error_1.APP_ERROR)(`${MyModels} is not successfully created`, http_response_1.HTTP_RESPONSE.NOT_FOUND);

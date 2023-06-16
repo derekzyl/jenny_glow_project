@@ -6,5 +6,6 @@ class Cart {
     add_cart = controller_cart_1.addCart;
     remove_cart = controller_cart_1.removeCart;
     get_cart = controller_cart_1.getCart;
+    update_cart_with_address = controller_cart_1.updateCartWithAddress;
 }
 exports.CartIndex = new Cart();

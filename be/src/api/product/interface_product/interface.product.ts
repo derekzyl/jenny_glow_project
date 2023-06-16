@@ -1,6 +1,6 @@
 import { Types, Document } from "mongoose";
 
-export interface ProductI  {
+export interface ProductI {
   name: string;
   description: string;
   discount_percentage: number;
@@ -19,7 +19,7 @@ export interface ProductI  {
   search_tags: string[];
 }
 
-export interface ProductDocI extends  ProductI, Document{}
+export interface ProductDocI extends ProductI, Document {}
 export interface ProductBodyI {
   name: string;
   description: string;

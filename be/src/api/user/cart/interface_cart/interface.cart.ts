@@ -1,6 +1,5 @@
 import { Types, Document, Model } from "mongoose";
 
-
 export type ProductAndCount = {
   product: Types.ObjectId;
   product_total_count: number;
@@ -9,7 +8,7 @@ export type ProductAndCount = {
 };
 export interface CartI {
   user: Types.ObjectId;
-  products: ProductAndCount[];
+  products: Types.ObjectId[];
   total_price: number;
   vat: number;
   sub_total: number;
@@ -21,4 +20,8 @@ export interface CartModelI extends Model<CartDocI> {
   checkDefaultWishlist(): void;
 }
 
+export interface CartItemDocI extends ProductAndCount, Document {
+  cart_id: Types.ObjectId;
+}
+export type CartItemBodyT = ProductAndCount;
 export type CartBodyT = Omit<CartI, "user" | "products">;

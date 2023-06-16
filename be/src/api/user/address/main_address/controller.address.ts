@@ -23,6 +23,11 @@ export const createAddress = async (
 
     const body: AddressBodyT = request.body;
 
+    // find the  user address length
+    const get_addresses = await ADDRESS.find({ user: request.user.id });
+    if (!get_addresses || get_addresses.length < 1) {
+      body.is_default = true;
+    }
     const crud_address = new Crud(request, response, next);
     crud_address.create<AddressBodyT & { user: Types.ObjectId }, AddressDocI>(
       { model: ADDRESS, exempt: "" },
