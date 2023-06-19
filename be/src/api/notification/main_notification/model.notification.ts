@@ -5,11 +5,16 @@ import { MessageTypeE } from "../../sales/online/interface_online/interface.onli
 
 const notificationSchema = new Schema<NotificationDocI>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "USER", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "USER" },
     information: String,
     title: String,
-        read_receipt: { type: Boolean, default: false },
-    message_type:{type:String, enum:MessageTypeE, default:MessageTypeE.TEXT}
+    read_receipt: { type: Boolean, default: false },
+    message_type: {
+      type: String,
+      enum: MessageTypeE,
+      default: MessageTypeE.TEXT,
+    },
+    receiver: { type: Schema.Types.ObjectId, ref: "USER", required: true },
   },
   { timestamps: time_stamps }
 );

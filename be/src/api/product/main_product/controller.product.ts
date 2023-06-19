@@ -66,8 +66,8 @@ export const updateProduct = async (
   const crud_product = new Crud(request, response, next);
   crud_product.update<ProductBodyI, ProductDocI>(
     { model: PRODUCT, exempt: "-__v" },
+    { ...body },
     { id: request.params.id },
-    { ...body }
   );
 };
 export const deleteProduct = async (

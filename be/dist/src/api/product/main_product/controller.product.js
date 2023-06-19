@@ -31,7 +31,7 @@ exports.getManyProduct = getManyProduct;
 const updateProduct = async (request, response, next) => {
     const body = request.body;
     const crud_product = new crud_1.Crud(request, response, next);
-    crud_product.update({ model: model_product_1.PRODUCT, exempt: "-__v" }, { id: request.params.id }, { ...body });
+    crud_product.update({ model: model_product_1.PRODUCT, exempt: "-__v" }, { ...body }, { id: request.params.id });
 };
 exports.updateProduct = updateProduct;
 const deleteProduct = async (request, response, next) => {

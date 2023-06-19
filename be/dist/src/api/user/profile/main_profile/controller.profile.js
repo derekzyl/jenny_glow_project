@@ -60,7 +60,7 @@ const updateProfile = async (request, response, next) => {
         id: check_permissions ? request.params.id : undefined,
     };
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.update({ model: model_profile_1.PROFILE, exempt: "-__v" }, data, { ...body });
+    crud_review.update({ model: model_profile_1.PROFILE, exempt: "-__v" }, { ...body }, data);
 };
 exports.updateProfile = updateProfile;
 const deleteProfile = async (request, response, next) => {

@@ -99,8 +99,8 @@ export const updateReview = async (
   const crud_review = new Crud(request, response, next);
   crud_review.update<ReviewBodyT, ReviewDocI>(
     { model: REVIEW, exempt: "-__v" },
+    { ...body },
     { id: request.params.id },
-    { ...body }
   );
 };
 export const deleteReview = async (

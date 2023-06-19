@@ -104,8 +104,8 @@ export const updateProfile = async (
   const crud_review = new Crud(request, response, next);
   crud_review.update<ProfileBodyT, ProfileDocI>(
     { model: PROFILE, exempt: "-__v" },
-    data,
-    { ...body }
+    { ...body },
+    data
   );
 };
 

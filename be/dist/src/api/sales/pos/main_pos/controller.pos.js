@@ -157,7 +157,7 @@ exports.getManyPosProduct = getManyPosProduct;
 const updatePos = async (request, response, next) => {
     const body = request.body;
     const crud_pos = new crud_1.Crud(request, response, next);
-    crud_pos.update({ model: model_pos_1.POS, exempt: "-__v" }, { id: request.params.id }, { ...body });
+    crud_pos.update({ model: model_pos_1.POS, exempt: "-__v" }, { ...body }, { id: request.params.id });
 };
 exports.updatePos = updatePos;
 const deletePos = async (request, response, next) => {

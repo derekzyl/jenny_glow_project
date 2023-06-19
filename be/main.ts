@@ -9,6 +9,7 @@ import productRouter from "./src/api/product/main_product/route.product";
 import salesRouter from "./src/api/sales/index.sales";
 import userRouter from "./src/api/user/index.user";
 import testRouter from "./src/api/test/main_test/route.t";
+import notificationRouter from "./src/api/notification/main_notification/route.notification";
 
 const app: Express = express();
 
@@ -21,6 +22,7 @@ app.use("/review", reviewRouter);
 app.use("product", productRouter);
 app.use("/sales", salesRouter);
 app.use("/user", userRouter);
+app.use("/notificationS", notificationRouter);
 
 // });
 app.use(errorCenter);

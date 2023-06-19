@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.time_stamps = exports.PermissionsE = void 0;
 /**
  * THE AVAILABLE PERMISSIONS
+ *
+ * --------------------------------------
+ *  trust me the list is kinda endless ill advice you come see for youself
  */
 var PermissionsE;
 (function (PermissionsE) {
@@ -57,6 +60,17 @@ var PermissionsE;
     PermissionsE["VIEW_SHIPPING_FEE"] = "VIEW_SHIPPING_FEE";
     PermissionsE["EDIT_SHIPPING_FEE"] = "EDIT_SHIPPING_FEE";
     PermissionsE["DELETE_SHIPPING_FEE"] = "DELETE_SHIPPING_FEE";
+    // dispatch handler
+    PermissionsE["CREATE_DISPATCH"] = "CREATE_DISPATCH";
+    PermissionsE["VIEW_DISPATCH"] = "VIEW_DISPATCH";
+    PermissionsE["EDIT_DISPATCH"] = "EDIT_DISPATCH";
+    PermissionsE["DELETE_DISPATCH"] = "DELETE_DISPATCH";
+    // manage online order
+    PermissionsE["CREATE_ONLINE_ORDER"] = "CREATE_ONLINE_ORDER";
+    PermissionsE["VIEW_ONLINE_ORDER"] = "VIEW_ONLINE_ORDER";
+    PermissionsE["EDIT_ONLINE_ORDER"] = "EDIT_ONLINE_ORDER";
+    PermissionsE["DELETE_ONLINE_ORDER"] = "DELETE_ONLINE_ORDER";
+    PermissionsE["HANDLE_ONLINE_ORDER"] = "HANDLE_ONLINE_ORDER";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
 exports.time_stamps = {
     createdAt: "created_at",

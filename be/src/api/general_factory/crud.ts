@@ -1,5 +1,4 @@
 import { NextFunction, Response, Request } from "express";
-
 import { APP_ERROR } from "../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../utilities/http_response";
 import { Queries } from "../../utilities/query";

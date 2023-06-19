@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import {
-  DeliveryStatusE,
   MessageTypeE,
   OnlineDocI,
   OnlineModelI,
@@ -87,18 +86,7 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
         },
       },
     ],
-    dispatch: {
-      tracking_id: { type: String },
-      is_dispatched: { type: Boolean, default: false },
-      dispatched_by: { type: Schema.Types.ObjectId, ref: "USER" },
-      dispatched_at: Date,
-      delivery_status: {
-        type: String,
-        enum: DeliveryStatusE,
-        default: DeliveryStatusE.PENDING,
-      },
-      received_at: Date,
-    },
+    dispatch: { type: Schema.Types.ObjectId, ref: "DISPATCH" },
   },
   { timestamps: time_stamps }
 );

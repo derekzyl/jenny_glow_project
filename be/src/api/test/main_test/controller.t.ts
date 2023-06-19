@@ -15,6 +15,13 @@ export const createTest = async (
   next: NextFunction
 ) => {
   // eslint-disable-next-line prefer-const
+  console.log(
+    "<---------request body file",
+    request.body.file,
+    "-------------------------------->"
+  );
+  console.log("<---------request body game", request.body.game);
+
   const fg = generateId(IdGenE.WEB_SALES);
   console.log(fg);
 
@@ -24,10 +31,11 @@ export const createTest = async (
       amount: 400 * 100,
       reference: fg,
     };
-    const paystack = PaymentIndex.paystack;
-    const pay = new paystack();
-    const init_pay = await pay.initialize(paystack_data);
-    return response.json({ url: init_pay.data.authorization_url });
+    // const paystack = PaymentIndex.paystack;
+    // const pay = new paystack();
+    // const init_pay = await pay.initialize(paystack_data);
+    return response.json({ url: "init_pay.data.authorization_url " });
+    // return response.json({ url: init_pay.data.authorization_url });
   } catch (error: any) {
     error.information = "error encountered creating test";
     next(error);

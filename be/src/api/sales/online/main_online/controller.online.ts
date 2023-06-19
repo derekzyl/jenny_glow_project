@@ -15,7 +15,6 @@ import { PRODUCT } from "../../../product/main_product/model.product";
 import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
 import { generateId } from "../../../../utilities/id_generator";
 import {
-  OrderTypeE,
   PaymentMethodE,
   PaymentStatusE,
 } from "../../interface_sales/interface.sales";
@@ -25,8 +24,7 @@ import { VatE } from "../../../admin/vat/interface_vat/interface.vat";
 import { ONLINE_ORDER } from "./model.online";
 import { PaystackPayI } from "../../../../utilities/interface_utilities/payment.interface";
 import { PaymentIndex } from "../../../../utilities/payment/index.payment";
-import { Paystack } from "../../../../utilities/payment/paystack.payment";
-import { get } from "http";
+import { DISPATCH } from "../../../admin/dispatch/main_dispatch/model.dispatch";
 
 // 1) create a post online order
 // 2) the dispatch rider should be able to maintain the messages on the order dispatch update
@@ -147,7 +145,6 @@ export const createOnlineSales = async (
       discount,
       total_amount,
       original_amount,
-      dispatch: { tracking_id: generateId(IdGenE.DISPATCH) },
     };
     const create_online_order = new ONLINE_ORDER(online_checkout);
     const created_order = await create_online_order.save();
@@ -230,6 +227,25 @@ export const verifyOnlineSales = async (
               title: "payment failed",
               message_type: MessageTypeE.TEXT,
             });
+
+            find_one_order_with_ref_id.message.push(message);
+          }
+          break;
+        case "success":
+          {
+            find_one_order_with_ref_id.payment_status = PaymentStatusE.APPROVED;
+            const message = customMessage({
+              information: "payment process approved",
+              title: "preparing your package for shipping",
+              message_type: MessageTypeE.TEXT,
+            });
+            //a) create a dispatch query
+            const new_dispatch = await DISPATCH.create({
+              tracking_id: generateId(IdGenE.DISPATCH),
+              order_id: find_one_order_with_ref_id.order_id,
+            });
+            find_one_order_with_ref_id.dispatch = new_dispatch.id;
+            //b) send notification to the online branch admin
 
             find_one_order_with_ref_id.message.push(message);
           }

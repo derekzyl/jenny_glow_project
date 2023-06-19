@@ -38,7 +38,7 @@ exports.getManyAddress = getManyAddress;
 const updateAddress = async (request, response, next) => {
     const body = request.body;
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.update({ model: model_address_1.ADDRESS, exempt: "-__v" }, { id: request.params.id }, { ...body });
+    crud_review.update({ model: model_address_1.ADDRESS, exempt: "-__v" }, { ...body }, { id: request.params.id });
 };
 exports.updateAddress = updateAddress;
 const deleteAddress = async (request, response, next) => {

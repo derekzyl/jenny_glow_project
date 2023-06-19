@@ -17,27 +17,13 @@ export type MessageT = {
   read_receipt: boolean;
   message_type: MessageTypeE;
 };
-export enum DeliveryStatusE {
-  RECEIVED_BY_CUSTOMER = "RECEIVED_BY_CUSTOMER",
-  DISPATCHED = "DISPATCHED",
-  ON_TRANSIT = "ON_TRANSIT",
-  PENDING = "PENDING",
-}
+
 export interface OnlineI extends Omit<SalesI, "products"> {
   products: ProductAndCount[];
   address: Types.ObjectId;
   user: Types.ObjectId;
 
-  dispatch: {
-    tracking_id: string;
-    is_dispatched?: boolean;
-    dispatched_by?: Types.ObjectId;
-    company_track_id?: string;
-
-    dispatched_at?: Date;
-    received_at?: Date;
-    delivery_status?: DeliveryStatusE;
-  };
+  dispatch: Types.ObjectId;
 
   message: MessageT[];
   date_ordered: Date;

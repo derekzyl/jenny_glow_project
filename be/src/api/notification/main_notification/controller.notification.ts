@@ -1,4 +1,5 @@
 import { NextFunction, Response, Request } from "express";
+import { Types } from "mongoose";
 
 import { NOTIFICATION } from "./model.notification";
 import { Crud } from "../../general_factory/crud";
@@ -14,7 +15,7 @@ export const createNotification = async (
   next: NextFunction
 ) => {
   try {
-    const body: NotificationBodyT = request.body;
+    const body: NotificationBodyT & { receiver: Types.ObjectId } = request.body;
 
     const gotten_body: NotificationT = { ...body, user: request.user.id };
     const crud_notification = new Crud(request, response, next);
@@ -88,7 +89,7 @@ export const updateReadNotification = async (
   const crud_notification = new Crud(request, response, next);
   crud_notification.update<NotificationT, NotificationDocI>(
     { model: NOTIFICATION, exempt: "-__v" },
-    { notification_name: request.params.id },
-    { read_receipt: true }
+    { read_receipt: true },
+    { notification_name: request.params.id }
   );
 };

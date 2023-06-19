@@ -5,3 +5,10 @@ export interface RoleI extends Document {
   name: string;
   permissions: PermissionsE[];
 }
+
+export enum RoleE {
+  USER = "USER",
+  STAFF = "STAFF",
+  MANAGER = "MANAGER",
+  SALES_MANAGER = "SALES_MANAGER",
+}

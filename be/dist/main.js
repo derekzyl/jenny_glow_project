@@ -12,6 +12,7 @@ const route_product_1 = __importDefault(require("./src/api/product/main_product/
 const index_sales_1 = __importDefault(require("./src/api/sales/index.sales"));
 const index_user_1 = __importDefault(require("./src/api/user/index.user"));
 const route_t_1 = __importDefault(require("./src/api/test/main_test/route.t"));
+const route_notification_1 = __importDefault(require("./src/api/notification/main_notification/route.notification"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -22,6 +23,7 @@ app.use("/review", route_review_1.default);
 app.use("product", route_product_1.default);
 app.use("/sales", index_sales_1.default);
 app.use("/user", index_user_1.default);
+app.use("/notificationS", route_notification_1.default);
 // });
 app.use(custom_error_1.errorCenter);
 exports.default = app;

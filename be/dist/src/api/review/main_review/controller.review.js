@@ -49,7 +49,7 @@ const updateReview = async (request, response, next) => {
         updated_at: Date.now,
     };
     const crud_review = new crud_1.Crud(request, response, next);
-    crud_review.update({ model: model_review_1.REVIEW, exempt: "-__v" }, { id: request.params.id }, { ...body });
+    crud_review.update({ model: model_review_1.REVIEW, exempt: "-__v" }, { ...body }, { id: request.params.id });
 };
 exports.updateReview = updateReview;
 const deleteReview = async (request, response, next) => {

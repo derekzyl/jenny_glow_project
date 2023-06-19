@@ -80,8 +80,8 @@ export const updateAddress = async (
   const crud_review = new Crud(request, response, next);
   crud_review.update<AddressBodyT, AddressDocI>(
     { model: ADDRESS, exempt: "-__v" },
+    { ...body },
     { id: request.params.id },
-    { ...body }
   );
 };
 export const deleteAddress = async (

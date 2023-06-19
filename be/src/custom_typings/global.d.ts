@@ -8,6 +8,7 @@ declare global {
     export interface Request {
       user: UserI;
       params: customParam;
+      files: any;
     }
   }
 }

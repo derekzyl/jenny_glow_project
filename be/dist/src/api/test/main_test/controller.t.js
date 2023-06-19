@@ -10,6 +10,8 @@ const id_generator_1 = require("../../../utilities/id_generator");
 const id_gen_interface_1 = require("../../../utilities/interface_utilities/id_gen.interface");
 const createTest = async (request, response, next) => {
     // eslint-disable-next-line prefer-const
+    console.log("<---------request body file", request.body.file, "-------------------------------->");
+    console.log("<---------request body game", request.body.game);
     const fg = (0, id_generator_1.generateId)(id_gen_interface_1.IdGenE.WEB_SALES);
     console.log(fg);
     try {
@@ -18,10 +20,11 @@ const createTest = async (request, response, next) => {
             amount: 400 * 100,
             reference: fg,
         };
-        const paystack = index_payment_1.PaymentIndex.paystack;
-        const pay = new paystack();
-        const init_pay = await pay.initialize(paystack_data);
-        return response.json({ url: init_pay.data.authorization_url });
+        // const paystack = PaymentIndex.paystack;
+        // const pay = new paystack();
+        // const init_pay = await pay.initialize(paystack_data);
+        return response.json({ url: "init_pay.data.authorization_url " });
+        // return response.json({ url: init_pay.data.authorization_url });
     }
     catch (error) {
         error.information = "error encountered creating test";

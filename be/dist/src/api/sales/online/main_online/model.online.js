@@ -75,17 +75,6 @@ exports.onlineSchema = new mongoose_1.Schema({
             },
         },
     ],
-    dispatch: {
-        tracking_id: { type: String },
-        is_dispatched: { type: Boolean, default: false },
-        dispatched_by: { type: mongoose_1.Schema.Types.ObjectId, ref: "USER" },
-        dispatched_at: Date,
-        delivery_status: {
-            type: String,
-            enum: interface_online_1.DeliveryStatusE,
-            default: interface_online_1.DeliveryStatusE.PENDING,
-        },
-        received_at: Date,
-    },
+    dispatch: { type: mongoose_1.Schema.Types.ObjectId, ref: "DISPATCH" },
 }, { timestamps: general_factory_1.time_stamps });
 exports.ONLINE_ORDER = (0, mongoose_1.model)("ONLINE_ORDER", exports.onlineSchema);

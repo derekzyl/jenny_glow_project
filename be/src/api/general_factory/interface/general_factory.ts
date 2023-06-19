@@ -2,6 +2,9 @@ import { Model } from "mongoose";
 
 /**
  * THE AVAILABLE PERMISSIONS
+ *
+ * --------------------------------------
+ *  trust me the list is kinda endless ill advice you come see for youself
  */
 export enum PermissionsE {
   //CRUD PRODUCT
@@ -63,6 +66,19 @@ export enum PermissionsE {
   VIEW_SHIPPING_FEE = "VIEW_SHIPPING_FEE",
   EDIT_SHIPPING_FEE = "EDIT_SHIPPING_FEE",
   DELETE_SHIPPING_FEE = "DELETE_SHIPPING_FEE",
+
+  // dispatch handler
+  CREATE_DISPATCH = "CREATE_DISPATCH",
+  VIEW_DISPATCH = "VIEW_DISPATCH",
+  EDIT_DISPATCH = "EDIT_DISPATCH",
+  DELETE_DISPATCH = "DELETE_DISPATCH",
+
+  // manage online order
+  CREATE_ONLINE_ORDER = "CREATE_ONLINE_ORDER",
+  VIEW_ONLINE_ORDER = "VIEW_ONLINE_ORDER",
+  EDIT_ONLINE_ORDER = "EDIT_ONLINE_ORDER",
+  DELETE_ONLINE_ORDER = "DELETE_ONLINE_ORDER",
+  HANDLE_ONLINE_ORDER = "HANDLE_ONLINE_ORDER",
 }
 
 export interface CrudModelI {

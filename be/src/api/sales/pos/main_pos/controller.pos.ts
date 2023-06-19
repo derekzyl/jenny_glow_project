@@ -210,8 +210,8 @@ export const updatePos = async (
   const crud_pos = new Crud(request, response, next);
   crud_pos.update<PosBodyI, PosDocI>(
     { model: POS, exempt: "-__v" },
+    { ...body },
     { id: request.params.id },
-    { ...body }
   );
 };
 export const deletePos = async (

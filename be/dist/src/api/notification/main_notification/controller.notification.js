@@ -38,6 +38,6 @@ const deleteNotification = async (request, response, next) => {
 exports.deleteNotification = deleteNotification;
 const updateReadNotification = async (request, response, next) => {
     const crud_notification = new crud_1.Crud(request, response, next);
-    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { notification_name: request.params.id }, { read_receipt: true });
+    crud_notification.update({ model: model_notification_1.NOTIFICATION, exempt: "-__v" }, { read_receipt: true }, { notification_name: request.params.id });
 };
 exports.updateReadNotification = updateReadNotification;

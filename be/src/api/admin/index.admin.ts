@@ -8,6 +8,7 @@ import {
 } from "./category/main_category/route.category";
 import vatRouter from "./vat/main_vat/route.vat";
 import shippingRouter from "./shipping/main_shipping/route.role";
+import dispatchRouter from "./dispatch/main_dispatch/route.dispatch";
 
 const adminRouter = Router();
 
@@ -18,5 +19,6 @@ adminRouter.use("/category", categoryRouter);
 adminRouter.use("/sub-category", subCategoryRouter);
 adminRouter.use("/vat", vatRouter);
 adminRouter.use("/shipping", shippingRouter);
+adminRouter.use("/dispatch", dispatchRouter);
 
 export default adminRouter;
