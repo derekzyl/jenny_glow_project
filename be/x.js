@@ -47,12 +47,26 @@
 // oddNumbers(2, 7);
 
 const n = Number("12");
-console.log(n);
+// console.log(n);
 
 const mm = {
   name: 0,
   v: 4,
 };
 mm.name = 2;
-console.log(mm.v * mm.name);
-console.log(new Date());
+// console.log(mm.v * mm.name);
+// console.log(new Date());
+
+const arr1 = ["a", "b", "c", "d", "e", "f"];
+const arr2 = ["i", "j"];
+
+const found = arr1.some((r) => arr2.includes(r));
+console.log(found);
+
+const b = {
+  name: "hello",
+  book: "me",
+  call: 34,
+  dope: 23,
+};
+console.log(Object.keys(b));

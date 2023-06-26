@@ -28,7 +28,7 @@ const getOneDispatchByStaff = async (request, response, next) => {
 exports.getOneDispatchByStaff = getOneDispatchByStaff;
 const getManyDispatchByStaff = async (request, response, next) => {
     const crud_dispatch = new crud_1.Crud(request, response, next);
-    crud_dispatch.getOne({ model: model_dispatch_1.DISPATCH, exempt: "-__v -created_at updated_at" }, { tracking_id: request.params.id }, {});
+    crud_dispatch.getMany({ model: model_dispatch_1.DISPATCH, exempt: "-__v -created_at updated_at" }, request.query, {}, {});
 };
 exports.getManyDispatchByStaff = getManyDispatchByStaff;
 const getManyDispatchByUser = async (request, response, next) => {

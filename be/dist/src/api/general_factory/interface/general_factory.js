@@ -65,6 +65,7 @@ var PermissionsE;
     PermissionsE["VIEW_DISPATCH"] = "VIEW_DISPATCH";
     PermissionsE["EDIT_DISPATCH"] = "EDIT_DISPATCH";
     PermissionsE["DELETE_DISPATCH"] = "DELETE_DISPATCH";
+    PermissionsE["HANDLE_DISPATCH"] = "HANDLE_DISPATCH";
     // manage online order
     PermissionsE["CREATE_ONLINE_ORDER"] = "CREATE_ONLINE_ORDER";
     PermissionsE["VIEW_ONLINE_ORDER"] = "VIEW_ONLINE_ORDER";

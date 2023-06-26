@@ -7,21 +7,30 @@ const http_response_1 = require("../../utilities/http_response");
  * Get Permissions
  *
  * -------------
- * @description this is a middle ware that authrizes by user permission
+ * @description this is a middle ware that authorizes by user permission
  *
- * @param {keyof PermissionsE} role_name this is a bunch of permissions for a  so input the role
+ * @param {keyof PermissionsE} role_names this is a bunch of permissions for a  so input the role
  * @enum {(PermissionsE)} role
  * @returns {Request Response NextFunction} returns the user and throws error if the user is not authenticated
  */
-const getPermissions = (role_name) => (request, response, next) => {
+const getPermissions = (role_names) => (request, response, next) => {
     const user = request.user;
     if (!user)
         throw (0, custom_error_1.APP_ERROR)("oops the user does not exist");
-    if (user.permissions && user.permissions.includes(role_name)) {
-        next();
+    if (!Array.isArray(role_names)) {
+        if (user.permissions && user.permissions.includes(role_names)) {
+            next();
+        }
+        else {
+            throw (0, custom_error_1.APP_ERROR)("you are not authenticated to access this data", http_response_1.HTTP_RESPONSE.UNAUTHORIZED);
+        }
     }
     else {
-        throw (0, custom_error_1.APP_ERROR)("you are not authenticated to access this data", http_response_1.HTTP_RESPONSE.UNAUTHORIZED);
+        const found = role_names.some((role_name) => user.permissions.includes(role_name));
+        if (found)
+            next();
+        else
+            throw (0, custom_error_1.APP_ERROR)("you are not authenticated to access this data", http_response_1.HTTP_RESPONSE.UNAUTHORIZED);
     }
 };
 exports.getPermissions = getPermissions;

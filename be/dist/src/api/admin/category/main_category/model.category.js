@@ -2,29 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SUB_CATEGORY = exports.CATEGORY = void 0;
 const mongoose_1 = require("mongoose");
+const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const categorySchema = new mongoose_1.Schema({
     name: { type: String, required: true },
-    created_at: {
-        type: Date,
-        default: Date.now(),
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+    image: String,
+}, { timestamps: general_factory_1.time_stamps });
 const subCategorySchema = new mongoose_1.Schema({
     name: { type: String, required: true, uppercase: true },
     category: { type: mongoose_1.Schema.Types.ObjectId, ref: "CATEGORY", required: true },
-    created_at: {
-        type: Date,
-        default: Date.now(),
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+    image: String,
+}, { timestamps: general_factory_1.time_stamps });
 categorySchema.pre("save", function () {
     this.name = this.name.trim().toLocaleUpperCase();
 });

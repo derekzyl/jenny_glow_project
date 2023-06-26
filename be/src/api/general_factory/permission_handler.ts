@@ -2,32 +2,42 @@ import { Response, NextFunction, Request } from "express";
 import { PermissionsE } from "./interface/general_factory";
 import { APP_ERROR } from "../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../utilities/http_response";
-import { LOG } from "../../utilities/console";
 import { UserI } from "../auth/interface_auth/interface.auth";
 
 /**
  * Get Permissions
  *
  * -------------
- * @description this is a middle ware that authrizes by user permission
+ * @description this is a middle ware that authorizes by user permission
  *
- * @param {keyof PermissionsE} role_name this is a bunch of permissions for a  so input the role
+ * @param {keyof PermissionsE} role_names this is a bunch of permissions for a  so input the role
  * @enum {(PermissionsE)} role
  * @returns {Request Response NextFunction} returns the user and throws error if the user is not authenticated
  */
 export const getPermissions =
-  (role_name: PermissionsE) =>
+  (role_names: PermissionsE | PermissionsE[]) =>
   (request: Request, response: Response, next: NextFunction) => {
     const user = request.user;
     if (!user) throw APP_ERROR("oops the user does not exist");
-
-    if (user.permissions && user.permissions.includes(role_name)) {
-      next();
+    if (!Array.isArray(role_names)) {
+      if (user.permissions && user.permissions.includes(role_names)) {
+        next();
+      } else {
+        throw APP_ERROR(
+          "you are not authenticated to access this data",
+          HTTP_RESPONSE.UNAUTHORIZED
+        );
+      }
     } else {
-      throw APP_ERROR(
-        "you are not authenticated to access this data",
-        HTTP_RESPONSE.UNAUTHORIZED
+      const found = role_names.some((role_name) =>
+        user.permissions.includes(role_name)
       );
+      if (found) next();
+      else
+        throw APP_ERROR(
+          "you are not authenticated to access this data",
+          HTTP_RESPONSE.UNAUTHORIZED
+        );
     }
   };
 /**

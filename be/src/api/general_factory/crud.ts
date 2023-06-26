@@ -165,7 +165,10 @@ export class Crud {
           let modelFind = model.model.find({ category });
           if (model.exempt) modelFind = modelFind.select(model.exempt);
           if (populate.model)
-            modelFind = modelFind.populate(populate.model, populate.fields);
+            modelFind = modelFind.populate({
+              path: populate.model,
+              select: populate.fields,
+            });
 
           const queryf = new Queries(modelFind, query)
             .filter()
@@ -283,7 +286,9 @@ export class Crud {
           get_one = await model.model.findOne(data).select(model.exempt);
           if (populate.model)
             if (populate.fields)
-              get_one = get_one.populate(populate.model, populate.fields);
+              get_one = get_one
+                .populate({ path: populate.model, select: populate.fields })
+                .exec();
           if (!get_one)
             throw APP_ERROR(
               `${model} is not successfully fetched`,
@@ -300,7 +305,10 @@ export class Crud {
           );
         if (populate.model)
           if (populate.fields)
-            get_one = get_one.populate(populate.model, populate.fields);
+            get_one = get_one.populate({
+              path: populate.model,
+              select: populate.fields,
+            });
         get_data.push(get_one);
       }
 

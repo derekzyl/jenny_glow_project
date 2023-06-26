@@ -1,8 +1,10 @@
 import { Schema, model } from "mongoose";
 import {
+  AcceptanceStatusE,
   MessageTypeE,
   OnlineDocI,
   OnlineModelI,
+  OnlineOrderStatusE,
 } from "../interface_online/interface.online";
 import {
   OrderTypeE,
@@ -17,6 +19,37 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
     user: { type: Schema.Types.ObjectId, ref: "USER" },
 
     order_id: { type: String, required: true, unique: true },
+    order_status: {
+      type: String,
+      enum: OnlineOrderStatusE,
+      default: OnlineOrderStatusE.REQUEST_PENDING,
+    },
+    transfer_handling: [
+      {
+        to: {
+          type: Schema.Types.ObjectId,
+          ref: "USER",
+        },
+        from: {
+          type: Schema.Types.ObjectId,
+          ref: "USER",
+        },
+        date: {
+          type: Date,
+          default: Date.now(),
+        },
+        acceptance_status: {
+          type: String,
+          enum: AcceptanceStatusE,
+          default: AcceptanceStatusE.PENDING,
+        },
+      },
+    ],
+    handled_by: {
+      type: Schema.Types.ObjectId,
+      ref: "USER",
+    },
+    is_being_handled: { type: Boolean, default: false },
     products: [
       {
         product: {
@@ -66,7 +99,7 @@ export const onlineSchema = new Schema<OnlineDocI, OnlineModelI>(
     amount_sold: { type: Number },
     server_amount_sold: { type: Number },
     server_total: { type: Number },
-
+    is_ready_for_dispatch: Boolean,
     address: {
       type: Schema.Types.ObjectId,
       ref: "ADDRESS",

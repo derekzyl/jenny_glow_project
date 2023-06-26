@@ -84,6 +84,7 @@ export const addCart = async (
         find_user_default_address && find_shipping_fee
           ? n(cart_item.shipping_fee) + n(cart_item.product_total_price)
           : n(cart_item.product_total_price);
+
       sub_total += cart_item.product_total_price;
       total_price += total_product_price;
       cart_item.save();

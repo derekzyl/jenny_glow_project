@@ -2,13 +2,12 @@ import { Document, Types } from "mongoose";
 
 export interface categoryI extends Document {
   name: string;
-  created_at: Date;
-  updated_at: Date;
+  image: string;
 }
 
 export interface subCategoryI extends Document {
+  image:string
   category: Types.ObjectId;
   name: string;
-  created_at: Date;
-  updated_at: Date;
+
 }

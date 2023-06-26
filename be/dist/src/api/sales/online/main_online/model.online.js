@@ -8,6 +8,37 @@ const general_factory_1 = require("../../../general_factory/interface/general_fa
 exports.onlineSchema = new mongoose_1.Schema({
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: "USER" },
     order_id: { type: String, required: true, unique: true },
+    order_status: {
+        type: String,
+        enum: interface_online_1.OnlineOrderStatusE,
+        default: interface_online_1.OnlineOrderStatusE.REQUEST_PENDING,
+    },
+    transfer_handling: [
+        {
+            to: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: "USER",
+            },
+            from: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: "USER",
+            },
+            date: {
+                type: Date,
+                default: Date.now(),
+            },
+            acceptance_status: {
+                type: String,
+                enum: interface_online_1.AcceptanceStatusE,
+                default: interface_online_1.AcceptanceStatusE.PENDING,
+            },
+        },
+    ],
+    handled_by: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "USER",
+    },
+    is_being_handled: { type: Boolean, default: false },
     products: [
         {
             product: {
@@ -56,6 +87,7 @@ exports.onlineSchema = new mongoose_1.Schema({
     amount_sold: { type: Number },
     server_amount_sold: { type: Number },
     server_total: { type: Number },
+    is_ready_for_dispatch: Boolean,
     address: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "ADDRESS",

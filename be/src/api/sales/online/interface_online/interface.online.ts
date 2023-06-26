@@ -1,12 +1,28 @@
 import { Model, Types } from "mongoose";
 import { SalesI } from "../../interface_sales/interface.sales";
 import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
+import { DateTime } from "aws-sdk/clients/devicefarm";
 
 export enum MessageTypeE {
   TEXT = "TEXT",
   URL = "URL",
   IMAGE = "IMAGE",
   VIDEO = "VIDEO",
+}
+
+export enum OnlineOrderStatusE {
+  PAYMENT_SUCCESSFUL = "PAYMENT_SUCCESSFUL",
+  PAYMENT_FAILED = "PAYMENT_FAILED",
+  REQUEST_PENDING = "REQUEST_PENDING",
+  ORDER_PACKAGED = "ORDER_PACKAGED",
+  ORDER_DISPATCHED = "ORDER_DISPATCHED",
+  ORDER_DELIVERED = "ORDER_DELIVERED",
+}
+
+export enum AcceptanceStatusE {
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  PENDING = "PENDING",
 }
 
 export type MessageT = {
@@ -18,13 +34,23 @@ export type MessageT = {
   message_type: MessageTypeE;
 };
 
-export interface OnlineI extends Omit<SalesI, "products"> {
+export interface OnlineI extends Omit<SalesI, "products" | "order_status"> {
   products: ProductAndCount[];
   address: Types.ObjectId;
   user: Types.ObjectId;
-
+  order_status: OnlineOrderStatusE;
   dispatch: Types.ObjectId;
-
+  is_ready_for_dispatch: boolean;
+  transfer_handling: [
+    {
+      from: Types.ObjectId;
+      to: Types.ObjectId;
+      time: Date;
+      acceptance_status: AcceptanceStatusE;
+    }
+  ];
+  handled_by: Types.ObjectId;
+  is_being_handled: boolean;
   message: MessageT[];
   date_ordered: Date;
 }

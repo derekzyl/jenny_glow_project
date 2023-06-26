@@ -19,7 +19,7 @@ export interface StaffI extends Document {
   updated_at: Date;
 }
 
-export interface StaffBodyI extends Document {
+export interface StaffBodyI {
   email: string;
   password: string;
   first_name: string;

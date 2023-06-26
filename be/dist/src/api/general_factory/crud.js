@@ -139,7 +139,10 @@ class Crud {
                     if (model.exempt)
                         modelFind = modelFind.select(model.exempt);
                     if (populate.model)
-                        modelFind = modelFind.populate(populate.model, populate.fields);
+                        modelFind = modelFind.populate({
+                            path: populate.model,
+                            select: populate.fields,
+                        });
                     const queryf = new query_1.Queries(modelFind, query)
                         .filter()
                         .limitFields()
@@ -238,7 +241,9 @@ class Crud {
                     get_one = await model.model.findOne(data).select(model.exempt);
                     if (populate.model)
                         if (populate.fields)
-                            get_one = get_one.populate(populate.model, populate.fields);
+                            get_one = get_one
+                                .populate({ path: populate.model, select: populate.fields })
+                                .exec();
                     if (!get_one)
                         throw (0, custom_error_1.APP_ERROR)(`${model} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_IMPLEMENTED);
                     get_data.push(get_one);
@@ -250,7 +255,10 @@ class Crud {
                     throw (0, custom_error_1.APP_ERROR)(`${MyModel} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_FOUND);
                 if (populate.model)
                     if (populate.fields)
-                        get_one = get_one.populate(populate.model, populate.fields);
+                        get_one = get_one.populate({
+                            path: populate.model,
+                            select: populate.fields,
+                        });
                 get_data.push(get_one);
             }
             this.response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({

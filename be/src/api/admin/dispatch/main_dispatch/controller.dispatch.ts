@@ -63,9 +63,10 @@ export const getManyDispatchByStaff = async (
   next: NextFunction
 ) => {
   const crud_dispatch = new Crud(request, response, next);
-  crud_dispatch.getOne<DispatchDocI>(
+  crud_dispatch.getMany<DispatchDocI>(
     { model: DISPATCH, exempt: "-__v -created_at updated_at" },
-    { tracking_id: request.params.id },
+    request.query,
+    {},
     {}
   );
 };
