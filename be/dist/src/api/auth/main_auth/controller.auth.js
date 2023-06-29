@@ -45,7 +45,7 @@ const signup = async (request, response, next) => {
         if (!password.match(/[a-z]/) ||
             !password.match(/[A-Z]/) ||
             !password.match(/[0-9]/) ||
-            !password.match(/[!@#$%^&*]/)) {
+            !password.match(/[@#$%^&*.]/)) {
             throw (0, custom_error_1.APP_ERROR)("Password must contain at least one lowercase letter, one uppercase letter, one number and one special character", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
         const encryptedPassword = await bcrypt_1.default.hash(password);

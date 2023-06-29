@@ -8,7 +8,6 @@ const vatSchema = new mongoose_1.Schema({
     vat_percentage: Number,
     vat_name: {
         enum: interface_vat_1.VatE,
-        unique: true,
         required: true,
         type: String,
     },

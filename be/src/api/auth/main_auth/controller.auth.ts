@@ -53,7 +53,7 @@ export const signup = async (
       !password.match(/[a-z]/) ||
       !password.match(/[A-Z]/) ||
       !password.match(/[0-9]/) ||
-      !password.match(/[!@#$%^&*]/)
+      !password.match(/[@#$%^&*.]/)
     ) {
       throw APP_ERROR(
         "Password must contain at least one lowercase letter, one uppercase letter, one number and one special character",
@@ -93,7 +93,8 @@ export const signup = async (
     const newUSER = await newUser.save();
     const create_profile = new PROFILE({
       user: newUSER.id,
-      profile_image: "testing 12343",
+      profile_image:
+        "https://res.cloudinary.com/cybergenii/image/upload/v1688016348/Asset_2_mfttzm.png",
     });
     const create_wishlist = new WISHLIST({
       user: newUSER.id,
@@ -236,6 +237,7 @@ export const protector = async (
     }
 
     const user = await USER.findById(decoded.id);
+
     if (!user) {
       throw APP_ERROR("User does not exist", HTTP_RESPONSE.BAD_REQUEST);
     }

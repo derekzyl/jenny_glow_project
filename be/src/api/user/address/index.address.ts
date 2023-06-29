@@ -3,6 +3,7 @@ import {
   deleteAddress,
   getManyAddress,
   updateAddress,
+  getOneAddress,
 } from "./main_address/controller.address";
 
 class Address {
@@ -10,5 +11,6 @@ class Address {
   public getAllAddress = getManyAddress;
   public updateAddress = updateAddress;
   public deleteAddress = deleteAddress;
+  public getOneAddress = getOneAddress;
 }
 export const AddressIndex = new Address();

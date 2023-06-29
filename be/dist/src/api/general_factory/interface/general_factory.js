@@ -72,6 +72,7 @@ var PermissionsE;
     PermissionsE["EDIT_ONLINE_ORDER"] = "EDIT_ONLINE_ORDER";
     PermissionsE["DELETE_ONLINE_ORDER"] = "DELETE_ONLINE_ORDER";
     PermissionsE["HANDLE_ONLINE_ORDER"] = "HANDLE_ONLINE_ORDER";
+    PermissionsE["SUPER_ADMIN"] = "SUPER_ADMIN";
 })(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
 exports.time_stamps = {
     createdAt: "created_at",

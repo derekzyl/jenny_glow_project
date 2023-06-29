@@ -1,10 +1,11 @@
-import { NextFunction, Response, Request } from "express";
+import { NextFunction, Response, Request, query } from "express";
 import { APP_ERROR } from "../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../utilities/http_response";
 import { Queries } from "../../utilities/query";
 import { responseMessage } from "../../utilities/response_message";
-import { CrudModelI } from "./interface/general_factory";
+import { CrudModelI, PopulateFieldI } from "./interface/general_factory";
 import { FilterQuery, UpdateQuery } from "mongoose";
+import { getOne } from "./controller.factory";
 
 /**
  * Crud functionality
@@ -49,10 +50,16 @@ export class Crud {
     finder: FilterQuery<U>
   ): Promise<Response | NextFunction | void> {
     try {
-      const find = await MyModel.model.findOne(finder);
+      console.log("<---------------------finder------", finder);
+      const find =
+        Object.keys(finder).length !== 0
+          ? await MyModel.model.findOne(finder)
+          : undefined;
       if (find)
         throw APP_ERROR(
-          `the ${MyModel} ${finder} already exist in database`,
+          `the data ${{
+            ...finder,
+          }}} already exist in database`,
           HTTP_RESPONSE.BAD_REQUEST
         );
 
@@ -155,21 +162,33 @@ export class Crud {
     MyModels: CrudModelI | CrudModelI[],
     query: typeof this.request.query,
     category: FilterQuery<T> | null = null,
-    populate: { model?: string | undefined; fields?: string | undefined }
+    populate: PopulateFieldI | PopulateFieldI[]
   ) {
     try {
       let data: any;
       const all = [];
       if (Array.isArray(MyModels)) {
         MyModels.forEach(async (model: CrudModelI) => {
-          let modelFind = model.model.find({ category });
+          let modelFind = category
+            ? model.model.find(category)
+            : model.model.find();
           if (model.exempt) modelFind = modelFind.select(model.exempt);
-          if (populate.model)
-            modelFind = modelFind.populate({
-              path: populate.model,
-              select: populate.fields,
-            });
-
+          if (populate && Array.isArray(populate))
+            for (const pop of populate) {
+              if (pop.model)
+                modelFind = modelFind.populate({
+                  path: pop.model,
+                  select: pop.fields,
+                  populate: pop.second_layer_populate,
+                });
+            }
+          else if (populate && !Array.isArray(populate))
+            if (populate.model)
+              modelFind = modelFind.populate({
+                path: populate.model,
+                select: populate.fields,
+                populate: populate.second_layer_populate,
+              });
           const queryf = new Queries(modelFind, query)
             .filter()
             .limitFields()
@@ -184,8 +203,26 @@ export class Crud {
           data = all.push(queryG);
         });
       } else {
-        let modelFind = MyModels.model.find({ category });
+        let modelFind = category
+          ? MyModels.model.find(category)
+          : MyModels.model.find();
         if (MyModels.exempt) modelFind = modelFind.select(MyModels.exempt);
+        if (populate && Array.isArray(populate))
+          for (const pop of populate) {
+            if (pop.model)
+              modelFind = modelFind.populate({
+                path: pop.model,
+                select: pop.fields,
+                populate: pop.second_layer_populate,
+              });
+          }
+        else if (populate && !Array.isArray(populate))
+          if (populate.model)
+            modelFind = modelFind.populate({
+              path: populate.model,
+              select: populate.fields,
+              populate: populate.second_layer_populate,
+            });
 
         const queryf = new Queries(modelFind, query)
           .filter()
@@ -205,6 +242,7 @@ export class Crud {
           success_status: true,
           message: "data fetched successfully",
           data: data,
+          doc_length: data.length,
         })
       );
     } catch (error) {
@@ -298,6 +336,7 @@ export class Crud {
         });
       } else {
         get_one = await MyModel.model.findOne(data).select(MyModel.exempt);
+
         if (!get_one)
           throw APP_ERROR(
             `${MyModel} is not successfully fetched`,

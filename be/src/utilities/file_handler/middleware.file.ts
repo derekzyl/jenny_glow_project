@@ -43,7 +43,7 @@ export const formFileHandler =
       for (const key of all_keys) {
         const d =
           request.user && request.user.email
-            ? `${request.user.email.split(".")[0]}/${key as string}/`
+            ? `${request.user.email.split("@")[0]}/${key as string}/`
             : "";
         // 2) check if the field is an array so we can push data
         if (Array.isArray(field[key])) {

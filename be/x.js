@@ -69,4 +69,7 @@ const b = {
   call: 34,
   dope: 23,
 };
-console.log(Object.keys(b));
+// console.log(Object.keys(b));
+
+const nn =
+  "https://res.cloudinary.com/cybergenii/image/upload/v1687840447/cybersgenii/image/huotirmygadzj7jaggfo.jpg";

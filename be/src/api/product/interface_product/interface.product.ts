@@ -13,23 +13,13 @@ export interface ProductI {
   weight: number;
   featured: boolean;
   available: boolean;
-  other_image: string[];
   number_in_stock: number;
+  other_image: string[];
   number_of_reviews: number;
   search_tags: string[];
 }
 
 export interface ProductDocI extends ProductI, Document {}
-export interface ProductBodyI {
-  name: string;
-  description: string;
-  reviews: Types.ObjectId[];
-  category: Types.ObjectId;
-  sub_category: Types.ObjectId;
-  price: number;
-  image: string;
-  other_image: string[];
-  number_in_stock: number;
-  number_of_reviews: number;
-  search_tags: string[];
-}
+export type ProductBodyI = Omit<ProductI, "search_tags"> & {
+  search_tag: string;
+};

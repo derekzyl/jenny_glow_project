@@ -11,12 +11,11 @@ export interface StaffI extends Document {
   user: Types.ObjectId;
   first_name: string;
   last_name: string;
+  image: string;
   address: string;
   username: string;
   branch: Types.ObjectId;
   bank_details?: BankDetailsI;
-  created_at: Date;
-  updated_at: Date;
 }
 
 export interface StaffBodyI {
@@ -26,6 +25,7 @@ export interface StaffBodyI {
   phone: string;
   last_name: string;
   role: Types.ObjectId;
+  image: string;
   address: string;
   username: string;
   branch: Types.ObjectId;

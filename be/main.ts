@@ -10,6 +10,7 @@ import salesRouter from "./src/api/sales/index.sales";
 import userRouter from "./src/api/user/index.user";
 import testRouter from "./src/api/test/main_test/route.t";
 import notificationRouter from "./src/api/notification/main_notification/route.notification";
+import generalRouter from "./src/api/general_factory/route.general";
 
 const app: Express = express();
 
@@ -19,10 +20,11 @@ app.use("/test", testRouter);
 app.use("/admin", adminRouter);
 app.use("/auth", authRouter);
 app.use("/review", reviewRouter);
-app.use("product", productRouter);
+app.use("/product", productRouter);
 app.use("/sales", salesRouter);
 app.use("/user", userRouter);
-app.use("/notificationS", notificationRouter);
+app.use("/gen", generalRouter);
+app.use("/notification", notificationRouter);
 
 // });
 app.use(errorCenter);

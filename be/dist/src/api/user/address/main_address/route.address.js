@@ -11,6 +11,7 @@ addressRouter
     .get(index_auth_1.AuthIndex.protector, index_address_1.AddressIndex.getAllAddress);
 addressRouter
     .route("/:id")
+    .get(index_auth_1.AuthIndex.protector, index_address_1.AddressIndex.getOneAddress)
     .patch(index_auth_1.AuthIndex.protector, index_address_1.AddressIndex.updateAddress)
     .delete(index_auth_1.AuthIndex.protector, index_address_1.AddressIndex.deleteAddress);
 addressRouter

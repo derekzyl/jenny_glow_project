@@ -11,30 +11,45 @@ vatRouter
   .route("/")
   .post(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.CREATE_VAT),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.CREATE_VAT,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     VatIndex.create_vat
   )
   .get(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_VAT),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.VIEW_VAT,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     VatIndex.get_all_vat
   );
 vatRouter
   .route("/:id")
   .get(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_VAT),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.VIEW_VAT,
+      PermissionsE.SUPER_ADMIN,
+    ]),
 
     VatIndex.get_one_vat
   )
   .patch(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.EDIT_VAT),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.EDIT_VAT,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     VatIndex.update_vat
   )
   .delete(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.DELETE_VAT),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.DELETE_VAT,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     VatIndex.delete_vat
   );
 

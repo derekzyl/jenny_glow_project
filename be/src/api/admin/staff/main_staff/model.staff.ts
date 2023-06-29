@@ -1,12 +1,17 @@
 import { Schema, model } from "mongoose";
 import { StaffI } from "../interface_staff/interface.staff";
+import { time_stamps } from "../../../general_factory/interface/general_factory";
 
 const staffSchema = new Schema<StaffI>({
   user: {
     type: Schema.Types.ObjectId,
     ref: "USER",
+    required: true,
   },
   first_name: {
+    type: String,
+  },
+  image: {
     type: String,
   },
   last_name: {
@@ -27,15 +32,8 @@ const staffSchema = new Schema<StaffI>({
   branch: {
     type: Schema.Types.ObjectId,
     ref: "BRANCH",
-  },
-  created_at: {
-    type: Date,
-    default: Date.now(),
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+    required: true,
+  }
+},{timestamps:time_stamps});
 
 export const STAFF = model("STAFF", staffSchema);

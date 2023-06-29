@@ -10,6 +10,8 @@ import { Crud } from "../../../general_factory/crud";
 import { checkPermissions } from "../../../general_factory/permission_handler";
 import { PermissionsE } from "../../../general_factory/interface/general_factory";
 import { Types } from "mongoose";
+import { phone_regex } from "../../../../utilities/regex";
+import { APP_ERROR } from "../../../../utilities/custom_error";
 
 //todo address receipt
 
@@ -22,6 +24,10 @@ export const createAddress = async (
     const user = request.user;
 
     const body: AddressBodyT = request.body;
+    const regex_check = phone_regex.test(body.phone);
+    if (!regex_check) {
+      throw APP_ERROR("invalid phone number");
+    }
 
     // find the  user address length
     const get_addresses = await ADDRESS.find({ user: request.user.id });
@@ -48,11 +54,13 @@ export const getOneAddress = async (
     PermissionsE.VIEW_USER_PROFILE,
     request.user
   );
+
+  console.log("request", request.params.id, "this is the id");
   const user = check_user_clearance ? undefined : request.user.id;
   const crud_address = new Crud(request, response, next);
   crud_address.getOne<AddressDocI>(
     { model: ADDRESS, exempt: "-__v -user " },
-    { id: request.params.id, user },
+    { _id: request.params.id, user },
     {}
   );
 };
@@ -81,7 +89,7 @@ export const updateAddress = async (
   crud_review.update<AddressBodyT, AddressDocI>(
     { model: ADDRESS, exempt: "-__v" },
     { ...body },
-    { id: request.params.id },
+    { id: request.params.id }
   );
 };
 export const deleteAddress = async (

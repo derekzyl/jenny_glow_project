@@ -44,9 +44,14 @@ class Crud {
      */
     async create(MyModel, data, finder) {
         try {
-            const find = await MyModel.model.findOne(finder);
+            console.log("<---------------------finder------", finder);
+            const find = Object.keys(finder).length !== 0
+                ? await MyModel.model.findOne(finder)
+                : undefined;
             if (find)
-                throw (0, custom_error_1.APP_ERROR)(`the ${MyModel} ${finder} already exist in database`, http_response_1.HTTP_RESPONSE.BAD_REQUEST);
+                throw (0, custom_error_1.APP_ERROR)(`the data ${{
+                    ...finder,
+                }}} already exist in database`, http_response_1.HTTP_RESPONSE.BAD_REQUEST);
             const create = new MyModel.model(data);
             const created = await create.save();
             if (!created)
@@ -135,14 +140,27 @@ class Crud {
             const all = [];
             if (Array.isArray(MyModels)) {
                 MyModels.forEach(async (model) => {
-                    let modelFind = model.model.find({ category });
+                    let modelFind = category
+                        ? model.model.find(category)
+                        : model.model.find();
                     if (model.exempt)
                         modelFind = modelFind.select(model.exempt);
-                    if (populate.model)
-                        modelFind = modelFind.populate({
-                            path: populate.model,
-                            select: populate.fields,
-                        });
+                    if (populate && Array.isArray(populate))
+                        for (const pop of populate) {
+                            if (pop.model)
+                                modelFind = modelFind.populate({
+                                    path: pop.model,
+                                    select: pop.fields,
+                                    populate: pop.second_layer_populate,
+                                });
+                        }
+                    else if (populate && !Array.isArray(populate))
+                        if (populate.model)
+                            modelFind = modelFind.populate({
+                                path: populate.model,
+                                select: populate.fields,
+                                populate: populate.second_layer_populate,
+                            });
                     const queryf = new query_1.Queries(modelFind, query)
                         .filter()
                         .limitFields()
@@ -155,9 +173,27 @@ class Crud {
                 });
             }
             else {
-                let modelFind = MyModels.model.find({ category });
+                let modelFind = category
+                    ? MyModels.model.find(category)
+                    : MyModels.model.find();
                 if (MyModels.exempt)
                     modelFind = modelFind.select(MyModels.exempt);
+                if (populate && Array.isArray(populate))
+                    for (const pop of populate) {
+                        if (pop.model)
+                            modelFind = modelFind.populate({
+                                path: pop.model,
+                                select: pop.fields,
+                                populate: pop.second_layer_populate,
+                            });
+                    }
+                else if (populate && !Array.isArray(populate))
+                    if (populate.model)
+                        modelFind = modelFind.populate({
+                            path: populate.model,
+                            select: populate.fields,
+                            populate: populate.second_layer_populate,
+                        });
                 const queryf = new query_1.Queries(modelFind, query)
                     .filter()
                     .limitFields()
@@ -172,6 +208,7 @@ class Crud {
                 success_status: true,
                 message: "data fetched successfully",
                 data: data,
+                doc_length: data.length,
             }));
         }
         catch (error) {

@@ -50,11 +50,20 @@ exports.getPermissions = getPermissions;
 const checkPermissions = (role_name, user) => {
     if (!user)
         throw (0, custom_error_1.APP_ERROR)("oops the user does not exist");
-    if (user.permissions && user.permissions.includes(role_name)) {
-        return true;
+    if (Array.isArray(role_name)) {
+        const found = role_name.some((role) => user.permissions.includes(role));
+        if (found)
+            return true;
+        else
+            return false;
     }
     else {
-        return false;
+        if (user.permissions && user.permissions.includes(role_name)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 };
 exports.checkPermissions = checkPermissions;

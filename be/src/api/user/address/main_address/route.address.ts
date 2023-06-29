@@ -10,6 +10,7 @@ addressRouter
   .get(AuthIndex.protector, AddressIndex.getAllAddress);
 addressRouter
   .route("/:id")
+  .get(AuthIndex.protector, AddressIndex.getOneAddress)
   .patch(AuthIndex.protector, AddressIndex.updateAddress)
   .delete(AuthIndex.protector, AddressIndex.deleteAddress);
 

@@ -8,8 +8,14 @@ const general_factory_1 = require("../../../general_factory/interface/general_fa
 const roleRouter = (0, express_1.Router)();
 roleRouter
     .route("/")
-    .post(index_auth_1.AuthIndex.protector, index_factory_1.GeneralIndex.getUserPermissions(general_factory_1.PermissionsE.CREATE_ROLE), index_role_1.RoleIndex.createRole)
-    .get(index_auth_1.AuthIndex.protector, index_factory_1.GeneralIndex.getUserPermissions(general_factory_1.PermissionsE.VIEW_ROLE), index_role_1.RoleIndex.getAllRole);
+    .post(index_auth_1.AuthIndex.protector, index_factory_1.GeneralIndex.getUserPermissions([
+    general_factory_1.PermissionsE.CREATE_ROLE,
+    general_factory_1.PermissionsE.SUPER_ADMIN,
+]), index_role_1.RoleIndex.createRole)
+    .get(index_auth_1.AuthIndex.protector, index_factory_1.GeneralIndex.getUserPermissions([
+    general_factory_1.PermissionsE.VIEW_ROLE,
+    general_factory_1.PermissionsE.SUPER_ADMIN,
+]), index_role_1.RoleIndex.getAllRole);
 roleRouter
     .route("/:id")
     .patch(index_auth_1.AuthIndex.protector, index_factory_1.GeneralIndex.getUserPermissions(general_factory_1.PermissionsE.EDIT_ROLE), index_role_1.RoleIndex.updateRole)

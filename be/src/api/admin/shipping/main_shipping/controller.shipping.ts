@@ -5,21 +5,43 @@ import { HTTP_RESPONSE } from "../../../../utilities/http_response";
 import { responseMessage } from "../../../../utilities/response_message";
 import { Crud } from "../../../general_factory/crud";
 import {
+  LocationAddressT,
   ShippingBodyT,
   ShippingDocI,
 } from "../interface_shipping/interface.shipping";
 import { SHIPPING } from "./model.shipping";
-
 
 export const fetchCountryAndState = async (
   request: Request,
   response: Response,
   next: NextFunction
 ) => {
+  const r: LocationAddressT = request.query;
+
+  const { country, state } = r;
   try {
+    const data: any[] = JSON.parse(JSON.stringify(address));
+    const result = data
+      .filter((dat) =>
+        country ? dat.name.toLowerCase() === country.toLowerCase() : dat
+      )
+      .filter((data) =>
+        data.states.some((states: any) =>
+          state ? states.name.toLowerCase() === state.toLowerCase() : states
+        )
+      );
+    const m = result.map((a: any) => {
+      return {
+        name: a.name,
+        states: a.states.map((s: any) => {
+          return { name: s.name };
+        }),
+      };
+    });
+
     response.status(HTTP_RESPONSE.OK).json(
       responseMessage({
-        data: address,
+        data: m,
         success_status: true,
         message: "fetched address successfully",
       })
@@ -35,24 +57,14 @@ export const getOneShippingFee = async (
   next: NextFunction
 ) => {
   try {
-    const { state, country }: { state: string; country: string } = request.body;
-
-    const get_shipping_fee = await SHIPPING.findOne({
-      country: country.toUpperCase(),
-    });
+    const get_shipping_fee = await SHIPPING.findById(request.params.id);
 
     if (!get_shipping_fee)
       throw APP_ERROR("shipping fee for selected location not found");
-    const find_state_fee = get_shipping_fee.states.filter(
-      (sta) => sta.name === state
-    );
-    if (!find_state_fee) throw APP_ERROR("hey this is not found here at all");
-    const shipping_fee = get_shipping_fee.use_country_shipping_fee_as_default
-      ? get_shipping_fee.country_shipping_fee
-      : find_state_fee;
+
     response.status(HTTP_RESPONSE.OK).json(
       responseMessage({
-        data: { shipping_fee },
+        data: { get_shipping_fee },
         success_status: true,
         message: "fetched address successfully",
       })
@@ -77,13 +89,14 @@ export const addShippingFee = async (
     const find_country_in_db = await SHIPPING.findOne({
       country: country.toUpperCase(),
     });
+    let create_country_shipping: any;
     if (!find_country_in_db) {
       if (use_country_shipping_fee_as_default) {
         states.map(
           (state) => (state.state_shipping_fee = country_shipping_fee)
         );
       }
-      const create_country_shipping = SHIPPING.create({
+      create_country_shipping = SHIPPING.create({
         created_by: request.user.id,
         country,
         country_shipping_fee,
@@ -115,7 +128,7 @@ export const addShippingFee = async (
     }
     response.status(HTTP_RESPONSE.OK).json(
       responseMessage({
-        data: address,
+        data: create_country_shipping,
         success_status: true,
         message: "fetched address successfully",
       })
@@ -185,7 +198,7 @@ export const getAllShippingFee = async (
   next: NextFunction
 ) => {
   try {
-    const { state, country }: { state: string; country: string } = request.body;
+    // const { state, country }: { state: string; country: string } = request.body;
 
     const get_many_shipping_fee = new Crud(request, response, next);
     get_many_shipping_fee.getMany<ShippingBodyT>(

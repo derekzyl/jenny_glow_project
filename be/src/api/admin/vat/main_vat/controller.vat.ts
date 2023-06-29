@@ -14,7 +14,7 @@ export const createVat = async (
     const gotten_body = { ...body };
     const crud_vat = new Crud(request, response, next);
     crud_vat.create<VatI, VatDocI>({ model: VAT, exempt: "" }, gotten_body, {
-      name: gotten_body.name,
+      vat_name: body.vat_name,
     });
   } catch (error) {
     next(error);

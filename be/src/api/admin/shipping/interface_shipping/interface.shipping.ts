@@ -14,3 +14,5 @@ export interface ShippingModelI extends Model<ShippingDocI> {
 }
 
 export type ShippingBodyT = Omit<ShippingI, "created_by">;
+
+export type LocationAddressT = { country?: string; state?: string };

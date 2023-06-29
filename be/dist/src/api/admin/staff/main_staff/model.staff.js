@@ -2,12 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.STAFF = void 0;
 const mongoose_1 = require("mongoose");
+const general_factory_1 = require("../../../general_factory/interface/general_factory");
 const staffSchema = new mongoose_1.Schema({
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "USER",
+        required: true,
     },
     first_name: {
+        type: String,
+    },
+    image: {
         type: String,
     },
     last_name: {
@@ -28,14 +33,7 @@ const staffSchema = new mongoose_1.Schema({
     branch: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "BRANCH",
-    },
-    created_at: {
-        type: Date,
-        default: Date.now(),
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+        required: true,
+    }
+}, { timestamps: general_factory_1.time_stamps });
 exports.STAFF = (0, mongoose_1.model)("STAFF", staffSchema);

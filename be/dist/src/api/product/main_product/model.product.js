@@ -8,6 +8,7 @@ const productSchema = new mongoose_1.Schema({
         type: String,
         required: true,
         trim: true,
+        uppercase: true,
     },
     description: {
         type: String,

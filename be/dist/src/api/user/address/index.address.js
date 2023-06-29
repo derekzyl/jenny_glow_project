@@ -7,5 +7,6 @@ class Address {
     getAllAddress = controller_address_1.getManyAddress;
     updateAddress = controller_address_1.updateAddress;
     deleteAddress = controller_address_1.deleteAddress;
+    getOneAddress = controller_address_1.getOneAddress;
 }
 exports.AddressIndex = new Address();

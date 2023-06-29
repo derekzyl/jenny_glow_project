@@ -7,7 +7,14 @@ const createProduct = async (request, response, next) => {
     //todo: send the images to aws or cloudinary
     try {
         const body = request.body;
-        const gotten_body = { ...body, created_by: request.user.id };
+        // body.search_tags = Array.from(body.search_tags);
+        const b = body.search_tag.split(" ");
+        // console.log(body.search_tags, "take by one");
+        const gotten_body = {
+            ...body,
+            search_tags: b,
+            created_by: request.user.id,
+        };
         const crud_product = new crud_1.Crud(request, response, next);
         crud_product.create({ model: model_product_1.PRODUCT, exempt: "" }, gotten_body, {
             name: gotten_body.name,
@@ -24,8 +31,16 @@ const getOneProduct = async (request, response, next) => {
 };
 exports.getOneProduct = getOneProduct;
 const getManyProduct = async (request, response, next) => {
+    console.log("inside get many products");
     const crud_product = new crud_1.Crud(request, response, next);
-    crud_product.getMany({ model: model_product_1.PRODUCT, exempt: "-__v -created_at -updated_at" }, request.query, {}, { model: "products" });
+    crud_product.getMany({ model: model_product_1.PRODUCT, exempt: "-__v -created_at -updated_at -created_by" }, request.query, {}, [
+        { model: "category" },
+        {
+            model: "sub_category",
+            fields: "name image",
+        },
+        { model: "reviews" },
+    ]);
 };
 exports.getManyProduct = getManyProduct;
 const updateProduct = async (request, response, next) => {

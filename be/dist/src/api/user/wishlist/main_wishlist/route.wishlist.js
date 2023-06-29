@@ -8,9 +8,9 @@ wishlistRouter
     .route("/")
     .get(index_auth_1.AuthIndex.protector, index_wishlist_1.WishlistIndex.get_wishlist);
 wishlistRouter
-    .route("add/:id")
-    .patch(index_auth_1.AuthIndex.protector, index_wishlist_1.WishlistIndex.add_wishlist);
+    .route("/add/:id")
+    .post(index_auth_1.AuthIndex.protector, index_wishlist_1.WishlistIndex.add_wishlist);
 wishlistRouter
-    .route("remove/:id")
+    .route("/remove/:id")
     .patch(index_auth_1.AuthIndex.protector, index_wishlist_1.WishlistIndex.remove_wishlist);
 exports.default = wishlistRouter;

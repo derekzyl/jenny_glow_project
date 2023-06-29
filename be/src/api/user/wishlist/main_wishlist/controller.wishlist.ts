@@ -22,14 +22,29 @@ export const addWishlist = async (
       throw APP_ERROR("product not found sorry", HTTP_RESPONSE.NOT_FOUND);
     }
     const user = request.user;
-    let get_wish_list = await WISHLIST.findOne({ user: user.id });
+    let get_wish_list = await WISHLIST.findOne({ user: user.id }).populate(
+      "products"
+    );
     if (!get_wish_list) get_wish_list = await WISHLIST.create({ user: user });
-    get_wish_list.products = get_wish_list.products.concat(get_product.id);
+
+    const g = get_wish_list.products.findIndex(
+      (prod) => prod.id === get_product.id
+    );
+    let added = true;
+
+    if (g > -1) {
+      added = false;
+      get_wish_list?.products.splice(g, 1);
+    } else {
+      get_wish_list.products = get_wish_list.products.concat(get_product.id);
+    }
     get_wish_list.save();
     return response.status(HTTP_RESPONSE.OK).json(
       responseMessage({
-        data: `${get_product.name} added successfully to wish list`,
-        message: "added successfully",
+        data: `${get_product.name} ${
+          added ? "added" : "removed"
+        } successfully  ${added ? "to" : "from"} wish list`,
+        message: `${added ? "added" : "removed"} successfully`,
         success_status: true,
       })
     );

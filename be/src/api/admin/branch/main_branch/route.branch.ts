@@ -10,29 +10,44 @@ branchRouter
   .route("/")
   .post(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.CREATE_BRANCH),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.CREATE_BRANCH,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     BranchIndex.create_branch
   )
   .get(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_BRANCH),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.VIEW_BRANCH,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     BranchIndex.get_all_branch
   );
 branchRouter
   .route("/:id")
   .get(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_BRANCH),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.VIEW_BRANCH,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     BranchIndex.get_one_branch
   )
   .patch(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.EDIT_BRANCH),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.EDIT_BRANCH,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     BranchIndex.update_branch
   )
   .delete(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.DELETE_BRANCH),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.DELETE_BRANCH,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     BranchIndex.delete_branch
   );
 

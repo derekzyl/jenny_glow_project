@@ -9,12 +9,18 @@ roleRouter
   .route("/")
   .post(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.CREATE_ROLE),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.CREATE_ROLE,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     RoleIndex.createRole
   )
   .get(
     AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_ROLE),
+    GeneralIndex.getUserPermissions([
+      PermissionsE.VIEW_ROLE,
+      PermissionsE.SUPER_ADMIN,
+    ]),
     RoleIndex.getAllRole
   );
 roleRouter

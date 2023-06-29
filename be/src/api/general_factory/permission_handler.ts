@@ -54,14 +54,20 @@ export const getPermissions =
  * ```
  */
 export const checkPermissions = (
-  role_name: PermissionsE,
+  role_name: PermissionsE | PermissionsE[],
   user: UserI
 ): boolean => {
   if (!user) throw APP_ERROR("oops the user does not exist");
 
-  if (user.permissions && user.permissions.includes(role_name)) {
-    return true;
+  if (Array.isArray(role_name)) {
+    const found = role_name.some((role) => user.permissions.includes(role));
+    if (found) return true;
+    else return false;
   } else {
-    return false;
+    if (user.permissions && user.permissions.includes(role_name)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 };

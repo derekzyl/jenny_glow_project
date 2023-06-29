@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, PopulateOptions } from "mongoose";
 
 /**
  * THE AVAILABLE PERMISSIONS
@@ -80,6 +80,8 @@ export enum PermissionsE {
   EDIT_ONLINE_ORDER = "EDIT_ONLINE_ORDER",
   DELETE_ONLINE_ORDER = "DELETE_ONLINE_ORDER",
   HANDLE_ONLINE_ORDER = "HANDLE_ONLINE_ORDER",
+
+  SUPER_ADMIN = "SUPER_ADMIN",
 }
 
 export interface CrudModelI {
@@ -91,3 +93,9 @@ export const time_stamps = {
   createdAt: "created_at",
   updatedAt: "updated_at",
 };
+
+export interface PopulateFieldI {
+  model?: string;
+  fields?: string;
+  second_layer_populate?: PopulateOptions | string;
+}

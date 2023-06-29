@@ -3,7 +3,7 @@ import { Types, Document, Model } from "mongoose";
 export interface AddressI {
   user: Types.ObjectId;
   address: string;
-  phone: number;
+  phone: string;
   country: string;
   state: string;
   local_government: string;

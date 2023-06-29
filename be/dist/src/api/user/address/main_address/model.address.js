@@ -7,11 +7,11 @@ const general_factory_1 = require("../../../general_factory/interface/general_fa
 const addressSchema = new mongoose_1.Schema({
     user: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: "USER" },
     address: { type: String, required: true },
-    country: { type: String, required: true },
-    local_government: { type: String, required: true },
+    country: { type: String, required: true, uppercase: true },
+    local_government: { type: String, required: true, uppercase: true },
     name: { type: String, required: true },
-    phone: { type: Number, required: true },
-    state: { type: String, required: true },
+    phone: { type: String, required: true },
+    state: { type: String, required: true, uppercase: true },
     zip_code: { type: String, minlength: 5, required: true },
     is_default: { type: Boolean, default: false },
 }, { timestamps: general_factory_1.time_stamps });

@@ -4,12 +4,15 @@ import {
   getAllStaff,
   getMyStaffProfile,
   getOneStaff,
-  updateStaff,
+  adminUpdateStaff,
+  staffUpdateSelf,
 } from "./main_staff/controller.staff";
 
 class Staff {
   public create_staff = createStaff;
-  public update_staff = updateStaff;
+  public update_staff = adminUpdateStaff;
+  public staff_update_self = staffUpdateSelf;
+
   public get_staff_profile = getMyStaffProfile;
   public get_one_staff = getOneStaff;
   public get_all_staff = getAllStaff;

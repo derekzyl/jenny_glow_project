@@ -47,11 +47,15 @@ export class CloudinaryHandler {
       const cld_upload_stream = cloudinary.uploader.upload_stream(
         { folder: link },
         function (error, result) {
-          console.log("error");
+  
 
           // console.log(error, result);
           if (error) reject(error);
-          if (result) resolve(result.secure_url);
+          if (result) {
+            console.log(result, 'this is a result sheet');
+            
+            resolve(result.secure_url);
+          }
         }
       );
       const n = new Readable({
@@ -66,3 +70,30 @@ export class CloudinaryHandler {
     });
   }
 }
+
+
+
+// cloudinary response DataTransfer
+
+// 1] {
+//  asset_id: '5355b5ed158bc4ea2fe19ef14aa45596',
+//  public_id: 'cybersgenii/image/huotirmygadzj7jaggfo',
+//  version: 1687840447,
+//  version_id: '8dc1e47ff4ef5faaac56628832e6c30e',
+//  signature: 'd8fbeca9e5cb65863ba98bccd9c448ae84064318',
+//  width: 500,
+//  height: 500,
+//  format: 'jpg',
+//  resource_type: 'image',
+//  created_at: '2023-06-27T04:34:07Z',
+//  tags: [],
+//  bytes: 33985,
+//  type: 'upload',
+//  etag: 'a394a1f56a2b2ffe0a22563ff99f7980',
+//  placeholder: false,
+//  url: 'http://res.cloudinary.com/cybergenii/image/upload/v1687840447/cybersgenii/image/huotirmygadzj7jaggfo.jpg',
+//  secure_url: 'https://res.cloudinary.com/cybergenii/image/upload/v1687840447/cybersgenii/image/huotirmygadzj7jaggfo.jpg',
+//  folder: 'cybersgenii/image',
+//  original_filename: 'file',
+//  api_key: '148834358482124'
+//   [1] } this is a result sheet

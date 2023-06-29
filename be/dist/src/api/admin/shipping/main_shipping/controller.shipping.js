@@ -11,9 +11,23 @@ const response_message_1 = require("../../../../utilities/response_message");
 const crud_1 = require("../../../general_factory/crud");
 const model_shipping_1 = require("./model.shipping");
 const fetchCountryAndState = async (request, response, next) => {
+    const r = request.query;
+    const { country, state } = r;
     try {
+        const data = JSON.parse(JSON.stringify(countries_states_json_1.default));
+        const result = data
+            .filter((dat) => country ? dat.name.toLowerCase() === country.toLowerCase() : dat)
+            .filter((data) => data.states.some((states) => state ? states.name.toLowerCase() === state.toLowerCase() : states));
+        const m = result.map((a) => {
+            return {
+                name: a.name,
+                states: a.states.map((s) => {
+                    return { name: s.name };
+                }),
+            };
+        });
         response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
-            data: countries_states_json_1.default,
+            data: m,
             success_status: true,
             message: "fetched address successfully",
         }));
@@ -25,20 +39,11 @@ const fetchCountryAndState = async (request, response, next) => {
 exports.fetchCountryAndState = fetchCountryAndState;
 const getOneShippingFee = async (request, response, next) => {
     try {
-        const { state, country } = request.body;
-        const get_shipping_fee = await model_shipping_1.SHIPPING.findOne({
-            country: country.toUpperCase(),
-        });
+        const get_shipping_fee = await model_shipping_1.SHIPPING.findById(request.params.id);
         if (!get_shipping_fee)
             throw (0, custom_error_1.APP_ERROR)("shipping fee for selected location not found");
-        const find_state_fee = get_shipping_fee.states.filter((sta) => sta.name === state);
-        if (!find_state_fee)
-            throw (0, custom_error_1.APP_ERROR)("hey this is not found here at all");
-        const shipping_fee = get_shipping_fee.use_country_shipping_fee_as_default
-            ? get_shipping_fee.country_shipping_fee
-            : find_state_fee;
         response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
-            data: { shipping_fee },
+            data: { get_shipping_fee },
             success_status: true,
             message: "fetched address successfully",
         }));
@@ -54,11 +59,12 @@ const addShippingFee = async (request, response, next) => {
         const find_country_in_db = await model_shipping_1.SHIPPING.findOne({
             country: country.toUpperCase(),
         });
+        let create_country_shipping;
         if (!find_country_in_db) {
             if (use_country_shipping_fee_as_default) {
                 states.map((state) => (state.state_shipping_fee = country_shipping_fee));
             }
-            const create_country_shipping = model_shipping_1.SHIPPING.create({
+            create_country_shipping = model_shipping_1.SHIPPING.create({
                 created_by: request.user.id,
                 country,
                 country_shipping_fee,
@@ -84,7 +90,7 @@ const addShippingFee = async (request, response, next) => {
                 throw (0, custom_error_1.APP_ERROR)("sorry we couldn't update shipping either");
         }
         response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
-            data: countries_states_json_1.default,
+            data: create_country_shipping,
             success_status: true,
             message: "fetched address successfully",
         }));
@@ -129,7 +135,7 @@ const deleteShippingFee = async (request, response, next) => {
 exports.deleteShippingFee = deleteShippingFee;
 const getAllShippingFee = async (request, response, next) => {
     try {
-        const { state, country } = request.body;
+        // const { state, country }: { state: string; country: string } = request.body;
         const get_many_shipping_fee = new crud_1.Crud(request, response, next);
         get_many_shipping_fee.getMany({ model: model_shipping_1.SHIPPING, exempt: "" }, request.query, {}, {});
     }

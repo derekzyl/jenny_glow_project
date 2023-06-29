@@ -9,7 +9,7 @@ const createVat = async (request, response, next) => {
         const gotten_body = { ...body };
         const crud_vat = new crud_1.Crud(request, response, next);
         crud_vat.create({ model: model_vat_1.VAT, exempt: "" }, gotten_body, {
-            name: gotten_body.name,
+            vat_name: body.vat_name,
         });
     }
     catch (error) {

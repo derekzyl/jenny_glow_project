@@ -31,7 +31,7 @@ const formFileHandler = (field, folder_name, use_email_and_key) => async (reques
         const body = request.body;
         for (const key of all_keys) {
             const d = request.user && request.user.email
-                ? `${request.user.email.split(".")[0]}/${key}/`
+                ? `${request.user.email.split("@")[0]}/${key}/`
                 : "";
             // 2) check if the field is an array so we can push data
             if (Array.isArray(field[key])) {

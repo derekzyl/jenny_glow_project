@@ -7,7 +7,6 @@ const vatSchema = new Schema<VatDocI>(
     vat_percentage: Number,
     vat_name: {
       enum: VatE,
-      unique: true,
       required: true,
       type: String,
     },
