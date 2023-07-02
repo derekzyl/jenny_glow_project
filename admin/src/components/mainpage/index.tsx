@@ -1,10 +1,11 @@
 import React from "react";
-import { CustomSideDrawer } from "./shared_mainpage_files/side_drawer";
-import { CustomAppBar } from "./shared_mainpage_files/appbar";
+import { CustomSideDrawer } from "./shared/side_drawer";
+import { CustomAppBar } from "./shared/appbar";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./dashboard/Dashboard";
+
 import { Box, CssBaseline, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import Dashboard from "./components/dashboard/Dashboard";
 
 const defaultTheme = createTheme();
 export default function MainPage() {
