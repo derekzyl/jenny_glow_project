@@ -93,17 +93,18 @@ export const updateProfile = async (
   next: NextFunction
 ) => {
   const body = request.body;
+
   const check_permissions = checkPermissions(
     PermissionsE.EDIT_USER_PROFILE,
     request.user.id
   );
   const data = {
-    user: check_permissions ? undefined : request.user.id,
-    id: check_permissions ? request.params.id : undefined,
+    user: check_permissions ? null : request.user.id,
+    id: check_permissions ? request.params.id : null,
   };
   const crud_review = new Crud(request, response, next);
   crud_review.update<ProfileBodyT, ProfileDocI>(
-    { model: PROFILE, exempt: "-__v" },
+    { model: PROFILE, exempt: "-__v -user" },
     { ...body },
     data
   );

@@ -275,33 +275,62 @@ class Crud {
             let get_one;
             if (Array.isArray(MyModel)) {
                 MyModel.forEach(async (model) => {
-                    get_one = await model.model.findOne(data).select(model.exempt);
-                    if (populate.model)
-                        if (populate.fields)
-                            get_one = get_one
-                                .populate({ path: populate.model, select: populate.fields })
-                                .exec();
-                    if (!get_one)
-                        throw (0, custom_error_1.APP_ERROR)(`${model} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_IMPLEMENTED);
-                    get_data.push(get_one);
+                    get_one = model.model.findOne(data).select(model.exempt);
+                    if (populate && Array.isArray(populate))
+                        for (const pop of populate) {
+                            if (pop.model)
+                                get_one = get_one.populate({
+                                    path: pop.model,
+                                    select: pop.fields,
+                                    populate: pop.second_layer_populate,
+                                });
+                        }
+                    else if (populate && !Array.isArray(populate))
+                        if (populate.model)
+                            get_one = get_one.populate({
+                                path: populate.model,
+                                select: populate.fields,
+                                populate: populate.second_layer_populate,
+                            });
+                    // if (!get_one)
+                    //   throw APP_ERROR(
+                    //     `${model} is not successfully fetched`,
+                    //     HTTP_RESPONSE.NOT_IMPLEMENTED
+                    //   );
+                    const gotten = await get_one.exec();
+                    get_data.push(gotten);
                 });
             }
             else {
-                get_one = await MyModel.model.findOne(data).select(MyModel.exempt);
-                if (!get_one)
-                    throw (0, custom_error_1.APP_ERROR)(`${MyModel} is not successfully fetched`, http_response_1.HTTP_RESPONSE.NOT_FOUND);
-                if (populate.model)
-                    if (populate.fields)
+                get_one = MyModel.model.findOne(data).select(MyModel.exempt);
+                // if (!get_one)
+                //   throw APP_ERROR(
+                //     `${MyModel} is not successfully fetched`,
+                //     HTTP_RESPONSE.NOT_FOUND
+                //   );
+                if (populate && Array.isArray(populate))
+                    for (const pop of populate) {
+                        if (pop.model)
+                            get_one = get_one.populate({
+                                path: pop.model,
+                                select: pop.fields,
+                                populate: pop.second_layer_populate,
+                            });
+                    }
+                else if (populate && !Array.isArray(populate))
+                    if (populate.model)
                         get_one = get_one.populate({
                             path: populate.model,
                             select: populate.fields,
+                            populate: populate.second_layer_populate,
                         });
-                get_data.push(get_one);
+                const gotten = await get_one.exec();
+                get_data.push(gotten);
             }
             this.response.status(http_response_1.HTTP_RESPONSE.OK).json((0, response_message_1.responseMessage)({
                 success_status: true,
                 message: " fetched successfully",
-                data: get_one,
+                data: get_data,
             }));
         }
         catch (error) {

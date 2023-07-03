@@ -102,6 +102,11 @@ export const signup = async (
     });
     const create_cart = new CART({
       user: newUSER.id,
+      total_price: 0,
+      total_shipping_fee: 0,
+      sub_total: 0,
+      vat: 0,
+      products: [],
     });
     await create_profile.save();
     await create_wishlist.save();

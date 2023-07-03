@@ -30,7 +30,7 @@ profileRouter
   );
 
 profileRouter
-  .route("/:id")
+  .route("/user")
   .get(
     AuthIndex.protector,
 
