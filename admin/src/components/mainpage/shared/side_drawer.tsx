@@ -10,6 +10,8 @@ import IconButton from "@mui/material/IconButton";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems, secondaryListItems } from "./listItems";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { openDrawer } from "../../../redux/drawer/drawer.type";
 
 const drawerWidth = 240;
 const Drawer = styled(MuiDrawer, {
@@ -39,12 +41,16 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const CustomSideDrawer = () => {
-  const [open, setOpen] = React.useState(true);
+  const drawer = useAppSelector((state) => state.drawer.open);
+  const dispatch = useAppDispatch();
+
+
   const toggleDrawer = () => {
-    setOpen(!open);
+    dispatch(openDrawer())
+
   };
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer variant="permanent" open={drawer}>
       <Toolbar
         sx={{
           display: "flex",

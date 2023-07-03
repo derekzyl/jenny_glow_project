@@ -73,7 +73,7 @@ const signup = async (request, response, next) => {
         const newUSER = await newUser.save();
         const create_profile = new model_profile_1.PROFILE({
             user: newUSER.id,
-            profile_image: "testing 12343",
+            profile_image: "https://res.cloudinary.com/cybergenii/image/upload/v1688016348/Asset_2_mfttzm.png",
         });
         const create_wishlist = new model_wishlist_1.WISHLIST({
             user: newUSER.id,

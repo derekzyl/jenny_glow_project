@@ -10,6 +10,8 @@ import Badge from "@mui/material/Badge";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
+import { openDrawer } from "../../../redux/drawer/drawer.type";
 
 const drawerWidth = 240;
 
@@ -27,7 +29,7 @@ const AppBar = styled(MuiAppBar, {
   }),
   ...(open && {
     marginLeft: drawerWidth,
-    width: `calc(100%)`,
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -36,13 +38,15 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export const CustomAppBar = () => {
-  const [open, setOpen] = React.useState(true);
+  const drawer = useAppSelector((state) => state.drawer.open);
+  const dispatch = useAppDispatch();
+
   const toggleDrawer = () => {
-    setOpen(!open);
+    dispatch(openDrawer());
   };
 
   return (
-    <AppBar position="absolute" open={open}>
+    <AppBar position="absolute" open={drawer}>
       <Toolbar
         sx={{
           background: "hsl(40, 70%, 40%)",
@@ -56,7 +60,7 @@ export const CustomAppBar = () => {
           onClick={toggleDrawer}
           sx={{
             marginRight: "36px",
-            ...(open && { display: "none" }),
+            ...(drawer && { display: "none" }),
           }}
         >
           <MenuIcon />
