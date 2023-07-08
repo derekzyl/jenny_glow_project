@@ -1,11 +1,10 @@
 import React from "react";
-import { CustomSideDrawer } from "./shared/side_drawer";
+import { CustomSideDrawer } from "./shared/side-drawer";
 import { CustomAppBar } from "./shared/appbar";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 import { Box, CssBaseline, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import Dashboard from "./components/dashboard/Dashboard";
 
 const defaultTheme = createTheme();
 export default function MainPage() {
@@ -16,9 +15,11 @@ export default function MainPage() {
 
         <CustomAppBar />
         <CustomSideDrawer />
-        <Routes>
+        <Outlet />
+        {/* <Routes>
           <Route path="/" element={<Dashboard />} />
-        </Routes>
+          <Route path="/" element={<Role />} />
+        </Routes> */}
       </Box>
     </ThemeProvider>
   );

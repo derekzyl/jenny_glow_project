@@ -18,7 +18,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -63,4 +62,58 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* general styling from the  */
+
+/*
+--------------------
+      DASHBOARD
+--------------------
+
+*/
+.popover-trigger {
+  padding: 10px;
+}
+
+.popover-content {
+  position: absolute;
+  padding: 4px;
+  top: -320%;
+  left: 0%;
+  width: 200px;
+  visibility: hidden;
+  opacity: 0.8;
+  /* display: none; */
+  z-index: 999;
+}
+
+.popover-content::before {
+  content: "";
+  z-index: 999;
+
+  position: absolute;
+  bottom: -18px;
+  left: 5%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: hsl(120, 50%, 80%) transparent transparent transparent;
+}
+
+.info-when-hover:hover + .popover-content {
+  visibility: visible;
+}
+
+/* lets talk about the active button 
+ */
+
+.active {
+  background-color: hsl(60, 70%, 40%);
+  display: flex;
+  min-width: 50px;
+  width: calc(100%);
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
 }

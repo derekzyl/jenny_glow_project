@@ -12,8 +12,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
 import { openDrawer } from "../../../redux/drawer/drawer.type";
+import { colorScheme } from "../../utilities/color-scheme";
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -49,7 +50,7 @@ export const CustomAppBar = () => {
     <AppBar position="absolute" open={drawer}>
       <Toolbar
         sx={{
-          background: "hsl(40, 70%, 40%)",
+          background: colorScheme.primary,
           pr: "24px", // keep right padding when drawer closed
         }}
       >

@@ -19,74 +19,91 @@ import NotificationIcon from "@mui/icons-material/Notifications";
 import SettingIcon from "@mui/icons-material/Settings";
 import ShopIcon from "@mui/icons-material/Shop";
 import StoreIcon from "@mui/icons-material/Store";
+import { NavLink } from "react-router-dom";
+import { Divider, Typography } from "@mui/material";
+import { colorScheme } from "../../utilities/color-scheme";
+import { CrudItemI, CrudItemPropI } from "./interface.shared";
 
-function dashboardList({ name, icon, onClick }: dashboardListI) {
-  return { name, icon, onClick };
+function dashboardList({ name, icon, onClick, link_to }: dashboardListI) {
+  return { name, icon, onClick, link_to };
 }
-
+// this is a side drawer for the dashboard
 const dashboard_item: dashboardListI[] = [
   dashboardList({
     name: "Dashboard",
     icon: <DashboardIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Orders",
     icon: <ShopIcon sx={{ color: "hsl(40, 70%, 40%)" }} />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Inventory",
     icon: <InventoryIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Products",
     icon: <CategoryIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Pos",
     icon: <PointOfSaleIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Expenditure",
     icon: <MonetizationOnIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Frontend",
     icon: <ColorLensIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Roles",
     icon: <AssignmentIndIcon />,
     onClick: () => null,
+    link_to: "/role",
   }),
   dashboardList({
     name: "Users",
     icon: <PeopleIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Staffs",
     icon: <GroupIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Notifications",
     icon: <NotificationIcon />,
     onClick: () => null,
+    link_to: "",
   }),
   dashboardList({
     name: "Branch",
     icon: <StoreIcon />,
     onClick: () => null,
+    link_to: "",
   }),
 ];
 
+// mapping the side drwer
 export const mainListItems = (
   <>
     {dashboard_item
@@ -105,10 +122,25 @@ export const mainListItems = (
       })
       .map((data, idx) => {
         return (
-          <ListItemButton key={idx}>
-            <ListItemIcon>{data.icon}</ListItemIcon>
-            <ListItemText primary={data.name} />
-          </ListItemButton>
+          <NavLink
+            key={idx}
+            className={({ isActive, isPending }) =>
+              isActive ? "active" : isPending ? "pending" : ""
+            }
+            to={data.link_to}
+          >
+            <ListItemButton sx={{ fontSize: 12 }}>
+              <ListItemIcon sx={{ color: colorScheme.secondary_1 }}>
+                {data.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={data.name}
+                sx={{
+                  color: colorScheme.dark_1,
+                }}
+              />
+            </ListItemButton>
+          </NavLink>
         );
       })}
   </>
@@ -130,3 +162,58 @@ export const secondaryListItems = (
     </ListItemButton>
   </React.Fragment>
 );
+
+// a list of crud functions with nav link
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const roleCrud: CrudItemI[] = [
+  {
+    link_to: "/role/",
+    name: "View Roles",
+  },
+  {
+    link_to: "/role/add/",
+    name: "New Role",
+  },
+];
+
+/**
+ *
+ * @param data  it takes the link to and the name of t he list
+ * @returns
+ */
+export function CrudItems({ data }: CrudItemPropI) {
+  return (
+    <>
+      {Object.entries(data).map(([idx, item]) => {
+        return (
+          <NavLink
+            key={idx}
+            className={({ isActive, isPending }) =>
+              isActive ? "active" : isPending ? "pending" : ""
+            }
+            to={item.link_to}
+          >
+            <Typography
+              key={idx}
+              fontSize={16}
+              color="textSecondary"
+              sx={{
+                textTransform: "capitalize",
+                position: "relative",
+
+                fontWeight: 500,
+                color: colorScheme.dark_0,
+                py: 2,
+              }}
+            >
+              {" "}
+              {item.name}
+            </Typography>
+            <Divider />
+          </NavLink>
+        );
+      })}
+    </>
+  );
+}

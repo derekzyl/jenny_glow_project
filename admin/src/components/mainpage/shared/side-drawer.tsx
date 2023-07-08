@@ -9,11 +9,12 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems, secondaryListItems } from "./listItems";
+import { mainListItems, secondaryListItems } from "./list-Items";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { openDrawer } from "../../../redux/drawer/drawer.type";
+import { colorScheme } from "../../utilities/color-scheme";
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -21,6 +22,7 @@ const Drawer = styled(MuiDrawer, {
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
+    backgroundColor: colorScheme.gray_1,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -44,10 +46,8 @@ export const CustomSideDrawer = () => {
   const drawer = useAppSelector((state) => state.drawer.open);
   const dispatch = useAppDispatch();
 
-
   const toggleDrawer = () => {
-    dispatch(openDrawer())
-
+    dispatch(openDrawer());
   };
   return (
     <Drawer variant="permanent" open={drawer}>
