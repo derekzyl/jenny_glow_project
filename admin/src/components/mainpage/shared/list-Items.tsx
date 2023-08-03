@@ -19,6 +19,8 @@ import NotificationIcon from "@mui/icons-material/Notifications";
 import SettingIcon from "@mui/icons-material/Settings";
 import ShopIcon from "@mui/icons-material/Shop";
 import StoreIcon from "@mui/icons-material/Store";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { NavLink } from "react-router-dom";
 import { Divider, Typography } from "@mui/material";
 import { colorScheme } from "../../utilities/color-scheme";
@@ -39,37 +41,37 @@ const dashboard_item: dashboardListI[] = [
     name: "Orders",
     icon: <ShopIcon sx={{ color: "hsl(40, 70%, 40%)" }} />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/order",
   }),
   dashboardList({
-    name: "Inventory",
+    name: "Stock",
     icon: <InventoryIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/stock",
   }),
   dashboardList({
     name: "Products",
     icon: <CategoryIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/product",
   }),
   dashboardList({
     name: "Pos",
     icon: <PointOfSaleIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/pos",
   }),
   dashboardList({
-    name: "Expenditure",
+    name: "Expenses",
     icon: <MonetizationOnIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "expenses",
   }),
   dashboardList({
     name: "Frontend",
     icon: <ColorLensIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/frontend",
   }),
   dashboardList({
     name: "Roles",
@@ -81,25 +83,37 @@ const dashboard_item: dashboardListI[] = [
     name: "Users",
     icon: <PeopleIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/user",
   }),
   dashboardList({
     name: "Staffs",
     icon: <GroupIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/staff",
   }),
   dashboardList({
     name: "Notifications",
     icon: <NotificationIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/notification",
   }),
   dashboardList({
     name: "Branch",
     icon: <StoreIcon />,
     onClick: () => null,
-    link_to: "",
+    link_to: "/branch",
+  }),
+  dashboardList({
+    name: "Dispatch",
+    icon: <LocalShippingIcon />,
+    onClick: () => null,
+    link_to: "/dispatch",
+  }),
+  dashboardList({
+    name: "Sales",
+    icon: <AttachMoneyIcon />,
+    onClick: () => null,
+    link_to: "/sales",
   }),
 ];
 
@@ -129,14 +143,18 @@ export const mainListItems = (
             }
             to={data.link_to}
           >
-            <ListItemButton sx={{ fontSize: 12 }}>
+            <ListItemButton>
               <ListItemIcon sx={{ color: colorScheme.secondary_1 }}>
                 {data.icon}
               </ListItemIcon>
               <ListItemText
-                primary={data.name}
+                disableTypography={false}
+                primary={
+                  <Typography sx={{ fontSize: 14 }}>{data.name}</Typography>
+                }
                 sx={{
                   color: colorScheme.dark_1,
+                  fontSize: 12,
                 }}
               />
             </ListItemButton>
@@ -152,7 +170,7 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Vat" />
+      <ListItemText primary="Report" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -177,6 +195,7 @@ export const roleCrud: CrudItemI[] = [
   },
 ];
 
+export const expenseCrud: CrudItemI[] = [];
 /**
  *
  * @param data  it takes the link to and the name of t he list
@@ -196,7 +215,7 @@ export function CrudItems({ data }: CrudItemPropI) {
           >
             <Typography
               key={idx}
-              fontSize={16}
+              fontSize={14}
               color="textSecondary"
               sx={{
                 textTransform: "capitalize",
@@ -210,7 +229,6 @@ export function CrudItems({ data }: CrudItemPropI) {
               {" "}
               {item.name}
             </Typography>
-            <Divider />
           </NavLink>
         );
       })}

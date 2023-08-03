@@ -23,7 +23,7 @@ export default function Role() {
       }}
     >
       <Container maxWidth={false} sx={{ mx: 2, mt: 4, mb: 4 }}>
-        <Typography sx={{ m: 1, color: colorScheme.dark_2 }} variant="h4">
+        <Typography sx={{ m: 1, color: colorScheme.dark_2, fontSize: 20 }}>
           {" "}
           Role
         </Typography>
