@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateApiKey = exports.dateFunc = exports.generatekey = exports.generatekeyE = exports.generateId = void 0;
+exports.generatekeyE = void 0;
+exports.generateId = generateId;
+exports.generatekey = generatekey;
+exports.dateFunc = dateFunc;
+exports.generateApiKey = generateApiKey;
 function generateId(order_type) {
     const id = new Date();
     const i = id.toLocaleString();
@@ -15,7 +19,6 @@ function generateId(order_type) {
     const r = order_type.toUpperCase() + "_" + k + n + o + "_" + p + o + n + "_" + q;
     return r;
 }
-exports.generateId = generateId;
 /**
  * eslint-disable @typescript-eslint/no-inferrable-types
  *
@@ -28,7 +31,7 @@ var generatekeyE;
     generatekeyE["numbers"] = "numbers";
     generatekeyE["default"] = "default";
     generatekeyE["characters"] = "characters";
-})(generatekeyE = exports.generatekeyE || (exports.generatekeyE = {}));
+})(generatekeyE || (exports.generatekeyE = generatekeyE = {}));
 function generatekey(size = 10, type = generatekeyE.alphanum) {
     const numbers = "01234567890";
     const letters = "abcdefghijklmnopqrstuvwxyz";
@@ -48,7 +51,6 @@ function generatekey(size = 10, type = generatekeyE.alphanum) {
     });
     return gen_key;
 }
-exports.generatekey = generatekey;
 function dateFunc() {
     const id = new Date();
     const i = id.toLocaleString();
@@ -65,7 +67,6 @@ function dateFunc() {
     const ret = date ?? r;
     return ret;
 }
-exports.dateFunc = dateFunc;
 function generateApiKey() {
     const numbers = "0123456789";
     const lower_case_letters = "abcdefghijklmnopqrstuvwxyz";
@@ -91,4 +92,3 @@ function generateApiKey() {
         gotten_public_key,
     };
 }
-exports.generateApiKey = generateApiKey;

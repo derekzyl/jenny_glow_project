@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.customMessage = exports.calculateAddressFee = void 0;
+exports.calculateAddressFee = void 0;
+exports.customMessage = customMessage;
 const model_address_1 = require("../../../user/address/main_address/model.address");
 const custom_error_1 = require("../../../../utilities/custom_error");
 const model_shipping_1 = require("../../../admin/shipping/main_shipping/model.shipping");
@@ -61,4 +62,3 @@ function customMessage(data) {
         message_type: message_type ?? interface_online_1.MessageTypeE.TEXT,
     };
 }
-exports.customMessage = customMessage;

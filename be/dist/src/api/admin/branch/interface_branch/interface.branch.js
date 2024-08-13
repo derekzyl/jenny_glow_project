@@ -5,4 +5,4 @@ var BranchTypeE;
 (function (BranchTypeE) {
     BranchTypeE["ONLINE"] = "ONLINE";
     BranchTypeE["LOCAL"] = "LOCAL";
-})(BranchTypeE = exports.BranchTypeE || (exports.BranchTypeE = {}));
+})(BranchTypeE || (exports.BranchTypeE = BranchTypeE = {}));

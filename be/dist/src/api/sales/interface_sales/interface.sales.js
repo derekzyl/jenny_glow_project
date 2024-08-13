@@ -6,17 +6,17 @@ var OrderStatusE;
     OrderStatusE["SUCCESS"] = "SUCCESS";
     OrderStatusE["PENDING"] = "PENDING";
     OrderStatusE["FAILED"] = "FAILED";
-})(OrderStatusE = exports.OrderStatusE || (exports.OrderStatusE = {}));
+})(OrderStatusE || (exports.OrderStatusE = OrderStatusE = {}));
 var SalesTypeE;
 (function (SalesTypeE) {
     SalesTypeE["ONLINE_SALES"] = "ONLINE_SALES";
     SalesTypeE["STORE_SALES"] = "STORE_SALES";
-})(SalesTypeE = exports.SalesTypeE || (exports.SalesTypeE = {}));
+})(SalesTypeE || (exports.SalesTypeE = SalesTypeE = {}));
 var OrderTypeE;
 (function (OrderTypeE) {
     OrderTypeE["WHOLESALE"] = "WHOLE_SALE";
     OrderTypeE["RETAIL"] = "RETAIL";
-})(OrderTypeE = exports.OrderTypeE || (exports.OrderTypeE = {}));
+})(OrderTypeE || (exports.OrderTypeE = OrderTypeE = {}));
 var PaymentStatusE;
 (function (PaymentStatusE) {
     PaymentStatusE["APPROVED"] = "APPROVED";
@@ -25,7 +25,7 @@ var PaymentStatusE;
     PaymentStatusE["DISPUTE"] = "DISPUTE";
     PaymentStatusE["DECLINED"] = "DECLINED";
     PaymentStatusE["INITIALIZED"] = "INITIALIZED";
-})(PaymentStatusE = exports.PaymentStatusE || (exports.PaymentStatusE = {}));
+})(PaymentStatusE || (exports.PaymentStatusE = PaymentStatusE = {}));
 var PaymentMethodE;
 (function (PaymentMethodE) {
     PaymentMethodE["CASH"] = "CASH";
@@ -35,4 +35,4 @@ var PaymentMethodE;
     PaymentMethodE["BANK_TRANSFERS"] = "BANK_TRANSFERS";
     PaymentMethodE["USSD"] = "USSD";
     PaymentMethodE["POS"] = "POS";
-})(PaymentMethodE = exports.PaymentMethodE || (exports.PaymentMethodE = {}));
+})(PaymentMethodE || (exports.PaymentMethodE = PaymentMethodE = {}));

@@ -1,0 +1,69 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PORT: 3000
+  MONGODB_URL: mongodb://127.0.0.1:27017/pay-paddy-database
+  JWT_SECRET: thisisasamplesecret
+  JWT_ACCESS_EXPIRATION_MINUTES: 30
+  JWT_REFRESH_EXPIRATION_DAYS: 30
+  JWT_RESET_PASSWORD_EXPIRATION_MINUTES: 10
+  JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: 10
+  CLIENT_URL: http://localhost:3000
+permissions: write-all
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        mongodb-version: [5.0]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git config --global credential.helper '!f() { sleep 1; echo "password=$GITHUB_TOKEN"; }; f'
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.3.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: Install dependencies
+        run: yarn install && yarn remove sharp && yarn add sharp --ignore-engines
+
+      # - name: Replace dist folder
+      #   run: rm -rf dist && mkdir dist
+
+      - name: Build and Commit dist folder
+        run: |
+          yarn compile
+      #     git add -f dist
+      #     git commit -m "Build and commit dist folder changes" -a
+      #     git push
+
+      # - name: Add dist folder to GitHub Release Artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: dist
+      #     path: dist
+
+      # - name: Showcase dist folder
+      #   run: ls -R dist 
+
+      - run: echo "🍏 This job's status is ${{ job.status }}"

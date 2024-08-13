@@ -7,4 +7,4 @@ var IdGenE;
     IdGenE["WEB_SALES"] = "WEB";
     IdGenE["DISPATCH"] = "DISP";
     IdGenE["INVENTORY"] = "INV";
-})(IdGenE = exports.IdGenE || (exports.IdGenE = {}));
+})(IdGenE || (exports.IdGenE = IdGenE = {}));

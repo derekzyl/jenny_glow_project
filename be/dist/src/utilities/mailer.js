@@ -13,18 +13,18 @@ class NodeMailer {
             const transporter = nodemailer_1.default.createTransport({
                 host: "process.env.EMAIL_HOST",
                 port: process.env.EMAIL_PORT,
-                secure: false,
+                secure: false, // true for 465, false for other ports
                 auth: {
-                    user: process.env.EMAIL_USER,
+                    user: process.env.EMAIL_USER, // generated ethereal user
                     pass: process.env.EMAIL_PASSWORD, // generated ethereal password
                 },
             });
             // send mail with defined transport object
             const info = await transporter.sendMail({
-                from: process.env.SENDER_MAIL,
-                to: data.to,
-                subject: data.subject,
-                text: data.text,
+                from: process.env.SENDER_MAIL, // sender address
+                to: data.to, // list of receivers
+                subject: data.subject, // Subject line
+                text: data.text, // plain text body
                 html: "<b>kindly follow the instructions to reset your password</b>", // html body
             });
             await transporter.sendMail(info);

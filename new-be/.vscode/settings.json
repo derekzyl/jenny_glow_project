@@ -1,0 +1,14 @@
+{
+    "prettier.enable": true,
+    "cSpell.words": [
+        "bitpwr",
+        "bpwr",
+        "giftcard",
+        "giftcards"
+    ],
+    "docwriter.style": "Doxygen",
+    "compile-hero.disable-compile-files-on-did-save-code": true,
+    "docwriter.progress.trackTypes": true,
+    "docwriter.progress.trackClasses": true,
+    "docwriter.hotkey.mac": "⌥ + ."
+}

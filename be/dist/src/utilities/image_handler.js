@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageUploadHandler = void 0;
+exports.imageUploadHandler = imageUploadHandler;
 /* eslint-disable no-case-declarations */
 const sharp_1 = __importDefault(require("sharp"));
 const dotenv = __importStar(require("dotenv"));
@@ -89,7 +89,6 @@ async function imageUploadHandler(image_file) {
             break;
     }
 }
-exports.imageUploadHandler = imageUploadHandler;
 // export async function imageUpdateHandler(image_file: ImageHandlerI) {
 // }
 // const imageDeletehandler(id:string){}

@@ -99,7 +99,7 @@ var PermissionsE;
     PermissionsE["DELETE_REPORT"] = "DELETE_REPORT";
     PermissionsE["HANDLE_REPORT"] = "HANDLE_REPORT";
     PermissionsE["SUPER_ADMIN"] = "SUPER_ADMIN";
-})(PermissionsE = exports.PermissionsE || (exports.PermissionsE = {}));
+})(PermissionsE || (exports.PermissionsE = PermissionsE = {}));
 exports.time_stamps = {
     createdAt: "created_at",
     updatedAt: "updated_at",

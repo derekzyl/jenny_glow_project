@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorCenter = exports.APP_ERROR = void 0;
+exports.errorCenter = void 0;
+exports.APP_ERROR = APP_ERROR;
 const console_1 = require("./console");
 const http_response_1 = require("./http_response");
 const response_message_1 = require("./response_message");
@@ -34,7 +35,6 @@ function APP_ERROR(message, status) {
     const my_error = new AppError(message, status);
     return my_error;
 }
-exports.APP_ERROR = APP_ERROR;
 const errorCenter = (error, request, response, next) => {
     const error_status = error.statusCode ?? 500;
     let error_message = error.message;

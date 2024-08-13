@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleCheckOut = void 0;
+exports.handleCheckOut = handleCheckOut;
 const interface_online_1 = require("../interface_online/interface.online");
 const model_address_1 = require("../../../user/address/main_address/model.address");
 const custom_error_1 = require("../../../../utilities/custom_error");
@@ -131,4 +131,3 @@ async function handleCheckOut(body, user) {
         throw (0, custom_error_1.APP_ERROR)(error);
     }
 }
-exports.handleCheckOut = handleCheckOut;

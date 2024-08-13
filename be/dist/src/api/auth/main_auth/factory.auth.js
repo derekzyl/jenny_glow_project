@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.protectorFunction = exports.signupFactory = void 0;
+exports.signupFactory = signupFactory;
+exports.protectorFunction = protectorFunction;
 const model_auth_1 = require("./model.auth");
 const crypto_1 = require("crypto");
 const custom_error_1 = require("../../../utilities/custom_error");
@@ -90,7 +91,6 @@ async function signupFactory(request, body) {
         ...data,
     };
 }
-exports.signupFactory = signupFactory;
 async function protectorFunction(request) {
     const token = request.headers.authorization;
     if (!token) {
@@ -113,4 +113,3 @@ async function protectorFunction(request) {
     // }
     return user;
 }
-exports.protectorFunction = protectorFunction;

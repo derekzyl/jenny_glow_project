@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imageDeleteHandler = exports.FileHandler = void 0;
+exports.FileHandler = void 0;
+exports.imageDeleteHandler = imageDeleteHandler;
 //todo sharp lets go
 const sharp_1 = __importDefault(require("sharp"));
 const cloudinary_1 = require("./cloudinary");
@@ -95,7 +96,6 @@ async function imageDeleteHandler(file_names, type = "CLOUDINARY") {
             break;
     }
 }
-exports.imageDeleteHandler = imageDeleteHandler;
 function file_handler(file_name) {
     const get_public_id = file_name.split("/").slice(-2);
     const image = get_public_id[1].split(".")[0];

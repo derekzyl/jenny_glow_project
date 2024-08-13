@@ -6,6 +6,6 @@ var FileTypeE;
 (function (FileTypeE) {
     FileTypeE["IMAGE"] = "IMAGE";
     FileTypeE["APPLICATION"] = "APPLICATION";
-})(FileTypeE = exports.FileTypeE || (exports.FileTypeE = {}));
+})(FileTypeE || (exports.FileTypeE = FileTypeE = {}));
 // lets create the file directory format
 // 'folder/user/user_model/data'

@@ -7,7 +7,7 @@ var MessageTypeE;
     MessageTypeE["URL"] = "URL";
     MessageTypeE["IMAGE"] = "IMAGE";
     MessageTypeE["VIDEO"] = "VIDEO";
-})(MessageTypeE = exports.MessageTypeE || (exports.MessageTypeE = {}));
+})(MessageTypeE || (exports.MessageTypeE = MessageTypeE = {}));
 var OnlineOrderStatusE;
 (function (OnlineOrderStatusE) {
     OnlineOrderStatusE["PAYMENT_SUCCESSFUL"] = "PAYMENT_SUCCESSFUL";
@@ -16,10 +16,10 @@ var OnlineOrderStatusE;
     OnlineOrderStatusE["ORDER_PACKAGED"] = "ORDER_PACKAGED";
     OnlineOrderStatusE["ORDER_DISPATCHED"] = "ORDER_DISPATCHED";
     OnlineOrderStatusE["ORDER_DELIVERED"] = "ORDER_DELIVERED";
-})(OnlineOrderStatusE = exports.OnlineOrderStatusE || (exports.OnlineOrderStatusE = {}));
+})(OnlineOrderStatusE || (exports.OnlineOrderStatusE = OnlineOrderStatusE = {}));
 var AcceptanceStatusE;
 (function (AcceptanceStatusE) {
     AcceptanceStatusE["ACCEPTED"] = "ACCEPTED";
     AcceptanceStatusE["REJECTED"] = "REJECTED";
     AcceptanceStatusE["PENDING"] = "PENDING";
-})(AcceptanceStatusE = exports.AcceptanceStatusE || (exports.AcceptanceStatusE = {}));
+})(AcceptanceStatusE || (exports.AcceptanceStatusE = AcceptanceStatusE = {}));

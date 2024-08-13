@@ -32,10 +32,10 @@ exports.signup = signup;
 const verifyEmail = async (request, response, next) => {
     try {
         const { tokenReset } = request.params;
-        const checker = tokenReset.split("-")[0];
         if (!tokenReset) {
             throw (0, custom_error_1.APP_ERROR)("error verifying email please try again", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }
+        const checker = tokenReset.split("-")[0];
         if (checker !== "email") {
             throw (0, custom_error_1.APP_ERROR)("error please try again", http_response_1.HTTP_RESPONSE.BAD_REQUEST);
         }

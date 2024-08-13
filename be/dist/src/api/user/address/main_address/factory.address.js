@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAddressFactory = void 0;
+exports.createAddressFactory = createAddressFactory;
 const model_address_1 = require("./model.address");
 const regex_1 = require("../../../../utilities/regex");
 const custom_error_1 = require("../../../../utilities/custom_error");
@@ -17,4 +17,3 @@ async function createAddressFactory(body, user) {
     const create_address = await model_address_1.ADDRESS.create({ ...body, user: user.id });
     return create_address;
 }
-exports.createAddressFactory = createAddressFactory;

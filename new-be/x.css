@@ -1,0 +1,69 @@
+.upload-file {
+    position: relative;
+    cursor: pointer;
+}
+
+
+
+.upload-file__input {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+
+
+
+
+.upload-file__img {
+    max-inline-size: 8.75rem;
+}
+
+
+.upload-file__img img {
+    aspect-ratio: 1 / 1;
+    background-color: var(--white-color);
+}
+
+.dropdown-menu,
+.card,
+.upload-file__img img,
+.setting-box,
+.information-details-box,
+.service-man-list__item {
+    border-radius: 0.625rem;
+}
+
+.upload-file__edit {
+    background-color: #c1cbff;
+    color: var(--c1);
+}
+
+.upload-file__edit,
+.upload-file__close {
+    inline-size: 2rem;
+    block-size: 2rem;
+    background-color: #ffe1e2;
+    display: grid;
+    place-items: center;
+    padding: 0.3125rem;
+    color: var(--c2);
+    position: absolute;
+    inset-inline-end: -0.625rem;
+    inset-block-end: -0.625rem;
+}
+
+
+
+
+
+
+.upload-file__edit .material-icons,
+.upload-file__close .material-icons {
+    font-size: 1rem;
+}

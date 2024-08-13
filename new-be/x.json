@@ -1,0 +1,217 @@
+[
+    {
+        "uid": "596ca387-06dc-4fe2-bdbd-70c4d3de97bd",
+        "externalId": "bb7d1d21-6292-4100-8c89-2d7baf40c9df",
+        "fiatCurrency": "USD",
+        "name": "Default Wallet",
+        "type": "DEFAULT",
+        "showInDashboard": true,
+        "isDeleted": false,
+        "isArchived": false,
+        "organizationId": "75ef80d7-70d3-4023-91ac-2170b46d6f82",
+        "network": "TESTNET",
+        "createdAt": "2024-01-29T16:44:56.909Z",
+        "mode": "TEST",
+        "maxDailyAmount": 10000,
+        "maxMonthlyAmount": 100000,
+        "maxDailyTransactionsCount": 100,
+        "maxMonthlyTransactionsCount": 1000,
+        "whiteListAddresses": null,
+        "asset": [
+            {
+                "uid": "15059f56-7520-40e7-9b7c-1a8e9082854c",
+                "guid": "22738e21-2663-4ab8-8797-2c925954db68",
+                "label": "Bitcoin",
+                "isDeleted": false,
+                "isArchived": false,
+                "isContract": false,
+                "chain": "BITCOIN",
+                "network": "TESTNET",
+                "mode": "TEST",
+                "assetType": "BTC",
+                "autoForwardAddress": null,
+                "createdAt": "2024-01-29T16:45:10.082Z",
+                "balance": {
+                    "received": "0.00237790",
+                    "sent": "0.00083795",
+                    "balance": "0.00153995",
+                    "pending": "0.0",
+                    "blocked": "0"
+                }
+            },
+            {
+                "uid": "872ba0b4-d4db-4425-9d9b-836ff6d1525e",
+                "guid": "82b70072-d443-4103-ab04-d011de5b06da",
+                "label": "Ethereum",
+                "isDeleted": false,
+                "isArchived": false,
+                "isContract": false,
+                "chain": "ETHEREUM",
+                "network": "TESTNET",
+                "mode": "TEST",
+                "assetType": "ETH",
+                "autoForwardAddress": null,
+                "createdAt": "2024-01-29T16:45:22.019Z",
+                "balance": {
+                    "received": "0.0",
+                    "sent": "0.0",
+                    "balance": "0.0",
+                    "pending": "0.0",
+                    "blocked": "0.0"
+                }
+            },
+            {
+                "uid": "9ef1071c-3c47-4c0d-a46e-b4837840f57a",
+                "guid": "7eecc544-e6b5-4b65-95ce-cd596316fea7",
+                "label": "Litecoin",
+                "isDeleted": false,
+                "isArchived": false,
+                "isContract": false,
+                "chain": "LITECOIN",
+                "network": "TESTNET",
+                "mode": "TEST",
+                "assetType": "LTC",
+                "autoForwardAddress": null,
+                "createdAt": "2024-01-29T16:45:30.262Z",
+                "balance": {
+                    "received": "0.0",
+                    "sent": "0.0",
+                    "balance": "0.0",
+                    "pending": "0.0",
+                    "blocked": "0.0"
+                }
+            },
+            {
+                "uid": "6da51db0-0bc8-47de-b306-cd1eddfbf5c7",
+                "guid": "8b621bd3-63f6-42ae-a10f-8ebb216347d5",
+                "label": "BNB (BSC)",
+                "isDeleted": false,
+                "isArchived": false,
+                "isContract": false,
+                "chain": "BSC",
+                "network": "TESTNET",
+                "mode": "TEST",
+                "assetType": "BSC",
+                "autoForwardAddress": null,
+                "createdAt": "2024-01-29T16:48:50.047Z",
+                "balance": {
+                    "received": "0.0",
+                    "sent": "0.0",
+                    "balance": "0.0",
+                    "pending": "0.0",
+                    "blocked": "0.0"
+                }
+            },
+            {
+                "uid": "fcd57d9b-239c-4950-a4fb-bb14dd90e440",
+                "guid": "2023ce00-9d97-4ecd-a6ce-b42d6ee9aad3",
+                "label": "etheruem test",
+                "isDeleted": false,
+                "isArchived": false,
+                "isContract": false,
+                "chain": "SOLANA",
+                "network": "TESTNET",
+                "mode": "TEST",
+                "assetType": "SOL",
+                "autoForwardAddress": null,
+                "createdAt": "2024-02-01T05:20:51.923Z",
+                "balance": {
+                    "received": "0.0",
+                    "sent": "0.0",
+                    "balance": "0.0",
+                    "pending": "0.0",
+                    "blocked": "0.0"
+                }
+            }
+        ],
+        "fiatBalance": {
+            "received": "124.18",
+            "sent": "43.76",
+            "balance": "80.42",
+            "pending": "0.00",
+            "blocked": "0.00"
+        }
+    },
+    {
+        "uid": "dce8c0cf-e529-449e-8960-c1119adaab07",
+        "externalId": "9e15ea04-94eb-4014-96dc-736962d45e21",
+        "fiatCurrency": "USD",
+        "name": "Gas Station Vault",
+        "type": "DEFAULT",
+        "showInDashboard": false,
+        "isDeleted": false,
+        "isArchived": false,
+        "organizationId": "75ef80d7-70d3-4023-91ac-2170b46d6f82",
+        "network": "TESTNET",
+        "createdAt": "2024-01-30T09:54:45.812Z",
+        "mode": "TEST",
+        "maxDailyAmount": 10000,
+        "maxMonthlyAmount": 100000,
+        "maxDailyTransactionsCount": 100,
+        "maxMonthlyTransactionsCount": 1000,
+        "whiteListAddresses": null,
+        "asset": [],
+        "fiatBalance": {
+            "received": "0.00",
+            "sent": "0.00",
+            "balance": "0.00",
+            "pending": "0.00",
+            "blocked": "0.00"
+        }
+    }
+]
+
+{
+    "id": 255461,
+    "account_reference": "PSA43E8D9830E1914373",
+    "account_name": "derek ogagarue",
+    "barter_id": "234000002964035",
+    "email": "cybersgenii@gmail.com",
+    "mobilenumber": "07059011222",
+    "country": "NG",
+    "nuban": "9461214848",
+    "bank_name": "Wema Bank PLC",
+    "bank_code": "035",
+    "status": "ACTIVE",
+    "created_at": "2024-02-22T11:38:56.000Z"
+}
+
+
+{
+    "status": "success",
+    "message": "Payout subaccount created",
+    "data": {
+        "id": 255728,
+        "account_reference": "PSA947488434D0166168",
+        "account_name": "david myers",
+        "barter_id": "234000002964673",
+        "email": "derekzyl@gmail.com",
+        "mobilenumber": "08188266175",
+        "country": "NG",
+        "nuban": "9461218092",
+        "bank_name": "Wema Bank PLC",
+        "bank_code": "035",
+        "status": "ACTIVE",
+        "created_at": "2024-02-23T03:49:30.000Z"
+    }
+}
+04: 49: 29 0|app  | 2024-02-23T04: 49: 29: info: request options: {
+    "url": "v3/payout-subaccounts/PSA947488434D0166168/static-account?currency=NGN",
+    "baseURL": "https://api.flutterwave.com/",
+    "method": "GET",
+    "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer FLWSECK-e644b18f4e4a0246d1a0db9dab04a836-18dbfe6d259vt-X"
+    }
+}
+04: 49: 30 0|app  | 2024-02-23T04: 49: 30: info: response data: 200 {
+    "status": "success",
+    "message": "SERVICE-RESPONSE",
+    "data": {
+        "static_account": "9461218092",
+        "bank_name": "Wema Bank PLC",
+        "bank_code": "035",
+        "currency": "NGN",
+        "is_default": true
+    }
+}

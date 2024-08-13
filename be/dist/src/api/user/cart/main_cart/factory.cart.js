@@ -2,7 +2,7 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addCartFunction = void 0;
+exports.addCartFunction = addCartFunction;
 const model_cart_1 = require("./model.cart");
 const model_product_1 = require("../../../product/main_product/model.product");
 const custom_error_1 = require("../../../../utilities/custom_error");
@@ -65,7 +65,6 @@ async function addCartFunction(products, user) {
     get_cart.save();
     return get_cart.products;
 }
-exports.addCartFunction = addCartFunction;
 async function createCartItem(product, check_address_and_shipping, state_fee, get_cart) {
     const get_product = await model_product_1.PRODUCT.findById(product.product);
     if (!get_product) {

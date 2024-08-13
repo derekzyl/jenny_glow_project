@@ -7,4 +7,4 @@ var CurrencyE;
     CurrencyE["GHS"] = "GHS";
     CurrencyE["USD"] = "USD";
     CurrencyE["ZAR"] = "ZAR";
-})(CurrencyE = exports.CurrencyE || (exports.CurrencyE = {}));
+})(CurrencyE || (exports.CurrencyE = CurrencyE = {}));

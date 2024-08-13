@@ -1,0 +1,40 @@
+@baseurl = https://paypad.onrender.com/api/v1
+
+
+
+### login
+
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+{
+    "email":"cybersgenii@gmail.com",
+    "password":""
+}
+
+
+### billing
+
+GET {{baseurl}}/bills/billing-categories/bills
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTk0NGVlOWEyYWM3MjQwYmMwNzJkMTEiLCJpYXQiOjE3MDgxNDcwNDQsImV4cCI6MTcwODE2NTA0NCwidHlwZSI6ImFjY2VzcyJ9.8p4F7fj-7rQnkmwA-Dtk7GjlGQrjs9fZ1sC2mJ5aIZs
+
+### exchange
+
+
+### wallet
+
+
+### swap
+
+
+
+### quote
+
+
+### transfer
+
+
+### withdrawal

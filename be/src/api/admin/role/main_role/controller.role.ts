@@ -4,8 +4,9 @@ import { RoleI } from "../interface_role/interface.role";
 import { ROLE } from "./model.role";
 import { APP_ERROR } from "../../../../utilities/custom_error";
 import { HTTP_RESPONSE } from "../../../../utilities/http_response";
-import { responseMessage } from "../../../../utilities/response_message";
+// import { responseMessage } from "../../../../utilities/response_message";
 import { LOG } from "../../../../utilities/console";
+import responseMessage from "../../../../utilities/response_messge";
 
 export const createRole = async (
   request: Request,
@@ -17,7 +18,6 @@ export const createRole = async (
     request.user,
     "---------------------->>",
   ]);
-  // eslint-disable-next-line prefer-const
   let { name, permissions }: RoleI = request.body;
 
   try {

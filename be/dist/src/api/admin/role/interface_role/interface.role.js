@@ -7,4 +7,4 @@ var RoleE;
     RoleE["STAFF"] = "STAFF";
     RoleE["MANAGER"] = "MANAGER";
     RoleE["SALES_MANAGER"] = "SALES_MANAGER";
-})(RoleE = exports.RoleE || (exports.RoleE = {}));
+})(RoleE || (exports.RoleE = RoleE = {}));

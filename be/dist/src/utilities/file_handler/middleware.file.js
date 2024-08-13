@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stringFileHandler = exports.formFileHandler = exports.multer_upload = void 0;
+exports.formFileHandler = exports.multer_upload = void 0;
+exports.stringFileHandler = stringFileHandler;
 const multer_1 = __importDefault(require("multer"));
 const files_handler_1 = require("./files_handler");
 const id_generator_1 = require("../id_generator");
@@ -94,4 +95,3 @@ function stringFileHandler(file, folder_name, key) {
     const file_name = new files_handler_1.FileHandler(file_data);
     return file_name;
 }
-exports.stringFileHandler = stringFileHandler;
