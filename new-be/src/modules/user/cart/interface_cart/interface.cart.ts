@@ -1,18 +1,19 @@
-import { Types, Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
-export type ProductAndCount = {
-  product: Types.ObjectId;
-  product_total_count: number;
-  product_total_price: number;
-  shipping_fee: number;
+export type CartItemI = {
+  productId: Types.ObjectId;
+  totalCount: number;
+  totalPrice: number;
+  shippingFee: number;
+  variantId?: Types.ObjectId|undefined;
 };
 export interface CartI {
-  user: Types.ObjectId;
-  products: Types.ObjectId[];
-  total_price: number;
+  userId: Types.ObjectId;
+  cartItemsId:Types.ObjectId[]
+  totalPrice: number;
   vat: number;
-  sub_total: number;
-  total_shipping_fee: number;
+  subTotal: number;
+  totalShippingFee: number;
 }
 
 export interface CartDocI extends Document, CartI {}
@@ -20,8 +21,8 @@ export interface CartModelI extends Model<CartDocI> {
   checkDefaultWishlist(): void;
 }
 
-export interface CartItemDocI extends ProductAndCount, Document {
-  cart_id: Types.ObjectId;
+export interface CartItemDocI extends CartItemI, Document {
+  cartId: Types.ObjectId;
 }
-export type CartItemBodyT = ProductAndCount;
-export type CartBodyT = Omit<CartI, "user" | "products">;
+export type CartItemBodyT = CartItemI;
+export type CartBodyT = Omit<CartI, "userId" | "cartItemsId">;

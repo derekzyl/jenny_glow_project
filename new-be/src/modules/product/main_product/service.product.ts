@@ -169,7 +169,9 @@ export async function deleteProduct (productId: Types.ObjectId) {
   return product;
 }
 
-export async function createProductVariant(data: ProductVariantI) {
+export async function createProductVariant (data: ProductVariantI) {
+  
+
   const productVariant = await CrudService.create<ProductVariantI>({
     modelData: {
       Model: PRODUCT_VARIANT,
@@ -209,6 +211,19 @@ export async function getManyProductVariant(query: Record<string, any>) {
   return productVariant;
 }
 
+export async function getManyProductVariantByProductId (productId: Types.ObjectId, query: Record<string, any> = {}) {
+    const productVariant = await CrudService.getMany<ProductVariantI>({
+      modelData: {
+        Model: PRODUCT_VARIANT,
+        select: [],
+      },
+      filter: {productId},
+      populate: {},
+      query,
+    });
+
+    return productVariant;
+}
 
 export async function updateProductVariant(productVariantId: Types.ObjectId, data: Partial<ProductVariantI>&{updatedBy:Types.ObjectId}) {
     const getProductVariant = await CrudService.getOne<ProductVariantI>({

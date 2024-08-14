@@ -17,6 +17,7 @@ import inventoryRouter from '@modules/inventory/route.inventory';
 import { productRouter, productVariantRouter } from '@modules/product/main_product/route.product';
 import referralRoutesV1 from '@modules/referral/routes/referral.route.v1';
 import { reviewRouter } from '@modules/review/main_review/route.review';
+import { stockRouter, stockTransferRouter } from '@modules/stock/routes';
 import walletRoutesV1 from '@modules/wallet/routes/wallet.route.v1';
 import webhookRouterV1 from '@modules/webhooks/webhook.route.v1';
 import express, { Router } from 'express';
@@ -78,12 +79,12 @@ const defaultIRoute: IRoute[] = [
     route: transactionsRoutesV1,
   },
   {
-    path: '/bills',
-    route: billPaymentRoutesV1,
+    path: '/stock',
+    route: stockRouter,
   },
   {
-    path: '/virtual-accounts',
-    route: virtualAccountRouterV1,
+    path: '/stock-transfer',
+    route:stockTransferRouter,
   },
   {
     path: '/staffs',

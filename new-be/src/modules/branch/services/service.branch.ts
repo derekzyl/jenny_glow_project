@@ -48,9 +48,16 @@ export async function createBranch (data: branchBodyT) {
 
 }
 
-export async function getBranch (id: Types.ObjectId) {
+export async function getBranchById (id: Types.ObjectId) {
     const branch = await CrudService.getOne<BranchI>({
         data: {_id: id}, modelData: {Model: BRANCH, select: []}, populate: []
+    })
+
+    return branch
+}
+export async function getOneBranch (data:Partial<BranchI>) {
+    const branch = await CrudService.getOne<BranchI>({
+        data, modelData: {Model: BRANCH, select: []}, populate: []
     })
 
     return branch

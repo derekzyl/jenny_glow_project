@@ -7,7 +7,17 @@ const stockSchema = new Schema<stockDocument, stockModel>({
     productId: { type: Schema.Types.ObjectId, ref: 'PRODUCT', required: true },
     amountInStock: { type: Number, required: true },
     branchId: { type: Schema.Types.ObjectId, ref: 'BRANCH', required: true },
-    stockType: { type: String, required: true }
+  stockType: { type: String, required: true },
+  productVariant: [{
+    productVariantId: {
+      type: Schema.Types.ObjectId,
+      ref: 'PRODUCT_VARIANT',
+    },
+    variantCount: {
+      type: Number,
+    },
+    
+    }],
 
 }, { timestamps: true });
 

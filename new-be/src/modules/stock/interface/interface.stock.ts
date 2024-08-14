@@ -1,13 +1,18 @@
 import mongoose from "mongoose";
 
 
-export interface StockI{
-    productId: mongoose.Types.ObjectId;
-    amountInStock: number;
-    branchId: mongoose.Types.ObjectId;
-    stockType: string;
-    stockStatus: string;
-
+export interface StockI {
+  productId: mongoose.Types.ObjectId;
+  productVariant?:
+    | {
+        productVariantId: mongoose.Types.ObjectId;
+        variantCount: number;
+      }[]
+    | undefined;
+  amountInStock: number;
+  branchId: mongoose.Types.ObjectId;
+  stockType: string;
+  stockStatus: string;
 }
 
 export interface stockDocument extends mongoose.Document, StockI { }

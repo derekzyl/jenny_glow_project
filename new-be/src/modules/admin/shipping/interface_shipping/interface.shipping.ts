@@ -16,7 +16,7 @@ export interface ShippingModelI extends Model<ShippingDocI> {
   makeUppercase(): void;
 }
 
-export type ShippingBodyT = Omit<ShippingI, "created_by">;
+export type ShippingBodyT = Omit<ShippingI, "createdBy">;
 
 export type LocationAddressT = { country?: string; state?: string };
 

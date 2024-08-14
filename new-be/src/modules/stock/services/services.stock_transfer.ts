@@ -6,6 +6,7 @@ import { TrxCrudTypes, TrxTypes } from '@modules/transactions/interfaces/interfa
 import { easyReferenceGenerator, GeneratePrefixType } from '@modules/utils/referenceGenerator';
 import { GeneralStatus } from '@modules/utils/utils';
 import { CrudService } from 'expressbolt';
+import { Types } from 'mongoose';
 import { stockService } from '..';
 import { StockTransferI } from '../interface/interface.stock_transfer';
 import { STOCK_TRANSFER } from '../model/stock_transfer.model';
@@ -23,7 +24,7 @@ export async function createStockTransfer(data: Omit<StockTransferI, 'toBranchSt
   return stockTransfer;
 }
 
-export async function getOneStockTransfer(stockTransferId: string) {
+export async function getOneStockTransfer(stockTransferId: Types.ObjectId) {
   const stockTransfer = await CrudService.getOne<StockTransferI>({
     modelData: {
       Model: STOCK_TRANSFER,
@@ -50,7 +51,7 @@ export async function getManyStockTransfer(query: Record<string, any>) {
   return stockTransfer;
 }
 
-export async function updateStockTransfer(stockTransferId: string, data: Partial<StockTransferI>) {
+export async function updateStockTransfer(stockTransferId: Types.ObjectId, data: Partial<StockTransferI>) {
   const stockTransfer = await CrudService.update<StockTransferI>({
     modelData: {
       Model: STOCK_TRANSFER,
@@ -63,7 +64,7 @@ export async function updateStockTransfer(stockTransferId: string, data: Partial
   return stockTransfer;
 }
 
-export async function deleteStockTransfer(stockTransferId: string) {
+export async function deleteStockTransfer(stockTransferId: Types.ObjectId) {
   const stockTransfer = await CrudService.delete<StockTransferI>({
     modelData: {
       Model: STOCK_TRANSFER,
@@ -89,7 +90,7 @@ export async function isProductInStockForTransfer(productId: string, branchId: s
   return product ? true : false;
 }
 
-export async function updateStockTransferStatus(stockTransferId: string, status: GeneralStatus) {
+export async function updateStockTransferStatus(stockTransferId: Types.ObjectId, status: GeneralStatus) {
   // lets get the stock transfer
 
   const stock = await STOCK_TRANSFER.findOne({ id: stockTransferId });
@@ -100,7 +101,7 @@ export async function updateStockTransferStatus(stockTransferId: string, status:
   let trxs = {
     trxType: TrxTypes.STOCK_TRANSFER,
 
-    referenceId: stockTransferId,
+    referenceId: stockTransferId.toString(),
     createdBy: stock.fromBranch,
     details: `Stock transfer from branch ${stock.fromBranch} to branch ${stock.toBranch}`,
     trxCrudType: TrxCrudTypes.UPDATE,
@@ -130,6 +131,7 @@ export async function updateStockTransferStatus(stockTransferId: string, status:
         productId: product.product,
         amount: product.productTotalCount,
         stockType: 'TRANSFER',
+        productVariant:product.productVariant
       });
 
       await stockService.addToStock({
@@ -137,6 +139,7 @@ export async function updateStockTransferStatus(stockTransferId: string, status:
         productId: product.product,
         amount: product.productTotalCount,
         stockType: 'TRANSFER',
+        productVariant:product.productVariant
       });
     });
     await Promise.all(stk);
@@ -176,7 +179,7 @@ export async function updateStockTransferStatus(stockTransferId: string, status:
   return stockTransfer;
 }
 
-export async function acceptStockTransferByBranch (stockTransferId: string, 
+export async function acceptStockTransferByBranch (stockTransferId: Types.ObjectId, 
     
 ) {
   // lets get the stock transfer
@@ -189,7 +192,7 @@ export async function acceptStockTransferByBranch (stockTransferId: string,
   let trxs = {
     trxType: TrxTypes.STOCK_TRANSFER,
 
-    referenceId: stockTransferId,
+    referenceId: stockTransferId.toString(),
     createdBy: stock.fromBranch,
     details: `Stock transfer from branch ${stock.fromBranch} to branch ${stock.toBranch}`,
     trxCrudType: TrxCrudTypes.UPDATE,
@@ -219,6 +222,7 @@ export async function acceptStockTransferByBranch (stockTransferId: string,
         productId: product.product,
         amount: product.productTotalCount,
         stockType: 'TRANSFER',
+        productVariant:product.productVariant
       });
 
       await stockService.addToStock({
@@ -226,6 +230,7 @@ export async function acceptStockTransferByBranch (stockTransferId: string,
         productId: product.product,
         amount: product.productTotalCount,
         stockType: 'TRANSFER',
+        productVariant:product.productVariant
       });
     });
     await Promise.all(stk);

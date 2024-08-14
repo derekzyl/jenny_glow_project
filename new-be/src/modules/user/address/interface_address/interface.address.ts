@@ -1,15 +1,15 @@
-import { Types, Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 export interface AddressI {
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
   address: string;
   phone: string;
   country: string;
   state: string;
-  local_government: string;
+  localGovernment: string;
   name: string;
-  zip_code: string;
-  is_default: boolean;
+  zipCode: string;
+  isDefault: boolean;
 }
 
 export interface AddressDocI extends Document, AddressI {}

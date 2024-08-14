@@ -1,3 +1,4 @@
+import { easyCreated } from "@modules/utils/created";
 import mongoose from "mongoose";
 import { StockTransferDocument, StockTransferModel } from "../interface/interface.stock_transfer";
 
@@ -5,7 +6,18 @@ const stockTransferSchema = new mongoose.Schema<StockTransferDocument, StockTran
     products: [
         {
             product: { type: mongoose.Schema.Types.ObjectId, ref: 'PRODUCT', required: true },
-            productTotalCount: { type: Number, required: true }
+            productTotalCount: { type: Number, required: true },
+            variant: [
+                {
+                    variantId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'PRODUCT_VARIANT',
+                    },
+                    variantCount: {
+                        type: Number,
+                    },
+                }
+            ]
         }
     ],
     note: { type: String },
@@ -14,7 +26,7 @@ const stockTransferSchema = new mongoose.Schema<StockTransferDocument, StockTran
     fromBranch: { type: mongoose.Schema.Types.ObjectId, ref: 'BRANCH', required: true },
     toBranch: { type: mongoose.Schema.Types.ObjectId, ref: 'BRANCH', required: true },
     transferStatus: { type: String, required: true },
-    transferType: { type: String, required: true }
+    transferType: { type: String, required: true },...easyCreated
 }, { timestamps: true });
 
 

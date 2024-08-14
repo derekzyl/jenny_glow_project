@@ -1,53 +1,47 @@
-import { Request, Response, NextFunction } from "express";
-import { Types } from "mongoose";
+import { NextFunction, Request, Response } from "express";
+import { APP_ERROR } from "../../../../utilities/custom_error";
+import { HTTP_RESPONSE } from "../../../../utilities/http_response";
+import { generateId } from "../../../../utilities/id_generator";
+import { IdGenE } from "../../../../utilities/interface_utilities/id_gen.interface";
+import { n } from "../../../../utilities/number_checker";
+import { PaymentIndex } from "../../../../utilities/payment/index.payment";
+import { BranchTypeE } from "../../../admin/branch/interface_branch/interface.branch";
+import { BRANCH } from "../../../admin/branch/main_branch/model.branch";
+import { DISPATCH } from "../../../admin/dispatch/main_dispatch/model.dispatch";
+import { StaffI } from "../../../admin/staff/interface_staff/interface.staff";
+import { STAFF } from "../../../admin/staff/main_staff/model.staff";
+import { VatE } from "../../../admin/vat/interface_vat/interface.vat";
+import { VAT } from "../../../admin/vat/main_vat/model.vat";
+import {
+  protectorFunction,
+  signupFactory,
+} from "../../../auth/main_auth/factory.auth";
+import { USER } from "../../../auth/main_auth/model.auth";
+import { Crud } from "../../../general_factory/crud";
+import { PermissionsE } from "../../../general_factory/interface/general_factory";
+import { NOTIFICATION } from "../../../notification/main_notification/model.notification";
+import { PRODUCT } from "../../../product/main_product/model.product";
+import { REVIEW } from "../../../review/main_review/model.review";
+import { createAddressFactory } from "../../../user/address/main_address/service.address";
+import { addCartFunction } from "../../../user/cart/main_cart/factory.cart";
+import { CART, CART_ITEM } from "../../../user/cart/main_cart/model.cart";
+import { PROFILE } from "../../../user/profile/main_profile/model.profile";
+import {
+  PaymentMethodE,
+  PaymentStatusE
+} from "../../interface_sales/interface.sales";
 import {
   AcceptanceStatusE,
-  MessageT,
   MessageTypeE,
   OnlineBodyT,
   OnlineDocI,
   OnlineI,
   OnlineOrderStatusE,
-  notLoggedIn,
+  notLoggedIn
 } from "../interface_online/interface.online";
-import { ADDRESS } from "../../../user/address/main_address/model.address";
-import { APP_ERROR } from "../../../../utilities/custom_error";
-import { HTTP_RESPONSE } from "../../../../utilities/http_response";
-import { CART, CART_ITEM } from "../../../user/cart/main_cart/model.cart";
-import { calculateAddressFee, customMessage } from "./service.online";
-import { n } from "../../../../utilities/number_checker";
-import { PRODUCT } from "../../../product/main_product/model.product";
-import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
-import { generateId } from "../../../../utilities/id_generator";
-import {
-  OrderStatusE,
-  PaymentMethodE,
-  PaymentStatusE,
-} from "../../interface_sales/interface.sales";
-import { IdGenE } from "../../../../utilities/interface_utilities/id_gen.interface";
-import { VAT } from "../../../admin/vat/main_vat/model.vat";
-import { VatE } from "../../../admin/vat/interface_vat/interface.vat";
-import { ONLINE_ORDER } from "./model.online";
-import { PaystackPayI } from "../../../../utilities/interface_utilities/payment.interface";
-import { PaymentIndex } from "../../../../utilities/payment/index.payment";
-import { DISPATCH } from "../../../admin/dispatch/main_dispatch/model.dispatch";
-import { BRANCH } from "../../../admin/branch/main_branch/model.branch";
-import { BranchTypeE } from "../../../admin/branch/interface_branch/interface.branch";
-import { STAFF } from "../../../admin/staff/main_staff/model.staff";
-import { USER } from "../../../auth/main_auth/model.auth";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
-import { StaffI } from "../../../admin/staff/interface_staff/interface.staff";
-import { NOTIFICATION } from "../../../notification/main_notification/model.notification";
-import { REVIEW } from "../../../review/main_review/model.review";
-import { PROFILE } from "../../../user/profile/main_profile/model.profile";
-import { Crud } from "../../../general_factory/crud";
 import { handleCheckOut } from "./factory.online";
-import {
-  protectorFunction,
-  signupFactory,
-} from "../../../auth/main_auth/factory.auth";
-import { createAddressFactory } from "../../../user/address/main_address/factory.address";
-import { addCartFunction } from "../../../user/cart/main_cart/factory.cart";
+import { ONLINE_ORDER } from "./model.online";
+import { customMessage } from "./service.online";
 
 // 1) create a post online order ✅done
 // 2) the dispatch rider should be able to maintain the messages on the order dispatch update

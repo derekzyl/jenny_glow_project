@@ -1,20 +1,32 @@
+import { auth } from "@modules/auth";
+import { allPermissions } from "@modules/setting/roles";
+import { validate } from "@modules/validate";
 import { Router } from "express";
-import { AddressIndex } from "../index.address";
-import { AuthIndex } from "../../../auth/index.auth";
 import { ShippingIndex } from "../../../admin/shipping/index.shipping";
+import { AddressIndex } from "../index.address";
+import * as addressValidation from "./validation.address";
 
 const addressRouter = Router();
 addressRouter
   .route("/")
-  .post(AuthIndex.protector, AddressIndex.createAddress)
-  .get(AuthIndex.protector, AddressIndex.getAllAddress);
+  .post(auth(),validate(addressValidation.addressSchema), AddressIndex.createAddress)
+  .get(auth(allPermissions.User.Manage),validate(addressValidation.addressQuerySchema),  AddressIndex.getAllAddress);
 addressRouter
-  .route("/:id")
-  .get(AuthIndex.protector, AddressIndex.getOneAddress)
-  .patch(AuthIndex.protector, AddressIndex.updateAddress)
-  .delete(AuthIndex.protector, AddressIndex.deleteAddress);
+  .route("/:id/address")
+  .get(auth(allPermissions.User.Manage), AddressIndex.getOneAddress)
+  .patch(auth(allPermissions.User.Manage), AddressIndex.updateAddress)
+  .delete(auth(allPermissions.User.Manage), AddressIndex.deleteAddress);
 
 addressRouter
   .route("/getCountryAndState")
-  .get(AuthIndex.protector, ShippingIndex.fetch_country_and_state);
+  .get(auth(), ShippingIndex.fetch_country_and_state);
+
+addressRouter
+  .route("/getAddressByUser")
+  .get(auth(), AddressIndex.getAddressByUser);
+
+addressRouter.get("/getAddressesByUser", auth(), AddressIndex.getAddressesByUser);
+addressRouter.patch("/setDefaultAddress/:id", auth(), AddressIndex.setDefaultAddress);
+
+
 export default addressRouter;

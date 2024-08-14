@@ -1,103 +1,196 @@
-import { NextFunction, Response, Request } from "express";
+import { Request, Response } from "express";
 
 import { ADDRESS } from "./model.address";
 
+import { ApiError } from "@modules/errors";
+import { catchAsync } from "@modules/utils";
+import { phoneRegex } from "@modules/utils/utils";
+import { CrudService } from "expressbolt";
+import httpStatus from "http-status";
 import {
   AddressBodyT,
-  AddressDocI,
+  AddressI
 } from "../interface_address/interface.address";
-import { Crud } from "../../../general_factory/crud";
-import { checkPermissions } from "../../../general_factory/permission_handler";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
-import { Types } from "mongoose";
-import { phone_regex } from "../../../../utilities/regex";
-import { APP_ERROR } from "../../../../utilities/custom_error";
 
-export const createAddress = async (
+export const createAddress =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  try {
-    const user = request.user;
+
+  
 
     const body: AddressBodyT = request.body;
-    const regex_check = phone_regex.test(body.phone);
+    const regex_check = phoneRegex(body.phone);
     if (!regex_check) {
-      throw APP_ERROR("invalid phone number");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Invalid phone number");
     }
 
     // find the  user address length
     const get_addresses = await ADDRESS.find({ user: request.user.id });
     if (!get_addresses || get_addresses.length < 1) {
-      body.is_default = true;
+      body.isDefault = true;
     }
-    const crud_address = new Crud(request, response, next);
-    crud_address.create<AddressBodyT & { user: Types.ObjectId }, AddressDocI>(
-      { model: ADDRESS, exempt: "" },
-      { ...body, user: user.id },
-      {}
-    );
-  } catch (error) {
-    next(error);
-  }
-};
+  const createAddress = CrudService.create<AddressI>({
+    check: { user: request.user.id },
+    data: {...body, userId: request.user.id},
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
+    },
+  });
+  response.status(httpStatus.CREATED).send(createAddress);
 
-export const getOneAddress = async (
+});
+
+export const getOneAddress =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const check_user_clearance = checkPermissions(
-    PermissionsE.VIEW_USER_PROFILE,
-    request.user
-  );
+  const getOne = await CrudService.getOne<AddressI>({
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
 
+    }, data: { _id: request.params["id"] },
+    populate:{}
 
-  const user = check_user_clearance ? undefined : request.user.id;
-  const crud_address = new Crud(request, response, next);
-  crud_address.getOne<AddressDocI>(
-    { model: ADDRESS, exempt: "-__v -user " },
-    { _id: request.params.id, user },
-    {}
-  );
-};
+  })
+  response.json(getOne);
+});
 
-export const getManyAddress = async (
+export const getManyAddress =catchAsync (async (
   request: Request,
   response: Response,
-  next: NextFunction
-) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.getMany<AddressDocI>(
-    { model: ADDRESS, exempt: "-__v, -user " },
-    request.query,
-    {},
-    {}
-  );
-};
 
-export const updateAddress = async (
+) => {
+  const getMany = await CrudService.getMany<AddressI>({
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
+
+    },
+    query: request.query,filter:{},
+    populate:{}
+  });
+  response.json(getMany);
+});
+
+export const updateAddress = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const body = request.body;
-  const crud_review = new Crud(request, response, next);
-  crud_review.update<AddressBodyT, AddressDocI>(
-    { model: ADDRESS, exempt: "-__v" },
-    { ...body },
-    { _id: request.params.id }
-  );
-};
-export const deleteAddress = async (
+
+  const updateAddress = await CrudService.update<AddressI>({
+    data: request.body,
+    filter: { _id: request.params["id"] },
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
+
+    },
+  });
+  response.json(updateAddress);
+
+});
+export const deleteAddress = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.delete<AddressDocI>(
-    { model: ADDRESS, exempt: "-__v -created_at -updated_at" },
-    { _id: request.params.id }
-  );
-};
+  const deleteAddress = await CrudService.delete<AddressI>({
+    data: { _id: request.params["id"] },
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
+
+    },
+  });
+  response.json(deleteAddress);
+
+});
+
+
+export const setDefaultAddress = catchAsync(async (
+  request: Request,
+  response: Response,
+
+) => {
+  const setDefaultAddress = await CrudService.update<AddressI>({
+    data: { isDefault: true },
+    filter: { _id: request.params["id"] },
+    modelData: {
+      Model: ADDRESS,
+      select: ["-__v"],
+
+    },
+  });
+  response.json(setDefaultAddress);
+
+});
+
+
+export const getAddressesByUser = catchAsync(async(
+  request: Request,
+  response: Response,
+
+) => {
+  const getMany = await CrudService.getMany<AddressI>({
+    modelData: {
+      Model: ADDRESS,
+      select: ['-__v'],
+    },
+    query: request.query,
+    filter: { userId: request.user.id },
+    populate: {},
+  });
+  response.json(getMany);
+})
+export const getAddressByUser = catchAsync(async(
+  request: Request,
+  response: Response,
+
+) => {
+  const getOne = await CrudService.getOne<AddressI>({
+    modelData: {
+      Model: ADDRESS,
+      select: ['-__v'],
+    },
+    data: { _id: request.params['id'], userId: request.user.id },
+
+    populate: {},
+  });
+  response.json(getOne);
+})
+export const deleteAddressByUser = catchAsync(async(
+  request: Request,
+  response: Response,
+
+) => {
+  const deleteAddress = await CrudService.delete<AddressI>({
+    data: { _id: request.params['id'], userId: request.user.id },
+    modelData: {
+      Model: ADDRESS,
+      select: ['-__v'],
+    },
+  });
+  response.json(deleteAddress);
+})
+
+export const updateAddressByUser = catchAsync(async(
+  request: Request,
+  response: Response,
+
+) => {
+  const updateAddress = await CrudService.update<AddressI>({
+    data: request.body,
+    filter: { _id: request.params['id'], userId: request.user.id },
+    modelData: {
+      Model: ADDRESS,
+      select: ['-__v'],
+    },
+  });
+  response.json(updateAddress);
+})

@@ -27,7 +27,7 @@ export const getOneBranch = catchAsync(async (req: Request, res: Response) => {
         res.status(400).send("Invalid id");
         return;
     }
-    const branch = await branchService.getBranch(id);
+    const branch = await branchService.getBranchById(id);
     res.status(200).send(branch);
 })
 

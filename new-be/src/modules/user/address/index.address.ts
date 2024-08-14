@@ -1,9 +1,13 @@
 import {
   createAddress,
   deleteAddress,
+  deleteAddressByUser,
+  getAddressByUser,
+  getAddressesByUser,
   getManyAddress,
-  updateAddress,
   getOneAddress,
+  setDefaultAddress,
+  updateAddress
 } from "./main_address/controller.address";
 
 class Address {
@@ -12,5 +16,10 @@ class Address {
   public updateAddress = updateAddress;
   public deleteAddress = deleteAddress;
   public getOneAddress = getOneAddress;
+  public deleteAddressByUser = deleteAddressByUser;
+  public getAddressByUser = getAddressByUser;
+  public getAddressesByUser = getAddressesByUser;
+  public setDefaultAddress = setDefaultAddress;
+  
 }
 export const AddressIndex = new Address();

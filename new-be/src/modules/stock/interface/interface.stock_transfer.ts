@@ -3,24 +3,27 @@ import mongoose from "mongoose";
 
 
 
-export interface StockTransferI{
-    products: [
-        {
-            product: mongoose.Types.ObjectId;
-            productTotalCount: number;
-           
-        }
-    ];
-    fromBranch: mongoose.Types.ObjectId;
-    toBranch: mongoose.Types.ObjectId;
-    toBranchStatus: boolean;
-    fromBranchStatus: boolean;
-    transferStatus: GeneralStatus;
-    note: string;
-    transferType: string;
-
-    
- }
+export interface StockTransferI {
+  products: [
+    {
+      product: mongoose.Types.ObjectId;
+      productTotalCount: number;
+      productVariant?: {
+        productVariantId: mongoose.Types.ObjectId;
+        variantCount: number;
+      }[]|undefined;
+    }
+  ];
+  fromBranch: mongoose.Types.ObjectId;
+  toBranch: mongoose.Types.ObjectId;
+  toBranchStatus: boolean;
+  fromBranchStatus: boolean;
+  transferStatus: GeneralStatus;
+  note: string;
+  transferType: string;
+  createdBy: mongoose.Types.ObjectId;
+  updatedBy: mongoose.Types.ObjectId;
+}
 
 
 

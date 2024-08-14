@@ -3,38 +3,36 @@ import {
   AddressDocI,
   AddressModelI,
 } from "../interface_address/interface.address";
-import { APP_ERROR } from "../../../../utilities/custom_error";
-import { time_stamps } from "../../../general_factory/interface/general_factory";
 
 const addressSchema = new Schema<AddressDocI, AddressModelI>(
   {
-    user: { type: Schema.Types.ObjectId, required: true, ref: "USER" },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: "USERS" },
     address: { type: String, required: true },
     country: { type: String, required: true, uppercase: true },
-    local_government: { type: String, required: true, uppercase: true },
+    localGovernment: { type: String, required: true, uppercase: true },
     name: { type: String, required: true },
     phone: { type: String, required: true },
     state: { type: String, required: true, uppercase: true },
-    zip_code: { type: String, minlength: 5, required: true },
-    is_default: { type: Boolean, default: false },
+    zipCode: { type: String, minlength: 5, required: true },
+    isDefault: { type: Boolean, default: false },
   },
-  { timestamps: time_stamps }
+  { timestamps: true}
 );
 
 addressSchema.pre("save", async function () {
   try {
-    if (Boolean(this.is_default) === true) {
-      const get_address = await ADDRESS.findOne({
-        user: this.user,
-        is_default: true,
+    if (Boolean(this.isDefault) === true) {
+      const getAddress = await ADDRESS.findOne({
+        user: this.userId,
+        isDefault: true,
       });
-      if (get_address) {
-        get_address.is_default = false;
-        get_address.save();
+      if (getAddress) {
+        getAddress.isDefault = false;
+        getAddress.save();
       }
     }
   } catch (error: any) {
-    throw APP_ERROR(error);
+    throw new Error(error);
   }
 });
 
