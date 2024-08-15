@@ -41,13 +41,15 @@ const paginate = (schema) => {
             project = projectionCriteria.join(' ');
         }
         else {
-            project = '-updatedAt';
+            project = 'updatedAt';
         }
         const limit = options.limit && parseInt(options.limit.toString(), 10) > 0 ? parseInt(options.limit.toString(), 10) : 10;
         const page = options.page && parseInt(options.page.toString(), 10) > 0 ? parseInt(options.page.toString(), 10) : 1;
         const skip = (page - 1) * limit;
         const countPromise = this.countDocuments(filter).exec();
-        let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit).select(project);
+        let queryStr = JSON.stringify(filter);
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+        let docsPromise = this.find(JSON.parse(queryStr)).sort(sort).skip(skip).limit(limit).select(project);
         if (options.populate) {
             options.populate.split(',').forEach((populateOption) => {
                 docsPromise = docsPromise.populate(populateOption

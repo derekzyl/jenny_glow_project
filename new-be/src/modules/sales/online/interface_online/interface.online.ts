@@ -1,8 +1,7 @@
 import { Model, Types } from "mongoose";
 import { SalesI } from "../../interface_sales/interface.sales";
-import { ProductAndCount } from "../../../user/cart/interface_cart/interface.cart";
-import { DateTime } from "aws-sdk/clients/devicefarm";
-import { CreateUserT } from "../../../auth/interface_auth/interface.auth";
+
+
 import { AddressBodyT } from "../../../user/address/interface_address/interface.address";
 
 export enum MessageTypeE {
@@ -36,8 +35,13 @@ export type MessageT = {
   message_type: MessageTypeE;
 };
 
-export interface OnlineI extends Omit<SalesI, "products" | "order_status"> {
-  products: ProductAndCount[];
+export interface OnlineI extends Omit<SalesI, 'products' | 'order_status'> {
+  products: {
+    product:Types.ObjectId;
+    product_total_count: number
+    product_total_price: number
+    shipping_fee: number
+  }[];
   address: Types.ObjectId;
   user: Types.ObjectId;
   order_status: OnlineOrderStatusE;
@@ -71,7 +75,7 @@ export interface OnlineModelI extends Model<OnlineDocI> {
 // export type OnlineBodyT = Pick<OnlineI,  "address"| ""  |||||||||    >
 
 export interface notLoggedIn {
-  user?: CreateUserT;
+  user?: any;
   address: AddressBodyT;
-  products: Pick<ProductAndCount, "product" | "product_total_count">[];
+  products: any[];
 }

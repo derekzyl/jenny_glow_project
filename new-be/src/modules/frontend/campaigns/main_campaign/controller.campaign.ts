@@ -1,143 +1,144 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { Types } from "mongoose";
 
 import { ApiError } from "@modules/errors";
 import { imageDeleteHandler } from "@modules/utils/file_handler/files_handler";
 import httpStatus from "http-status";
-import { Crud } from "../../../general_factory/crud";
+
+import { catchAsync } from "@modules/utils";
+import { CrudService } from "expressbolt";
 import {
   CampaignBodyT,
-  CampaignDocI,
   CampaignI,
   SliderBodyT,
-  SliderDocI,
   SliderI,
 } from "../interface_campaigns/interface.campaign";
 import { CAMPAIGN, SLIDER } from "./model.campaign";
 
-export const createSlider = async (
+export const createSlider =catchAsync (async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  try {
+  
     const body: SliderBodyT & { receiver: Types.ObjectId } = request.body;
 
     const gotten_body: SliderI = { ...body, createdBy: request.user.id };
-    const crud_slider = new Crud(request, response, next);
-    crud_slider.create<SliderI, SliderDocI>(
-      { model: SLIDER, exempt: "" },
-      gotten_body,
-      {}
+    const crud_slider =await CrudService.create<SliderI>(
+      {modelData:{ Model: SLIDER, select: [] },
+      data:gotten_body,
+      check:{}}
     );
-  } catch (error) {
-    next(error);
-  }
-};
+  
+  response.status(201).send(crud_slider)
+});
 
-export const getOneSlider = async (
+export const getOneSlider =catchAsync (async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  const crud_slider = new Crud(request, response, next);
-  crud_slider.getOne<SliderDocI>(
-    { model: SLIDER, exempt: "-__v -createdAt updated_At-is_active" },
-    { _id: request.params["id"] },
-    { model: "product", fields: "-reviews" }
+  const crud_slider =await CrudService.getOne<SliderI>(
+    {
+      modelData: { Model: SLIDER, select: ["-__v", "-isActive"] },
+    
+    data: { _id: request.params["id"] },
+    
+    populate:{ path: "product", fields: ["-reviews"] }
+}
   );
-};
+  response.send(crud_slider)
+});
 
-export const getManySlider = async (
+export const getManySlider = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  const crud_slider = new Crud(request, response, next);
-  crud_slider.getMany<SliderDocI>(
-    { model: SLIDER, exempt: "-__v -createdAt -updatedAt -is_active" },
-    request.query,
-    { is_active: true },
-    {}
+  const crud_slider =await CrudService.getMany<SliderI>(
+   { modelData:{ Model: SLIDER, select: ['-isActive'] },
+   query: request.query,
+  filter:  { is_active: true },
+    populate:{}}
   );
-};
+  response.send(crud_slider)
+});
 
-export const updateSlider = async (
+export const updateSlider = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
   const body = request.body;
-  const crud_slider = new Crud(request, response, next);
-  crud_slider.update<SliderI, SliderDocI>(
-    { model: SLIDER, exempt: "-__v" },
-    { ...body, updatedBy: request.user.id },
-    { _id: request.params["id"] }
-  );
-};
-export const deleteSlider = async (
+  const crud_slider =await CrudService.update<SliderI>(
+    {modelData:{ Model: SLIDER, select: ["-__v"] },
+  data:  { ...body, updatedBy: request.user.id },
+   filter: { _id: request.params["id"] }
+    });
+  response.send(crud_slider)
+});
+export const deleteSlider =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  const crud_slider = new Crud(request, response, next);
-  crud_slider.delete<SliderDocI>(
-    { model: SLIDER, exempt: "-__v -createdAt -updatedAt" },
-    { _id: request.params["id"] }
-  );
-};
+  const crud_slider =await CrudService.delete<SliderI>(
+  {modelData:  { Model: SLIDER, select: ['-__v'] },
+    data:{ _id: request.params["id"] }
+    });
+  response.send(crud_slider)
+});
 
-export const createCampaign = async (
+export const createCampaign = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  try {
+  
     const body: CampaignBodyT = request.body;
 
     const gotten_body: CampaignI = { ...body, createdBy: request.user.id };
-    const crud_campaign = new Crud(request, response, next);
-    crud_campaign.create<CampaignI, CampaignDocI>(
-      { model: CAMPAIGN, exempt: "" },
-      gotten_body,
-      {}
+    const crud_campaign = CrudService.create<CampaignI>(
+    {  modelData:{ Model: CAMPAIGN, select: [] },
+      data:gotten_body,
+      check:{}}
     );
-  } catch (error) {
-    next(error);
-  }
-};
+  
+  response.status(201).send(crud_campaign)
+ 
+});
 
-export const getOneCampaign = async (
+export const getOneCampaign = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  const crud_campaign = new Crud(request, response, next);
-  crud_campaign.getOne<CampaignDocI>(
-    { model: CAMPAIGN, exempt: "-__v -createdAt updated_At-is_active" },
-    { campaign_name: request.params["id"] },
-    {}
+  const crud_campaign =await CrudService.getOne<CampaignI>(
+    {modelData:{ Model: CAMPAIGN, select: [] },
+    data:{ campaign_name: request.params["id"] },
+    populate:{}}
   );
-};
+  response.send(crud_campaign)
+});
 
-export const getManyCampaign = async (
+export const getManyCampaign =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  const crud_campaign = new Crud(request, response, next);
-  crud_campaign.getMany<CampaignDocI>(
-    { model: CAMPAIGN, exempt: "-__v -createdAt -updatedAt -is_active" },
-    request.query,
-    { user: request.user.id },
-    {}
+  const crud_campaign =await CrudService.getMany<CampaignI>(
+{  modelData:  { Model: CAMPAIGN, select: ['-isActive'] },
+   query: request.query,
+  filter:  { user: request.user.id },
+ populate:   {}}
   );
-};
+  response.send(crud_campaign)
+});
 
-export const updateCampaign = async (
+export const updateCampaign =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
   const body = request.body;
   if (request.body.image) {
@@ -145,25 +146,25 @@ export const updateCampaign = async (
     if (!get_image_url) throw new ApiError(httpStatus.NOT_FOUND,"campaign banner not found");
     get_image_url.image ? imageDeleteHandler(get_image_url.image) : "";
   }
-  const crud_campaign = new Crud(request, response, next);
-  crud_campaign.update<CampaignI, CampaignDocI>(
-    { model: CAMPAIGN, exempt: "-__v" },
-    { campaign_name: request.params["id"] },
-    { ...body, updatedBy: request.user.id }
+  const crud_campaign =await CrudService.update<CampaignI>(
+{    modelData:{ Model: CAMPAIGN, select: [] },
+    filter:{ campaign_name: request.params["id"] },
+     data:{ ...body, updatedBy: request.user.id }}
   );
-};
-export const deleteCampaign = async (
+  response.send(crud_campaign)
+});
+export const deleteCampaign =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
 
   const get_image_url = await CAMPAIGN.findById(request.params["id"]);
   if (!get_image_url) throw new ApiError(httpStatus.NOT_FOUND,"campaign banner not found");
   get_image_url.image ? imageDeleteHandler(get_image_url.image) : ""
-  const crud_campaign = new Crud(request, response, next);
-  crud_campaign.delete<CampaignDocI>(
-    { model: CAMPAIGN, exempt: "-__v -createdAt -updatedAt" },
-    { _id: request.params["id"] }
+  const crud_campaign =await CrudService.delete<CampaignI>(
+   {modelData: { Model: CAMPAIGN, select: ['-__v'] },
+   data: { _id: request.params["id"] }}
   );
-};
+  response.send(crud_campaign)
+});

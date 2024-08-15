@@ -4,7 +4,7 @@ const router = Router();
 request is made to the root route ("/") of the router. */
 router.get('/', (_req, res) => {
     res.send({
-        message: 'PayPaddy backend [Restful API]',
+        message: 'JennyGlow backend [Restful API]',
     });
 });
 export default router;

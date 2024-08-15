@@ -2,8 +2,6 @@ import { auth } from "@modules/auth";
 import { allPermissions } from "@modules/setting/roles";
 import { formFileHandler, MULTER_UPLOAD } from "@modules/utils/file_handler/middleware.file";
 import { Router } from "express";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
-import { getPermissions } from "../../../general_factory/permission_handler";
 import { CampaignIndex } from "../index.campaign";
 
 export const campaignRouter = Router();
@@ -19,7 +17,7 @@ campaignRouter
     auth(allPermissions.Campaign.Create),
     MULTER_UPLOAD.fields([{ name: 'image', maxCount: 1 }]),
     formFileHandler([{ name: 'image' }]),
-    getPermissions([PermissionsE.CREATE_CAMPAIGN, PermissionsE.SUPER_ADMIN]),
+ 
     CampaignIndex.create_campaign
   )
   .get(CampaignIndex.get_all_campaign);

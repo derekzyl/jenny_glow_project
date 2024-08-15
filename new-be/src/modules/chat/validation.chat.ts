@@ -32,7 +32,7 @@ const getAllChatsQuery = {
   userId: Joi.string().custom(objectId),
   isClosed: Joi.boolean(),
   sort: Joi.string(),
-  sort: Joi.string(),
+
   projectBy: Joi.string(),
   limit: Joi.number().integer(),
   page: Joi.number().integer(),

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import address from "../countries_states.json";
+import { shipping } from '../countries_states';
 
 
 
@@ -25,7 +25,7 @@ export const fetchCountryAndState = async (
 
   const { country, state } = r;
   try {
-    const data: any[] = JSON.parse(JSON.stringify(address));
+    const data: any[] = JSON.parse(JSON.stringify(shipping));
     const result = data
       .filter((dat) =>
         country ? dat.name.toLowerCase() === country.toLowerCase() : dat
@@ -184,12 +184,12 @@ export const addStateShippingFee = catchAsync(async (request: Request, response:
 }
 )
 
-export const updateShippingFee = async (
+export const updateShippingFee =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+  
 ) => {
-  try {
+
     const {
       countryShippingFee,
       states,
@@ -214,30 +214,27 @@ export const updateShippingFee = async (
       }
       await findCountryInDb.save();
     }
-  } catch (error) {
-    next(error);
-  }
-};
+  response.send(findCountryInDb)
 
-export const deleteShippingFee = async (
+});
+
+export const deleteShippingFee = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  try {
+
   
- await  CrudService.delete<ShippingI>({ modelData: { Model: SHIPPING, select:[] }, data: { _id: request.params["id"] } });
-  } catch (error) {
-    next(error);
-  }
-};
+ const d =await  CrudService.delete<ShippingI>({ modelData: { Model: SHIPPING, select:[] }, data: { _id: request.params["id"] } });
 
-export const getAllShippingFee = async (
+  response.status(200).json(d)
+});
+
+export const getAllShippingFee = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  try {
+
     // const { state, country }: { state: string; country: string } = request.body;
 
     const get_shipping_fee = await CrudService.getMany<ShippingI>({
@@ -249,14 +246,12 @@ export const getAllShippingFee = async (
     response.status(httpStatus.OK).json(
       get_shipping_fee
     );
-  } catch (error) {
-    next(error);
-  }
-};
+
+});
 
 
 
 export function fetchCountres (): CountryI[] {
-  const countries: CountryI[] = JSON.parse(JSON.stringify(address));
+  const countries: CountryI[] = JSON.parse(JSON.stringify(shipping));
   return countries;
 }

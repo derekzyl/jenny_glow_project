@@ -10,13 +10,13 @@ const router: Router = Router();
 router
   .route('/referral/')
   .post(auth(), validate(refValidation.createReferral), refController.createReferral)
-  .get(auth(allPermissions.Referrals.GetRef), refController.getAllReferrals);
+  .get(auth(allPermissions.Referral.Get), refController.getAllReferrals);
 
 router
   .route('/referral/:referralId')
-  .get(auth(allPermissions.Referrals.GetRef), validate(refValidation.getReferral), refController.getReferral)
-  .patch(auth(allPermissions.Referrals.ManageRef), validate(refValidation.updateReferral), refController.updateReferral)
-  .delete(auth(allPermissions.Referrals.ManageRef), validate(refValidation.deleteReferral), refController.deleteReferral);
+  .get(auth(allPermissions.Referral.Get), validate(refValidation.getReferral), refController.getReferral)
+  .patch(auth(allPermissions.Referral.Manage), validate(refValidation.updateReferral), refController.updateReferral)
+  .delete(auth(allPermissions.Referral.Manage), validate(refValidation.deleteReferral), refController.deleteReferral);
 router.route('/referral/get/user').get(auth(), refController.getReferralByUserId);
 router.route('/refbonus/').post(auth(), refController.createRefBonus).get(auth(), refController.getAllRefBonus);
 

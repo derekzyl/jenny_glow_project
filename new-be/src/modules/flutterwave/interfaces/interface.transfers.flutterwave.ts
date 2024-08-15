@@ -2,16 +2,7 @@
 // bulk tranfer payload starts here
 // --------------------------------
 
-import {
-  FCMBDetails,
-  FidelityUnionDetails,
-  MetaDataEUR,
-  MetaDataGBP,
-  MetaDataKES,
-  MetaDataNGN,
-  MetaDataUSD,
-  ProvidusDetails,
-} from '@modules/tranfers/api/interface.api.transfers';
+
 import { CurrencyCodesEnum, FLWResponse } from './interface.flutterwave';
 
 /**
@@ -65,14 +56,7 @@ export type BulkTransferDataPayload = {
   reference?: string;
   meta?:
     | MetaDataPayload[]
-    | MetaDataEUR[]
-    | MetaDataGBP[]
-    | MetaDataUSD[]
-    | MetaDataKES[]
-    | MetaDataNGN[]
-    | FidelityUnionDetails[]
-    | ProvidusDetails[]
-    | FCMBDetails[];
+ 
 };
 
 /**
@@ -124,15 +108,8 @@ export type TransferSchemaPayload = {
   beneficiary_name?: string | undefined;
   destination_branch_code?: string | undefined;
   callback_url?: string | undefined;
-  meta?:
-    | MetaDataEUR[]
-    | MetaDataGBP[]
-    | MetaDataUSD[]
-    | MetaDataKES[]
-    | MetaDataNGN[]
-    | FidelityUnionDetails[]
-    | ProvidusDetails[]
-    | FCMBDetails[];
+  meta?:[]
+
 };
 
 // -----------------------------

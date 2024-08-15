@@ -6,8 +6,6 @@ import { allPermissions } from "@modules/setting/roles";
 import { formFileHandler, MULTER_UPLOAD } from "@modules/utils/file_handler/middleware.file";
 import { validate } from "@modules/validate";
 import { categoryValidation } from ".";
-import { GeneralIndex } from "../../general_factory/index.factory";
-import { PermissionsE } from "../../general_factory/interface/general_factory";
 import { CategoryIndex, SubCategoryIndex } from "./index.category";
 
 const categoryRouter = Router();
@@ -80,10 +78,7 @@ subCategoryRouter
   .route("/admin")
   .post(
     auth(allPermissions.Category.Create),
-    GeneralIndex.getUserPermissions([
-      PermissionsE.CREATE_CATEGORY,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+
     MULTER_UPLOAD.fields([{ name: "image", maxCount: 1 }]),
     formFileHandler([{ name: "image" }]),
     SubCategoryIndex.create_sub_category

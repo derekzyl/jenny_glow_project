@@ -4,7 +4,7 @@
   "description": "JennyGlow  app",
   "main": "dist/index.js",
   "bin": "bin/createNodetsApp.cjs",
-  "repository": "https://git@github.com:PAYPADDY/backend-core.git",
+  "repository": "https://git@github.com:JENNYGLOW/backend-core.git",
   "author": "example author <example@gmail.com>",
   "license": "MIT",
   "type": "module",

@@ -1,5 +1,5 @@
-import Joi from 'joi';
 import { objectId } from '../../validate';
+import Joi from 'joi';
 const createStaffBody = {
     address: Joi.string(),
     benefits: Joi.string(),
@@ -20,6 +20,7 @@ const createStaffBody = {
     notes: Joi.string(),
     phoneNumber: Joi.string(),
     role: Joi.custom(objectId).required(),
+    branchId: Joi.custom(objectId).required(),
 };
 export const createStaff = {
     body: Joi.object().keys(createStaffBody),

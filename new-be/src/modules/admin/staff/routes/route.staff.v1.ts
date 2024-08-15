@@ -8,22 +8,22 @@ const staffRouter: Router =Router();
 
 staffRouter
   .route('/')
-  .get(auth(allPermissions.Staffs.GetAll), validate(staffValidation.getStaffs), staffController.getManyStaffsController)
-  .post(auth(allPermissions.Staffs.Create), validate(staffValidation.createStaff), staffController.createStaffController);
+  .get(auth(allPermissions.Staff.GetAll), validate(staffValidation.getStaffs), staffController.getManyStaffsController)
+  .post(auth(allPermissions.Staff.Create), validate(staffValidation.createStaff), staffController.createStaffController);
 staffRouter
   .route('/assign/user-as-staff')
-  .post(auth(allPermissions.Staffs.Create), validate(staffValidation.createStaff), staffController.makeExistingUserStaff);
+  .post(auth(allPermissions.Staff.Create), validate(staffValidation.createStaff), staffController.makeExistingUserStaff);
 staffRouter
   .route('/:id')
-  .get(auth(allPermissions.Staffs.Get), validate(staffValidation.getStaff), staffController.getOneStaffByIdController)
+  .get(auth(allPermissions.Staff.Get), validate(staffValidation.getStaff), staffController.getOneStaffByIdController)
   .patch(
-    auth(allPermissions.Staffs.Update),
+    auth(allPermissions.Staff.Update),
     validate(staffValidation.updateStaffById),
     staffController.updateOneStaffByIdController
   )
 
   .delete(
-    auth(allPermissions.Staffs.Delete),
+    auth(allPermissions.Staff.Delete),
     validate(staffValidation.deleteStaff),
     staffController.deleteStaffByIdController
   );

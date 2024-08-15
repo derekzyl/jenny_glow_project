@@ -1,0 +1,1 @@
+{"version":3,"file":"route.general.js","sourceRoot":"","sources":["../../../src/modules/general_factory/route.general.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,EAAE,aAAa,EAAE,MAAM,kCAAkC,CAAC;AAEjE,MAAM,aAAa,GAAG,MAAM,EAAE,CAAC;AAE/B,aAAa;KACV,KAAK,CAAC,yBAAyB,CAAC;KAChC,GAAG,CAAC,aAAa,CAAC,uBAAuB,CAAC,CAAC;AAE9C,eAAe,aAAa,CAAC"}

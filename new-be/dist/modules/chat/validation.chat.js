@@ -1,5 +1,5 @@
-import Joi from 'joi';
 import { objectId } from '../validate';
+import Joi from 'joi';
 // Create Chat Validator
 const createChatBody = {
     title: Joi.string().required(),
@@ -26,7 +26,6 @@ const getAllChatsQuery = {
     title: Joi.string(),
     userId: Joi.string().custom(objectId),
     isClosed: Joi.boolean(),
-    sort: Joi.string(),
     sort: Joi.string(),
     projectBy: Joi.string(),
     limit: Joi.number().integer(),

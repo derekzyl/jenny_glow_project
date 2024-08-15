@@ -1,5 +1,5 @@
-import Joi from 'joi';
 import { objectId } from '../../../validate';
+import Joi from 'joi';
 const createRoleBody = {
     details: Joi.string().required(),
     name: Joi.string().required(),

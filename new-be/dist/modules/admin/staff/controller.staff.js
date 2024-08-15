@@ -127,4 +127,9 @@ export const staffLogout = catchAsync(async (req, res) => {
     await authService.logout(req.body.refreshToken);
     res.status(httpStatus.NO_CONTENT).send();
 });
+export const getStaffByBranchId = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const staff = await STAFFS.find({ branchId: id });
+    return res.status(httpStatus.OK).json(staff);
+});
 //# sourceMappingURL=controller.staff.js.map

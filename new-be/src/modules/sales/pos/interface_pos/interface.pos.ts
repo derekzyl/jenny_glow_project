@@ -1,9 +1,9 @@
-import { Document, Types } from "mongoose";
+import { Document } from "mongoose";
 import {
   OrderTypeE,
   PaymentMethodE,
-  ProductT,
   PaymentStatusE,
+  ProductT,
   SalesI,
 } from "../../interface_sales/interface.sales";
 

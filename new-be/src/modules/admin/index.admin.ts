@@ -8,7 +8,7 @@ import {
   categoryRouter,
   subCategoryRouter,
 } from "./category/route.category";
-import dispatchRouter from "./dispatch/main_dispatch/route.dispatch";
+// import dispatchRouter from "./dispatch/main_dispatch/route.dispatch";
 
 import shippingRouter from "./shipping/main_shipping/route.role";
 
@@ -26,7 +26,7 @@ adminRouter.use("/category", categoryRouter);
 adminRouter.use("/sub-category", subCategoryRouter);
 adminRouter.use("/vat", vatRouter);
 adminRouter.use("/shipping", shippingRouter);
-adminRouter.use("/dispatch", dispatchRouter);
+// adminRouter.use("/dispatch", dispatchRouter);
 adminRouter.use("/campaign", campaignRouter);
 adminRouter.use("/slider", sliderRouter);
 

@@ -65,7 +65,7 @@ export const sendNotificationToManager = async ({
     // we check if the branchId is provided
     if (branchId) {
       // we get the branch manager
-      const branch = await branchService.getBranch(branchId);
+      const branch = await branchService.getBranchById(branchId);
       if (branch['data'] && branch['data'].branchManager) {
         // we send the notification to the branch manager
         sendNotification({ body, nType, title, type, userId: branch['data'].branchManager });

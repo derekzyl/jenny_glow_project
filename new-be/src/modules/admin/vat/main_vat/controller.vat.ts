@@ -1,74 +1,83 @@
-import { NextFunction, Request, Response } from "express";
-import { Crud } from "../../../general_factory/crud";
-import { VatDocI, VatI } from "../interface_vat/interface.vat";
+import { Request, Response } from "express";
+
+import { catchAsync } from "@modules/utils";
+import { CrudService } from "expressbolt";
+import { VatI } from "../interface_vat/interface.vat";
 import { VAT } from "./model.vat";
 
-export const createVat = async (
+export const createVat = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  try {
+
     const body = request.body;
 
-    const gotten_body = { ...body };
-    const crud_vat = new Crud(request, response, next);
-    crud_vat.create<VatI, VatDocI>({ model: VAT, exempt: "" }, gotten_body, {
-      vat_name: body.vat_name,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
 
-export const getOneVat = async (
+  const crud = await CrudService.create<VatI>({
+    check: {},
+    data: body, modelData: {
+      Model:VAT,select:[]
+    }
+    
+  })
+
+  response.status(201).send(crud)
+
+});
+
+export const getOneVat = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const crud_vat = new Crud(request, response, next);
-  crud_vat.getOne<VatDocI>(
-    { model: VAT, exempt: "-__v -createdAt updatedAt" },
-    { vat_name: request.params["id"] },
-    {}
-  );
-};
+  
+  const getOne = CrudService.getOne<VatI>({
+    data: { id: request.params['id'] }, modelData: {
+      Model: VAT,
+      select:[]
+    },populate:{}
+  });
+  response.send(getOne)
+});
 
 export const getManyVat = async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const crud_vat = new Crud(request, response, next);
-  crud_vat.getMany<VatDocI>(
-    { model: VAT, exempt: "-__v -createdAt -updatedAt" },
-    request.query,
-    {},
-    {}
-  );
+ 
+  const getMany = CrudService.getMany<VatI>({
+    filter: {}, modelData: {
+      Model:VAT, select:[]
+    },populate:{}, query:request.query
+  })
+  response.send(getMany)
 };
 
-export const updateVat = async (
+export const updateVat = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const body = request.body;
-  const crud_vat = new Crud(request, response, next);
-  crud_vat.update(
-    { model: VAT, exempt: "-__v" },
-    { vat_name: request.params["id"] },
-    { ...body }
-  );
-};
-export const deleteVat = async (
+
+  const update = CrudService.update<VatI>({
+    data: request.body, filter: { id: request.params['id'] }, modelData: {
+      Model:VAT, select:[]
+    }
+  })
+  response.send(update)
+});
+export const deleteVat = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
+
 ) => {
-  const crud_vat = new Crud(request, response, next);
-  crud_vat.delete<VatDocI>(
-    { model: VAT, exempt: "-__v -createdAt -updatedAt" },
-    { vat_name: request.params["id"] }
-  );
-};
+
+  const delet = await CrudService.delete<VatI>({
+    data: { id: request.params['id'] }, modelData: {
+      Model:VAT, select:[]
+    }
+  })
+  response.send(delet)
+});

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { roleServices } from '../admin/Roles';
 import { staffService } from '../admin/staff';
+import { branchService } from '../branch';
 import { ApiError } from '../errors';
 import { userService } from '../user';
 import httpStatus from 'http-status';
@@ -35,6 +36,30 @@ export const viewNotification = async (id, userId) => {
         throw new ApiError(httpStatus.NOT_FOUND, 'Notification not found');
     return viewed;
 };
+export const sendNotificationToManager = async ({ body, title, type, nType = 'both', branchId }) => {
+    try {
+        // we check if the branchId is provided
+        if (branchId) {
+            // we get the branch manager
+            const branch = await branchService.getBranchById(branchId);
+            if (branch['data'] && branch['data'].branchManager) {
+                // we send the notification to the branch manager
+                sendNotification({ body, nType, title, type, userId: branch['data'].branchManager });
+            }
+        }
+        else {
+            const managers = await branchService.getBranchManagerUserId();
+            if (managers && managers["data"]) {
+                await Promise.all(managers["data"].map(async (managerId) => {
+                    sendNotification({ body, nType, title, type, userId: managerId.branchManager });
+                }));
+            }
+        }
+    }
+    catch (error) {
+        // Handle the error here
+    }
+};
 /**
  * The function `sendNotificationToStaffs` sends notifications to staff members based on specified
  * permissions and notification type.
@@ -42,14 +67,22 @@ export const viewNotification = async (id, userId) => {
  * @param  The `sendNotificationToStaffs` function is designed to send notifications to staff members
  * based on certain criteria. Here's an explanation of the parameters: if you want to send to all staff add `ALL_STAFFS` in permission
  */
-export const sendNotificationToStaffs = async ({ body, permissions, title, type, nType = 'both', }) => {
+export const sendNotificationToStaffs = async ({ body, permissions, title, type, nType = 'both', branchId }) => {
     try {
         const staffsId = await staffService.getAllStaffsUserId();
         if (staffsId && staffsId.length > 0 && staffsId !== null && staffsId !== undefined) {
             await Promise.all(staffsId.map(async (staffId) => {
                 const hasPermission = await roleServices.checkStaffPermission(staffId, permissions);
                 if (hasPermission) {
-                    sendNotification({ body, nType, title, type, userId: staffId });
+                    if (branchId) {
+                        const staff = await staffService.getStaffByUserId(staffId);
+                        if (staff && staff.branchId && staff.branchId.equals(branchId)) {
+                            sendNotification({ body, nType, title, type, userId: staffId });
+                        }
+                    }
+                    else {
+                        sendNotification({ body, nType, title, type, userId: staffId });
+                    }
                     // Send notification to staff
                 }
                 if (permissions.includes('ALL_STAFFS'))

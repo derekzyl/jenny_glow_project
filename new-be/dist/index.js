@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/no-extraneous-dependencies */
-import logger from './modules/logger/logger';
 import mongoose from 'mongoose';
+import { logger } from './modules/logger';
 import { Socket } from './modules/utils/socket';
 import { createAdapter } from '@socket.io/cluster-adapter';
 import { setupWorker } from '@socket.io/sticky';
@@ -14,8 +14,8 @@ import config from './config/config';
 const serve = createServer(app);
 export const baseSocket = new Socket(serve);
 dirname(fileURLToPath(import.meta.url));
-// import { addNewWorkerJob } from './modules/worker/service.jobs.worker';
-// import QueueManager from './modules/worker/manager.jobs.worker';
+// import { addNewWorkerJob } from '@modules/worker/service.jobs.worker';
+// import QueueManager from '@modules/worker/manager.jobs.worker';
 // import { JobTypes } from './config/jobs';
 // import { createNewWallet } from '@modules/blockchain/core.wallet.blockchain';
 // import { IBlockchainWallet } from '@modules/blockchain/interface.blockchain';

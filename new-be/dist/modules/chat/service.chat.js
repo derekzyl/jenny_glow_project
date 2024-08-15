@@ -19,8 +19,13 @@ import httpStatus from 'http-status';
 import { CHAT } from './models/model.chat';
 import { MESSAGES } from './models/model.messages';
 export async function createChatInDb(data) {
+    var _a, _b;
     try {
-        let getChat = await CHAT.findOne({ isClosed: false, userId: data.userId }).select('-staff');
+        let getChat = await CrudService.getOne({
+            data: { isClosed: false, userId: data.userId }, modelData: {
+                Model: CHAT, select: ['-staff', '-__v']
+            }, populate: {}
+        });
         if (!getChat) {
             getChat = await CrudService.create({
                 modelData: { Model: CHAT, select: ['-__v', '-staff'] },
@@ -28,14 +33,14 @@ export async function createChatInDb(data) {
                 data,
             });
             notificationService.sendNotificationToStaffs({
-                body: `customer chat with id: ${getChat === null || getChat === void 0 ? void 0 : getChat.ref} has been created`,
+                body: `customer chat with id: ${(_a = getChat['data']) === null || _a === void 0 ? void 0 : _a.ref} has been created`,
                 nType: 'notification',
-                title: `chat created title: ${getChat === null || getChat === void 0 ? void 0 : getChat.title}`,
-                permissions: Object.values(allPermissions.Chats),
+                title: `chat created title: ${(_b = getChat['data']) === null || _b === void 0 ? void 0 : _b.title}`,
+                permissions: Object.values(allPermissions.Chat),
                 type: 'create chat',
             });
         }
-        await createMessageInDb({ chatId: getChat._id, message: data.message, senderId: getChat.userId, isRead: false });
+        await createMessageInDb({ chatId: getChat['data']._id, message: data.message, senderId: getChat['data'].userId, isRead: false });
         return getChat;
     }
     catch (error) {
@@ -172,7 +177,7 @@ export async function getChatAndMessagesById(chatId, query) {
             message: 'chat and messages fetched successfully',
             data: { chat: chat.data, message: getMessage.data },
             success: true,
-            doc_length: getMessage.length,
+            doc_length: 0
         };
     }
     catch (error) {
@@ -190,7 +195,7 @@ export async function getUsersCurrentChat(query, userId) {
             message: 'chat and messages fetched successfully',
             data: { chat, message: getMessage.data },
             success: true,
-            doc_length: getMessage.length,
+            doc_length: 0,
         };
     }
     catch (error) {

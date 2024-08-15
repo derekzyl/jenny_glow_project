@@ -4,54 +4,58 @@ import express, { Router } from 'express';
 import { userController, userValidation } from '..';
 import { allPermissions } from '../../setting/roles';
 
-const router: Router = express.Router();
+const userRoute: Router = express.Router();
 
-router
+userRoute
   .route('/')
-  .post(auth(allPermissions.Users.Manage), validate(userValidation.createUser), userController.createUser)
-  .get(auth(allPermissions.Users.Get), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth(allPermissions.User.Manage), validate(userValidation.createUser), userController.createUser)
+  .get(
+    auth(allPermissions.User.Get, allPermissions.User.Manage),
+    validate(userValidation.getUsers),
+    userController.getUsers
+  );
 
-router
+userRoute
   .route('/:userId')
-  .get(auth(allPermissions.Users.UserOnly), validate(userValidation.getUser), userController.getUser)
-  .patch(auth(allPermissions.Users.Manage), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth(allPermissions.Users.Manage), validate(userValidation.deleteUser), userController.deleteUser);
+  .get(auth(), validate(userValidation.getUser), userController.getUser)
+  .patch(auth(allPermissions.User.Manage), validate(userValidation.updateUser), userController.updateUser)
+  .delete(auth(allPermissions.User.Manage), validate(userValidation.deleteUser), userController.deleteUser);
 
-router.post(
+userRoute.post(
   '/pin/change-password',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
   validate(userValidation.changeUserPassword),
   userController.changeUserPassword
 );
-router.post(
+userRoute.post(
   '/pin/forgot-pin',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
   validate(userValidation.forgotPin),
   userController.forgotPin
 );
-router.post(
+userRoute.post(
   '/pin/reset-pin',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
   validate(userValidation.resetPin),
   userController.resetPin
 );
-router.post(
+userRoute.post(
   '/pin/create-pin',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
   validate(userValidation.createPin),
   userController.createUserPin
 );
-router.post(
+userRoute.post(
   '/pin/update-pin',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
   validate(userValidation.changePin),
   userController.changeUserPin
 );
-router.get(
+userRoute.get(
   '/pin/check-if-pin-exist',
-  auth(allPermissions.Users.UserOnly),
+  auth(),
 
   userController.checkIfUserHasPinCreated
 );
 
-export default router;
+export default userRoute;

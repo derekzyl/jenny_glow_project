@@ -1,11 +1,11 @@
-import httpStatus from 'http-status';
-import mongoose from 'mongoose';
 import ApiError from '../errors/ApiError';
 import { emailService } from '../notification';
 import { sendNotification } from '../notification/service.notification';
 import { tokenService } from '../token';
 import catchAsync from '../utils/catchAsync';
 import pick from '../utils/pick';
+import httpStatus from 'http-status';
+import mongoose from 'mongoose';
 import * as userService from './service.user';
 export const createUser = catchAsync(async (req, res) => {
     const user = await userService.createUser(req.body);

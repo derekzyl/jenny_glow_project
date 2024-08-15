@@ -1,10 +1,9 @@
-import { Types, Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 export interface ProfileI {
-  user: Types.ObjectId;
-  first_name: string;
-  last_name: string;
-  profile_image: string;
+  userId: Types.ObjectId;
+
+ image: string;
   gender: "male" | "female";
 }
 

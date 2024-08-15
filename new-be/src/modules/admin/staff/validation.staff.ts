@@ -22,7 +22,7 @@ const createStaffBody: Record<keyof CreateStaffType, any> = {
   notes: Joi.string(),
   phoneNumber: Joi.string(),
   role: Joi.custom(objectId).required(),
-  branch: Joi.custom(objectId).required(),
+  branchId: Joi.custom(objectId).required(),
   
 };
 

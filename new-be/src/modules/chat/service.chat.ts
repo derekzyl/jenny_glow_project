@@ -13,7 +13,12 @@ import { MESSAGES } from './models/model.messages';
 
 export async function createChatInDb(data: Omit<ChatI, 'ref'> & { message: string }) {
   try {
-    let getChat = await CHAT.findOne({ isClosed: false, userId: data.userId }).select('-staff');
+    let getChat = await CrudService.getOne<ChatI>(
+      {
+        data: { isClosed: false, userId: data.userId }, modelData: {
+        Model:CHAT, select:['-staff', '-__v']
+      },populate:{}}
+    ) 
     if (!getChat) {
       getChat = await CrudService.create<ChatI>({
         modelData: { Model: CHAT, select: ['-__v', '-staff'] },
@@ -21,14 +26,14 @@ export async function createChatInDb(data: Omit<ChatI, 'ref'> & { message: strin
         data,
       });
       notificationService.sendNotificationToStaffs({
-        body: `customer chat with id: ${getChat?.ref} has been created`,
+        body: `customer chat with id: ${getChat['data']?.ref} has been created`,
         nType: 'notification',
-        title: `chat created title: ${getChat?.title}`,
-        permissions: Object.values(allPermissions.Chats),
+        title: `chat created title: ${getChat['data']?.title}`,
+        permissions: Object.values(allPermissions.Chat),
         type: 'create chat',
       });
     }
-    await createMessageInDb({ chatId: getChat!._id!, message: data.message, senderId: getChat!.userId!, isRead: false });
+    await createMessageInDb({ chatId: getChat['data']!._id!, message: data.message, senderId: getChat['data']!.userId!, isRead: false });
     return getChat;
   } catch (error: any) {
     throw new ApiError(
@@ -181,7 +186,7 @@ export async function getChatAndMessagesById(chatId: mongoose.Types.ObjectId, qu
       message: 'chat and messages fetched successfully',
       data: { chat: chat.data, message: getMessage.data },
       success: true,
-      doc_length: getMessage.length,
+      doc_length: 0
     };
   } catch (error: any) {
     throw new ApiError(
@@ -204,7 +209,7 @@ export async function getUsersCurrentChat(query: IOptions, userId: mongoose.Type
       message: 'chat and messages fetched successfully',
       data: { chat, message: getMessage.data },
       success: true,
-      doc_length: getMessage.length,
+      doc_length: 0,
     };
   } catch (error: any) {
     throw new ApiError(

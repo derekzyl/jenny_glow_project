@@ -15,7 +15,7 @@ export const createOne =
         throw new ApiError(httpStatus.BAD_REQUEST, `${created_model}`);
       }
 
-      return response.status(httpStatus.CREATED).json(
+       response.status(httpStatus.CREATED).json(
         responseMessage({
           message: "created successfully",
           success_status: true,
@@ -37,7 +37,7 @@ export const deleteOne =
         throw new ApiError(httpStatus.BAD_REQUEST, `${delete_model}`);
       }
 
-      return response.status(httpStatus.CREATED).json(
+       response.status(httpStatus.CREATED).json(
         responseMessage({
           message: "deleted successfully",
           success_status: true,
@@ -63,7 +63,7 @@ export const updateOne =
         throw new ApiError(httpStatus.BAD_REQUEST, `${update_model}`);
       }
 
-      return response.status(httpStatus.CREATED).json(
+       response.status(httpStatus.CREATED).json(
         responseMessage({
           message: "updated successfully",
           success_status: true,
@@ -87,7 +87,7 @@ export const getOne =
         throw new ApiError(httpStatus.BAD_REQUEST, `could not get one data`);
       }
 
-      return response.status(httpStatus.CREATED).json(
+     response.status(httpStatus.CREATED).json(
         responseMessage({
           message: "gotten one data successfully",
           success_status: true,
@@ -114,7 +114,7 @@ export const getAll =
       }
       const get_all_data = await get_all.model;
 
-      return response.status(httpStatus.CREATED).json(
+       response.status(httpStatus.CREATED).json(
         responseMessage({
           message: "gotten one data successfully",
           success_status: true,

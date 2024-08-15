@@ -1,131 +1,126 @@
-import { NextFunction, Response, Request } from "express";
+import { Request, Response } from "express";
 
 import { PROFILE } from "./model.profile";
 
+import { catchAsync } from "@modules/utils";
+import { CrudService } from "expressbolt";
+import httpStatus from "http-status";
 import {
-  ProfileBodyT,
-  ProfileDocI,
+  ProfileI
 } from "../interface_profile/interface.profile";
-import { Crud } from "../../../general_factory/crud";
-import { getRole } from "../../../../utilities/get_role";
-import {
-  checkPermissions,
-  getPermissions,
-} from "../../../general_factory/permission_handler";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
-import { HTTP_RESPONSE } from "../../../../utilities/http_response";
-import { responseMessage } from "../../../../utilities/response_message";
-import { Types } from "mongoose";
 
 //todo profile receipt
 
-export const createProfile = async (
+export const createProfile = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  try {
-    // const user = request.user;
-
-    const body: ProfileBodyT = request.body;
-    const crud_profile = new Crud(request, response, next);
-    crud_profile.create<ProfileBodyT & { user: Types.ObjectId }, ProfileDocI>(
-      { model: PROFILE, exempt: "" },
-      { ...body, user: body.user_id },
-      {}
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getOneProfile = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  try {
-    const get_role = await getRole(request.user.id);
-    let profile;
-    const user = request.user;
-    if (get_role && get_role.name === "USER") {
-      profile = await PROFILE.findOne({
-        user,
-      }).select("-__v id");
-    } else if (
-      request.params.id &&
-      checkPermissions(PermissionsE.VIEW_USER_PROFILE, user)
-    ) {
-      profile = await PROFILE.findById(request.params.id);
+  const profile = await CrudService.create<ProfileI>({
+    check: {}, 
+    data: request.body,
+    modelData: {
+      Model:PROFILE, select:[]
     }
+  })
+  response.status(httpStatus.CREATED).send(profile)
+});
 
-    profile = profile?.populate("user", "phone");
-
-    return response.status(HTTP_RESPONSE.OK).json(
-      responseMessage({
-        data: profile,
-        message: "fetched successfully",
-        success_status: true,
-      })
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getManyProfile = async (
+export const getOneProfileByUserId =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  const crud_review = new Crud(request, response, next);
-  crud_review.getMany<ProfileDocI>(
-    { model: PROFILE, exempt: "-__v, -user " },
-    request.query,
-    {},
-    {}
-  );
-};
-
-export const updateProfile = async (
+  const getProfile = await CrudService.getOne<ProfileI>({
+    data: { userId: request.user.id }, modelData: {
+      Model: PROFILE, select:[]
+      
+    }, populate: {
+      path: 'userId',
+      fields:['-password']
+    }
+  })
+  response.send(getProfile)
+});
+export const getOneProfileById =catchAsync( async (
   request: Request,
   response: Response,
-  next: NextFunction
+) => {
+  const getProfile = await CrudService.getOne<ProfileI>({
+    data: { id: request.params['id'] }, modelData: {
+      Model: PROFILE, select:[]
+      
+    }, populate: {
+      path: 'userId',
+      fields:['-password']
+    }
+  })
+  response.send(getProfile)
+});
+
+export const getManyProfile = catchAsync(async (
+  request: Request,
+  response: Response,
+) => {
+  const getMany = await CrudService.getMany<ProfileI>({
+    filter: {},
+    query: request.query,
+    modelData: {
+      Model: PROFILE,
+      select:[]
+    },populate:{}
+  })
+  response.send(getMany)
+});
+
+export const updateProfileById = catchAsync(async (
+  request: Request,
+  response: Response,
 ) => {
   const body = request.body;
 
-  const check_permissions = checkPermissions(
-    PermissionsE.EDIT_USER_PROFILE,
-    request.user.id
-  );
-  const data = {
-    user: check_permissions ? null : request.user.id,
-    id: check_permissions ? request.params.id : null,
-  };
-  const crud_review = new Crud(request, response, next);
-  crud_review.update<ProfileBodyT, ProfileDocI>(
-    { model: PROFILE, exempt: "-__v -user" },
-    { ...body },
-    data
-  );
-};
-
-export const deleteProfile = async (
+  const update = await CrudService.update<ProfileI>({
+    data: body,
+    filter: { id: request.params['id'] },
+    modelData: {
+      Model:PROFILE,select:[]
+    }
+  })
+  response.send(update)
+});
+export const updateProfileByUserId = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  const check_permissions = checkPermissions(
-    PermissionsE.DELETE_USER_PROFILE,
-    request.user.id
-  );
-  const data = {
-    user: check_permissions ? undefined : request.user.id,
-    id: check_permissions ? request.params.id : undefined,
-  };
-  const crud_review = new Crud(request, response, next);
-  crud_review.delete<ProfileDocI>(
-    { model: PROFILE, exempt: "-__v -created_at -updated_at" },
-    data
-  );
-};
+  const body = request.body;
+
+  const update = await CrudService.update<ProfileI>({
+    data: body,
+    filter: { userId:request.user.id },
+    modelData: {
+      Model:PROFILE,select:[]
+    }
+  })
+  response.send(update)
+});
+
+export const deleteProfileById =catchAsync( async (
+  request: Request,
+  response: Response,
+) => {
+  const del = await CrudService.delete<ProfileI>({
+    data: { id: request.params['id'] }, modelData: {
+    Model:PROFILE, select:[]
+  }
+  })
+  response.send(del)
+});
+export const deleteProfileByUserId =catchAsync( async (
+  request: Request,
+  response: Response,
+) => {
+  const del = await CrudService.delete<ProfileI>({
+    data: { userId:request.user.id }, modelData: {
+    Model:PROFILE, select:[]
+  }
+  })
+  response.send(del)
+});

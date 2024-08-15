@@ -29,6 +29,22 @@ export const allPermissions = {
     Delete: 'deleteUser',
     Manage: 'manageUser',
   },
+  Referral: {
+    Create: 'createReferral',
+    GetAll: 'getAllReferral',
+    Get: 'getReferral',
+    Update: 'updateReferral',
+    Delete: 'deleteReferral',
+    Manage: 'manageReferral',
+  },
+  Chat: {
+    Create: 'createChat',
+    GetAll: 'getAllChat',
+    Get: 'getChat',
+    Update: 'updateChat',
+    Delete: 'deleteChat',
+    Manage: 'manageChat',
+  },
   Product: {
     Create: 'createProduct',
     GetAll: 'getAllProduct',
@@ -118,6 +134,14 @@ export const allPermissions = {
     Update: 'updateNotification',
     Delete: 'deleteNotification',
     Manage: 'manageNotification',
+  },
+ System: {
+    Create: 'createSystem',
+    GetAll: 'getAllSystem',
+    Get: 'getSystem',
+    Update: 'updateSystem',
+    Delete: 'deleteSystem',
+    Manage: 'manageSystem',
   },
   Inventory: {
     Create: 'createInventory',

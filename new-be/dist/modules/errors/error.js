@@ -11,7 +11,7 @@ export const errorConverter = (err, _req, _res, next) => {
     let error = err;
     if (!(error instanceof ApiError)) {
         let statusCode = error.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
-        let message = error.message || `${httpStatus[statusCode]}`;
+        let message = error.message || `${statusCode}`;
         // Check for Mongoose errors
         if (error instanceof mongoose.Error) {
             statusCode = httpStatus.BAD_REQUEST;

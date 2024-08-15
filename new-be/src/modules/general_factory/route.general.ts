@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { ShippingIndex } from "../admin/shipping/index.shipping";
-import exp from "constants";
 
 const generalRouter = Router();
 

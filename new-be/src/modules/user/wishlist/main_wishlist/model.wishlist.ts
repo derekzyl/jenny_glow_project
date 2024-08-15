@@ -5,8 +5,8 @@ import {
 } from "../interface_wishlist/interface.wishlist";
 
 const wishlistSchema = new Schema<WishlistDocI, WishlistModelI>({
-  user: { type: Schema.Types.ObjectId, required: true, ref: "USER" },
-  products: [{ type: Schema.Types.ObjectId, required: true, ref: "PRODUCT" }],
+  userId: { type: Schema.Types.ObjectId, required: true, ref: "USERS" },
+  productsId: [{ type: Schema.Types.ObjectId, required: true, ref: "PRODUCT" }],
 });
 
 export const WISHLIST = model("WISHLIST", wishlistSchema);

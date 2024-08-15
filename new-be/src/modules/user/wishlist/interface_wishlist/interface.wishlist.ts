@@ -1,9 +1,8 @@
-import { Types, Document, Model } from "mongoose";
-import { ProductDocI } from "../../../product/interface_product/interface.product";
+import { Document, Model, Types } from "mongoose";
 
 export interface WishlistI {
-  user: Types.ObjectId;
-  products: ProductDocI[];
+  userId: Types.ObjectId;
+  productsId: Types.ObjectId[];
 }
 
 export interface WishlistDocI extends Document, WishlistI {}
@@ -11,4 +10,4 @@ export interface WishlistModelI extends Model<WishlistDocI> {
   checkDefaultWishlist(): void;
 }
 
-export type WishlistBodyT = Omit<WishlistI, "user">;
+export type WishlistBodyT = Omit<WishlistI, "userId">;

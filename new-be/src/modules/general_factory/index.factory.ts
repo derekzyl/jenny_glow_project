@@ -5,7 +5,7 @@ import {
   getOne,
   updateOne,
 } from "./controller.factory";
-import { getPermissions } from "./permission_handler";
+
 
 class GeneralFactory {
   public createOneFactory = createOne;
@@ -13,7 +13,7 @@ class GeneralFactory {
   public updateOneFactory = updateOne;
   public getOneFactory = getOne;
   public getAllFactory = getAll;
-  public getUserPermissions = getPermissions;
+
 }
 
 

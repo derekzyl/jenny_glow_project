@@ -1,5 +1,7 @@
 import { CrudService } from '../../../genCrud';
 import Crud from '../../../genCrud/crud.controller';
+import responseMessage from '../../../genCrud/responseMessage';
+import { allPermissions } from '../../../setting/roles';
 import { catchAsync } from '../../../utils';
 import httpStatus from 'http-status';
 import PERMISSIONS from '../models/models.permissions';
@@ -39,5 +41,8 @@ export const getRolesFromUserRoleNameController = catchAsync(async (req, res) =>
     const role = req.body.role;
     const gottenRole = await findUserRolesFromEncryptedRoleName(role);
     return res.status(httpStatus.OK).send(gottenRole);
+});
+export const getAllPermissionsRaw = catchAsync(async (_req, res) => {
+    res.status(httpStatus.OK).send(responseMessage({ message: "All permissions", data: allPermissions, success_status: true }));
 });
 //# sourceMappingURL=controller.permissions.js.map

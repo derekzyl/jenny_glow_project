@@ -1,21 +1,47 @@
-import { Router } from "express";
-import { CartIndex } from "../index.cart";
-import { AuthIndex } from "../../../auth/index.auth";
+import { auth } from '@modules/auth';
+import { validate } from '@modules/validate';
+import express, { Router } from 'express';
+import { cartController } from '..';
+import { cartValidations } from './validation.cart';
 
-const cartRouter = Router();
-cartRouter
-  .route("/")
+const router: Router = express.Router();
 
-  .get(AuthIndex.protector, CartIndex.get_cart);
-cartRouter.route("/add/:id").patch(AuthIndex.protector, CartIndex.add_cart);
-cartRouter
-  .route("/remove/:id")
-  .delete(AuthIndex.protector, CartIndex.remove_cart);
-cartRouter
-  .route("/update-cart-with-address/:id")
-  .patch(AuthIndex.protector, CartIndex.update_cart_with_address);
+// Create Cart
+router.post('/', auth(), validate(cartValidations.createCart), cartController.createCart);
 
-cartRouter
-  .route("/clear/cart")
-  .delete(AuthIndex.protector, CartIndex.clear_cart);
-export default cartRouter;
+// Get User Cart
+router.get('/user/:userId', auth(), validate(cartValidations.getUserCart), cartController.getUserCart);
+
+// Clear Cart
+router.delete('/clear', auth(), validate(cartValidations.clearCart), cartController.clearCart);
+
+// Add Item to Cart
+router.post('/add-item', auth(), validate(cartValidations.addToCartItem), cartController.addToCartItem);
+
+// Remove Item from Cart
+router.delete('/remove-item', auth(), validate(cartValidations.removeFromCartItem), cartController.removeFromCartItem);
+
+// Get Cart Item by ID
+router.get('/item/:id', auth(), validate(cartValidations.getCartItemById), cartController.getCartItemById);
+
+// Update Cart Item by ID
+router.patch('/item/:id', auth(), validate(cartValidations.updateCartItem), cartController.updateCartItem);
+
+// Get Cart Items by Cart ID
+router.get('/:cartId/items', auth(), validate(cartValidations.getCartItemsByCartId), cartController.getCartItemsByCartId);
+
+// Update Cart by Address Change
+router.patch(
+  '/:cartId/address/:addressId',
+  auth(),
+  validate(cartValidations.updateCartItemsByAddressChange),
+  cartController.updateCartItemsByAddressChange
+);
+
+// Delete Cart Item by ID
+router.delete('/item/:id', auth(), validate(cartValidations.deleteCartItem), cartController.deleteCartItem);
+
+// Update Cart
+router.patch('/:cartId', auth(), validate(cartValidations.updateCart), cartController.updateCart);
+
+export default router;

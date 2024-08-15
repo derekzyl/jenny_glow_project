@@ -1,160 +1,319 @@
 /* eslint-disable import/no-mutable-exports */
 /*
-    Roles and Permissions
+    Role and Permissions
 */
 // All Permissions
 export const allPermissions = {
     SuperAdmin: 'superAdmin',
-    Roles: {
-        Create: 'createRoles',
-        GetAll: 'getAllRoles',
-        Get: 'getRoles',
-        Update: 'updateRoles',
-        Delete: 'deleteRoles',
+    Admin: 'admin',
+    Branch: {
+        Create: 'createBranch',
+        GetAll: 'getAllBranch',
+        Get: 'getBranch',
+        Update: 'updateBranch',
     },
-    Kyc: {
-        Get: 'getKyc',
-        Manage: 'manageCurrencies',
-        Verify: 'verifyKyc',
-        VerifyKyc: 'verifyKyc',
+    Role: {
+        Create: 'createRole',
+        GetAll: 'getAllRole',
+        Get: 'getRole',
+        Update: 'updateRole',
+        Delete: 'deleteRole',
     },
-    Currencies: {
-        Get: 'getCurrencies',
-        Manage: 'manageCurrencies',
+    User: {
+        Create: 'createUser',
+        GetAll: 'getAllUser',
+        Get: 'getUser',
+        Update: 'updateUser',
+        Delete: 'deleteUser',
+        Manage: 'manageUser',
     },
-    CurrencyPairs: {
-        Get: 'getCurrencyPairs',
-        Create: 'createCurrencyPairs',
-        Update: 'updateCurrencyPairs',
-        Deactivate: 'deactivateCurrencyPairs',
-        Delete: 'deleteCurrencyPairs',
+    Referral: {
+        Create: 'createReferral',
+        GetAll: 'getAllReferral',
+        Get: 'getReferral',
+        Update: 'updateReferral',
+        Delete: 'deleteReferral',
+        Manage: 'manageReferral',
     },
-    CurrencyPairsRates: {
-        GetRate: 'getCurrencyPairsRates',
-        CreateRate: 'createCurrencyPairsRates',
-        UpdateRate: 'updateCurrencyPairsRates',
-        DeactivateRate: 'deactivateCurrencyPairsRates',
-        DeleteRate: 'deleteCurrencyPairsRates',
-        GetAllRates: 'getAllCurrencyPairsRates',
+    Chat: {
+        Create: 'createChat',
+        GetAll: 'getAllChat',
+        Get: 'getChat',
+        Update: 'updateChat',
+        Delete: 'deleteChat',
+        Manage: 'manageChat',
     },
-    GiftCards: {
-        GetRate: 'getGiftCardsRate',
-        CreateRate: 'createGiftCardsRate',
-        UpdateRate: 'updateGiftCardsRate',
-        DeleteRate: 'deleteGiftCardsRate',
-        DeactivateRate: 'deactivateGiftCardsRate',
-        GetAllRates: 'getAllGiftCardsRates',
-        ApproveGiftCard: 'ApproveGiftCards',
-        transactGiftCard: 'transactGiftCards',
+    Product: {
+        Create: 'createProduct',
+        GetAll: 'getAllProduct',
+        Get: 'getProduct',
+        Update: 'updateProduct',
+        Delete: 'deleteProduct',
+        Manage: 'manageProduct',
+    },
+    Category: {
+        Create: 'createCategory',
+        GetAll: 'getAllCategory',
+        Get: 'getCategory',
+        Update: 'updateCategory',
+        Delete: 'deleteCategory',
+        Manage: 'manageCategory',
+    },
+    Order: {
+        Create: 'createOrder',
+        GetAll: 'getAllOrder',
+        Get: 'getOrder',
+        Update: 'updateOrder',
+        Delete: 'deleteOrder',
+        Manage: 'manageOrder',
+        GetBranchOrder: 'getBranchOrder',
+        GetAllBranchOrder: 'getAllBranchOrder',
+        UpdateBranchOrder: 'updateBranchOrder',
+        DeleteBranchOrder: 'deleteBranchOrder',
+    },
+    Payment: {
+        Create: 'createPayment',
+        GetAll: 'getAllPayment',
+        GetBranchPayment: 'getBranchPayment',
+        Get: 'getPayment',
+        Update: 'updatePayment',
+        Delete: 'deletePayment',
+        Manage: 'managePayment',
+        GetAllBranchPayment: 'getAllBranchPayment',
+        UpdateBranchPayment: 'updateBranchPayment',
+        DeleteBranchPayment: 'deleteBranchPayment',
+    },
+    Discount: {
+        Create: 'createDiscount',
+        GetAll: 'getAllDiscount',
+        Get: 'getDiscount',
+        Update: 'updateDiscount',
+        Delete: 'deleteDiscount',
+        Manage: 'manageDiscount',
+        GetAllBranchDiscount: 'getAllBranchDiscount',
+        UpdateBranchDiscount: 'updateBranchDiscount',
+        DeleteBranchDiscount: 'deleteBranchDiscount',
+    },
+    Review: {
+        Create: 'createReview',
+        GetAll: 'getAllReview',
+        Get: 'getReview',
+        Update: 'updateReview',
+        Delete: 'deleteReview',
+        Manage: 'manageReview',
+    },
+    Shipping: {
+        Create: 'createShipping',
+        GetAll: 'getAllShipping',
+        Get: 'getShipping',
+        Update: 'updateShipping',
+        Delete: 'deleteShipping',
+        Manage: 'manageShipping',
     },
     CustomerService: {
+        Create: 'createCustomerService',
+        GetAll: 'getAllCustomerService',
         Get: 'getCustomerService',
+        Update: 'updateCustomerService',
+        Delete: 'deleteCustomerService',
         Manage: 'manageCustomerService',
     },
-    Transactions: {
-        Get: 'getTransactions',
-        Manage: 'manageTransactions',
+    Analytic: {
+        View: 'viewAnalytic',
+        Manage: 'manageAnalytic',
     },
-    Exchanges: {
-        Get: 'getExchanges',
-        Create: 'createExchanges',
-        GetAll: 'getAllExchanges',
-        TransactionOps: 'ExchangesTransactionOperations',
-        Delete: 'deleteExchanges',
-        Update: 'updateExchanges',
-        Deactivate: 'deactivateExchanges',
+    Notification: {
+        Create: 'createNotification',
+        GetAll: 'getAllNotification',
+        Get: 'getNotification',
+        Update: 'updateNotification',
+        Delete: 'deleteNotification',
+        Manage: 'manageNotification',
     },
-    Bills: {
-        Get: 'getBills',
-        GetAll: 'getAllBills',
-        Create: 'createBills', // for users, so they can get data specific to them
+    System: {
+        Create: 'createSystem',
+        GetAll: 'getAllSystem',
+        Get: 'getSystem',
+        Update: 'updateSystem',
+        Delete: 'deleteSystem',
+        Manage: 'manageSystem',
     },
-    Users: {
-        Get: 'getUsers',
-        Manage: 'manageUsers',
-        UserOnly: 'usersOnly',
-        VerifyKyc: 'verifyKyc',
+    Inventory: {
+        Create: 'createInventory',
+        GetAll: 'getAllInventory',
+        Get: 'getInventory',
+        Update: 'updateInventory',
+        Delete: 'deleteInventory',
+        Manage: 'manageInventory',
+        Approve: 'approveInventory',
+        CreateBranchInventory: 'createBranchInventory',
+        GetAllBranchInventory: 'getAllBranchInventory',
+        GetBranchInventory: 'getBranchInventory',
+        UpdateBranchInventory: 'updateBranchInventory',
+        DeleteBranchInventory: 'deleteBranchInventory',
     },
-    Wallets: {
-        Get: 'getWallets',
-        Create: 'createWallets',
-        Manage: 'manageWallets',
+    Staff: {
+        Create: 'createStaff',
+        GetAll: 'getAllStaff',
+        Get: 'getStaff',
+        Update: 'updateStaff',
+        Delete: 'deleteStaff',
+        Manage: 'manageStaff',
+        CreateBranchStaff: 'createBranchStaff',
+        GetAllBranchStaff: 'getAllBranchStaff',
+        GetBranchStaff: 'getBranchStaff',
+        UpdateBranchStaff: 'updateBranchStaff',
     },
-    VirtualAccounts: {
-        Get: 'getVirtualAccounts',
-        Create: 'createVirtualAccounts',
-        GetAll: 'getAllVirtualAccounts',
-        Delete: 'deleteVirtualAccounts',
-        Update: 'updateVirtualAccounts',
+    Setting: {
+        Update: 'updateSetting',
+        Manage: 'manageSetting',
     },
-    Staffs: {
-        Get: 'getStaffs',
-        Create: 'createStaffs',
-        GetAll: 'getAllStaffs',
-        Delete: 'deleteStaffs',
-        Update: 'updateStaffs',
+    Report: {
+        Create: 'createReport',
+        GetAll: 'getAllReport',
+        Get: 'getReport',
+        Update: 'updateReport',
+        Delete: 'deleteReport',
+        Manage: 'manageReport',
+        createBranchReport: 'createBranchReport',
+        getAllBranchReport: 'getAllBranchReport',
+        getBranchReport: 'getBranchReport',
+        updateBranchReport: 'updateBranchReport',
+        deleteBranchReport: 'deleteBranchReport',
     },
-    Systems: {
-        Update: 'updateSystems',
-        Create: 'createSystems',
-        Delete: 'deleteSystems',
+    Refund: {
+        Create: 'createRefund',
+        GetAll: 'getAllRefund',
+        Get: 'getRefund',
+        Update: 'updateRefund',
+        Delete: 'deleteRefund',
+        Manage: 'manageRefund',
+        CreateBranchRefund: 'createBranchRefund',
+        GetAllBranchRefund: 'getAllBranchRefund',
+        GetBranchRefund: 'getBranchRefund',
+        UpdateBranchRefund: 'updateBranchRefund',
+        DeleteBranchRefund: 'deleteBranchRefund',
     },
-    Statistics: {
-        Update: 'updateStatistics',
-        Create: 'createStatistics',
+    LoyaltyProgram: {
+        Create: 'createLoyaltyProgram',
+        GetAll: 'getAllLoyaltyProgram',
+        Get: 'getLoyaltyProgram',
+        Update: 'updateLoyaltyProgram',
+        Delete: 'deleteLoyaltyProgram',
+        Manage: 'manageLoyaltyProgram',
     },
-    Chats: {
-        Get: 'getChats',
-        Create: 'createChats',
-        GetAll: 'getAllChats',
-        Delete: 'deleteChats',
-        Update: 'updateChats',
-        Transfer: 'transferChats',
+    Advertisement: {
+        Create: 'createAdvertisement',
+        GetAll: 'getAllAdvertisement',
+        Get: 'getAdvertisement',
+        Update: 'updateAdvertisement',
+        Delete: 'deleteAdvertisement',
+        Manage: 'manageAdvertisement',
     },
-    Referrals: {
-        GetRef: 'getReferral',
-        CreateRef: 'createReferral',
-        UpdateRef: 'updateReferral',
-        DeleteRef: 'deleteReferral',
-        GetAllRef: 'getAllReferral',
-        ManageRef: 'manageReferral',
-        GetRefById: 'getReferralById',
+    Coupon: {
+        Create: 'createCoupon',
+        GetAll: 'getAllCoupon',
+        Get: 'getCoupon',
+        Update: 'updateCoupon',
+        Delete: 'deleteCoupon',
+        Manage: 'manageCoupon',
     },
-    Beneficiary: {
-        getBeneficiaries: 'getBeneficiaries',
-        createBeneficiary: 'createBeneficiary',
-        updateBeneficiary: 'updateBeneficiary',
-        deleteBeneficiary: 'deleteBeneficiary',
-        getAllBeneficiaries: 'getAllBeneficiaries',
+    AuditLog: {
+        View: 'viewAuditLog',
+        Manage: 'manageAuditLog',
+        ViewBranchAuditLog: 'viewBranchAuditLog',
+        ManageBranchAuditLog: 'manageBranchAuditLog',
+    },
+    Subscription: {
+        Create: 'createSubscription',
+        GetAll: 'getAllSubscription',
+        Get: 'getSubscription',
+        Update: 'updateSubscription',
+        Delete: 'deleteSubscription',
+        Manage: 'manageSubscription',
+    },
+    Campaign: {
+        Create: 'createCampaign',
+        GetAll: 'getAllCampaign',
+        Get: 'getCampaign',
+        Update: 'updateCampaign',
+        Delete: 'deleteCampaign',
+        Manage: 'manageCampaign',
+    },
+    Transaction: {
+        Manage: 'manageTransaction',
+        Get: 'getTransaction',
+    },
+    Stock: {
+        Create: 'createStock',
+        GetAll: 'getAllStock',
+        Get: 'getStock',
+        Update: 'updateStock',
+        Delete: 'deleteStock', Manage: 'manageStock',
+        Transfer: 'transferStock',
     },
 };
-// All Roles
-export const allRoles = {
+export const allRole = {
     // Customer
-    user: [
-        allPermissions.Users.UserOnly,
-        allPermissions.Transactions.Get,
-        allPermissions.Currencies.Get,
-        allPermissions.CurrencyPairs.Get,
-        allPermissions.CurrencyPairsRates.GetAllRates,
-        allPermissions.CurrencyPairsRates.GetRate,
-        allPermissions.GiftCards.GetRate,
-        allPermissions.Exchanges.TransactionOps,
-        allPermissions.Bills.Create,
-        allPermissions.Wallets.Get,
-        allPermissions.Wallets.Create,
-        allPermissions.VirtualAccounts.Get,
-        allPermissions.VirtualAccounts.Create,
-        allPermissions.GiftCards.GetRate,
+    customer: [
+        allPermissions.User.Create,
+        allPermissions.Order.Create,
+        allPermissions.Order.Get,
+        allPermissions.Product.Get,
+        allPermissions.Review.Create,
+        allPermissions.Review.Get,
+        allPermissions.Review.Update,
+        allPermissions.Review.Delete,
+        allPermissions.Discount.Get,
+        allPermissions.Notification.Get,
     ],
     // Staff
-    // accountant: [allPermissions.Users.Get],
-    // trader: [allPermissions.Exchanges.Get, allPermissions.Exchanges.Manage],
-    // reconciller: [allPermissions.Users.Get, allPermissions.Exchanges.Get, allPermissions.Exchanges.Manage],
-    // // Admin
-    // admin: Object.values(allPermissions)
-    //   .flatMap<string>((role) => Object.values(role))
-    //   .filter((role) => role !== 'userOnly'), // Object.values(allPermissions).flatMap<string>(Object.values),
+    accountant: [
+        allPermissions.Payment.GetAll,
+        allPermissions.Payment.Manage,
+        allPermissions.Order.GetAll,
+        allPermissions.Order.Update,
+        allPermissions.Refund.GetAll,
+        allPermissions.Refund.Manage,
+    ],
+    customerServiceRep: [
+        allPermissions.CustomerService.Create,
+        allPermissions.CustomerService.GetAll,
+        allPermissions.CustomerService.Get,
+        allPermissions.CustomerService.Update,
+        allPermissions.CustomerService.Delete,
+        allPermissions.Notification.Get,
+        allPermissions.Notification.Manage,
+    ],
+    inventoryManager: [
+        allPermissions.Inventory.Create,
+        allPermissions.Inventory.GetAll,
+        allPermissions.Inventory.Get,
+        allPermissions.Inventory.Update,
+        allPermissions.Inventory.Delete,
+        allPermissions.Product.Create,
+        allPermissions.Product.GetAll,
+        allPermissions.Product.Get,
+        allPermissions.Product.Update,
+        allPermissions.Product.Delete,
+    ],
+    salesRep: [
+        allPermissions.Order.Create,
+        allPermissions.Order.GetAll,
+        allPermissions.Order.Get,
+        allPermissions.Order.Update,
+        allPermissions.Order.Delete,
+        allPermissions.Discount.GetAll,
+        allPermissions.Discount.Get,
+        allPermissions.Notification.Get,
+        allPermissions.Notification.Create,
+    ],
+    // Admin
+    admin: Object.values(allPermissions)
+        .flatMap((role) => Object.values(role))
+        .filter((role) => role !== 'usersOnly'),
+    // Super Admin
+    superAdmin: [allPermissions.SuperAdmin, ...Object.values(allPermissions).flatMap((role) => Object.values(role))],
 };
 // All Kyc Tier Permissions
 export const allKycTierFields = {
@@ -168,56 +327,4 @@ export const allKycTierFields = {
     BVN: 'BVN',
     NIN: 'NIN',
 };
-export const allKycTierPermissions = {
-    0: [],
-    1: [allKycTierFields.PhoneNumber, allKycTierFields.Country, allKycTierFields.DateOfBirth, allKycTierFields.BVN],
-    2: [allKycTierFields.DocumentNumber, allKycTierFields.DocumentImage, allKycTierFields.UserPhoto],
-    3: [allKycTierFields.Address],
-};
-export const kycTiers = Object.keys(allKycTierPermissions).map(Number);
-export const kycTierPermissions = new Map(Object.entries(allKycTierPermissions).map(([key, value]) => [Number(key), value]));
-// Define possible states as an enum
-export var KycFieldStates;
-(function (KycFieldStates) {
-    KycFieldStates["UNINITIATED"] = "UNINITIATED";
-    KycFieldStates["PENDING"] = "PENDING";
-    KycFieldStates["FAILED"] = "FAILED";
-    KycFieldStates["VERIFIED"] = "VERIFIED";
-})(KycFieldStates || (KycFieldStates = {}));
-// export const roles: string[] = Object.keys(/* await getRoles()) || */ allRoles);
-// export const rolePermissions: Map<string, string[]> = new Map(Object.entries(allRoles));
-// async function getRoles(): Promise<Record<string, string[]>> {
-//   // try {
-//   //   const roles = await ROLES.find();
-//   //   if (!roles) {
-//   //     throw new Error('No roles found');
-//   //   }
-//   //   const mapRoles: Record<string, string[]> = {};
-//   //   roles.forEach((role) => {
-//   //     mapRoles[role.name] = role.permissions;
-//   //   });
-//   //   return mapRoles;
-//   // } catch (error) {
-//   //   throw error;
-//   // }
-//   return { admin: ['roles'] };
-// }
-// (async () => {
-//   const allRolesMap = await getRoles();
-//   roles = Object.keys(allRolesMap);
-//   rolePermissions = new Map(Object.entries(allRolesMap));
-// })();
-// export { rolePermissions, roles };
-// export let rolePermissions: Map<string, string[]>;
-// export let roles: string[];
-// (async () => {
-//   try {
-//     const allRolesMap = await getRoles();
-//     // Assign values to rolePermissions
-//     rolePermissions = new Map(Object.entries(allRolesMap));
-//     roles = Object.keys(allRolesMap);
-//   } catch (error) {
-//     logger.info('Error fetching roles:', error);
-//   }
-// })();
 //# sourceMappingURL=roles.js.map

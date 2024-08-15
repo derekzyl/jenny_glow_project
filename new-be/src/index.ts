@@ -1,9 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/no-extraneous-dependencies */
-import logger from '@modules/logger/logger';
+
 import { Server } from 'http';
 import mongoose from 'mongoose';
 
+import { logger } from '@modules/logger/';
 import { Socket } from '@modules/utils/socket';
 import { createAdapter } from '@socket.io/cluster-adapter';
 import { setupWorker } from '@socket.io/sticky';

@@ -8,7 +8,7 @@ router.post('/', auth(), validate(chatValidations.createChat), chatController.cr
 // Get Chat By Id
 router.get('/:id', auth( /* permission to access chat */), validate(chatValidations.getChatById), chatController.getChatById);
 // Delete Chat By Id
-router.delete('/:id', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.deleteChatById), chatController.deleteChatById);
+router.delete('/:id', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.deleteChatById), chatController.deleteChatById);
 // Get All Chats
 router.get('/', auth( /* permission to get chats */), validate(chatValidations.getAllChats), chatController.getAllChats);
 // Message Routes
@@ -22,12 +22,12 @@ router.delete('/messages/:id', auth( /* permission to delete message */), valida
 // Get All Messages
 router.get('/:chatId/messages', auth( /* permission to access messages */), validate(chatValidations.getAllMessages), chatController.getAllMessages);
 // Other Chat functionalities (implement validation as needed)
-router.patch('/:chatId/transfer', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.transferChat), chatController.transferChat);
-router.patch('/:id/staff', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.addStaffToChat), chatController.addStaffToChat);
-router.patch('/:id/close', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.closeChat), chatController.closeChat);
-router.get('/:id/details', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.getChatAndMessagesById), chatController.getChatAndMessagesById);
+router.patch('/:chatId/transfer', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.transferChat), chatController.transferChat);
+router.patch('/:id/staff', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.addStaffToChat), chatController.addStaffToChat);
+router.patch('/:id/close', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.closeChat), chatController.closeChat);
+router.get('/:id/details', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.getChatAndMessagesById), chatController.getChatAndMessagesById);
 router.get('/users/userId/chats', auth( /* permission to access user chats */), validate(chatValidations.getUsersCurrentChat), chatController.getUsersCurrentChat);
 router.get('/by-ref/:ref', auth( /* permission to access chat by ref */), validate(chatValidations.getChatByData), chatController.getChatByData);
-router.get('/', auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin), validate(chatValidations.getAllChats), chatController.getManyChat);
+router.get('/', auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin), validate(chatValidations.getAllChats), chatController.getManyChat);
 export default router;
 //# sourceMappingURL=chat.route.v1.js.map

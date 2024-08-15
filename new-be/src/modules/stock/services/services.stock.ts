@@ -61,7 +61,7 @@ export async function addToStock(
       } else {
         if (getStock.productVariant && variantIndex && getStock.productVariant[variantIndex]) {
           if (getStock.productVariant && variantIndex !== -1) {
-            getStock.productVariant[variantIndex].variantCount += variant.variantCount;
+            getStock.productVariant[variantIndex]!.variantCount += variant.variantCount;
           }
         }
       }
@@ -107,8 +107,8 @@ export async function removeStock(
         throw new ApiError(httpStatus.NOT_FOUND, `Variant not found for product ${data.productId}`);
       }
       if (getStock.productVariant && variantIndex && getStock.productVariant[variantIndex] && variantIndex !== -1) {
-        if (getStock.productVariant[variantIndex].variantCount<variant.variantCount) throw new ApiError(httpStatus.BAD_REQUEST, `Variant count is less than the amount you want to remove`);
-          getStock.productVariant[variantIndex].variantCount -= variant.variantCount;
+        if (getStock.productVariant[variantIndex]!.variantCount<variant.variantCount) throw new ApiError(httpStatus.BAD_REQUEST, `Variant count is less than the amount you want to remove`);
+          getStock.productVariant[variantIndex]!.variantCount -= variant.variantCount;
       }
     });
   }

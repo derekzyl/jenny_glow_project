@@ -6,10 +6,7 @@ import systemRoutesV1 from '@modules/admin/system/route.system.v1';
 import authRouteV1 from '@modules/auth/routes/auth.route.v1';
 import notificationRouterV1 from '@modules/notification/routes/notification.route.v1';
 import transactionsRoutesV1 from '@modules/transactions/routes/transactions.route.v1';
-import userRouteV1 from '@modules/user/routes/user.route.v1';
-import currencyRoutesV1 from '@modules/wallet/routes/currency.route.v1';
-import giftcardMerchantRoutesV1 from '@modules/wallet/routes/giftcard.merchant.route.v1';
-import giftcardRoutesV1 from '@modules/wallet/routes/giftcard.routes.v1';
+
 
 import adminRouter from '@modules/admin/index.admin';
 import chatRoutesV1 from '@modules/chat/routes/chat.route.v1';
@@ -18,8 +15,9 @@ import { productRouter, productVariantRouter } from '@modules/product/main_produ
 import referralRoutesV1 from '@modules/referral/routes/referral.route.v1';
 import { reviewRouter } from '@modules/review/main_review/route.review';
 import { stockRouter, stockTransferRouter } from '@modules/stock/routes';
-import walletRoutesV1 from '@modules/wallet/routes/wallet.route.v1';
-import webhookRouterV1 from '@modules/webhooks/webhook.route.v1';
+import userRouter from '@modules/user/index.user';
+
+
 import express, { Router } from 'express';
 import config from '../../config/config';
 import devRoute from './dev.route.v1';
@@ -48,20 +46,13 @@ const defaultIRoute: IRoute[] = [
   },
   {
     path: '/users',
-    route: userRouteV1,
+    route: userRouter,
   },
   {
     path: '/product',
     route: productRouter,
   },
-  {
-    path: '/currencies',
-    route: currencyRoutesV1,
-  },
-  {
-    path: '/wallets',
-    route: walletRoutesV1,
-  },
+
   {
     path: '/inventory',
     route: inventoryRouter,
@@ -90,22 +81,10 @@ const defaultIRoute: IRoute[] = [
     path: '/staffs',
     route: staffsV1,
   },
-  {
-    path: '/fx',
-    route: fxV1,
-  },
-  {
-    path: '/giftcards',
-    route: giftcardRoutesV1,
-  },
-  {
-    path: '/giftcard-merchants',
-    route: giftcardMerchantRoutesV1,
-  },
-  {
-    path: '/transfer',
-    route: transferRoutesV1,
-  },
+
+
+
+
   {
     path: '/roles',
     route: rolesRoutesV1,
@@ -119,10 +98,7 @@ const defaultIRoute: IRoute[] = [
     path: '/system',
     route: systemRoutesV1,
   },
-  {
-    path: '/webhook',
-    route: webhookRouterV1,
-  },
+
 
   {
     path: '/notification',

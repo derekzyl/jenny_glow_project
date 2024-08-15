@@ -1,55 +1,48 @@
 import { Router } from "express";
 
+import { auth } from "@modules/auth";
+import { allPermissions } from "@modules/setting/roles";
+
+import { MULTER_UPLOAD, formFileHandler } from "@modules/utils/file_handler/middleware.file";
 import { ProfileIndex } from "../index.profile";
-import { AuthIndex } from "../../../auth/index.auth";
-import { GeneralIndex } from "../../../general_factory/index.factory";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
-import {
-  multer_upload,
-  formFileHandler,
-} from "../../../../utilities/file_handler/middleware.file";
 
 const profileRouter = Router();
 
 profileRouter
-  .route("/")
+  .route('/')
   .post(
-    AuthIndex.protector,
-    multer_upload.fields([{ name: "profile_image", maxCount: 1 }]),
-    formFileHandler<{ profile_image: string }>(
-      { profile_image: "" },
-      "category",
-      false
-    ),
+    auth(allPermissions.User.Manage, allPermissions.User.Create),
+    MULTER_UPLOAD.fields([{ name: 'inventoryReceipt', maxCount: 1 }]),
+    formFileHandler([{ name: 'inventoryReceipt' }]),
     ProfileIndex.create_profile
   )
   .get(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.VIEW_USER_PROFILE),
+    auth(allPermissions.User.Manage, allPermissions.User.GetAll),
+  
     ProfileIndex.get_all_profile
-  );
+);
+profileRouter.route("admin/:id").get(auth(allPermissions.User.Manage, allPermissions.User.Get), ProfileIndex.get_profile_by_id);
+profileRouter.route("admin/:id").patch(auth(allPermissions.User.Manage, allPermissions.User.Update), ProfileIndex.update_profile_by_id);
+profileRouter.route("admin/:id").delete(auth(allPermissions.User.Manage, allPermissions.User.Delete), ProfileIndex.delete_profile_by_id);
 
 profileRouter
   .route("/user")
   .get(
-    AuthIndex.protector,
+    auth(),
 
-    ProfileIndex.get_one_profile
+    ProfileIndex.get_profile_by_user_id
+
   )
   .patch(
-    AuthIndex.protector,
-    multer_upload.fields([{ name: "profile_image", maxCount: 1 }]),
-    formFileHandler<{ profile_image: string }>(
-      { profile_image: "" },
-      "category",
-      false
-    ),
-    ProfileIndex.update_profile
+    auth(),
+ MULTER_UPLOAD.fields([{ name: 'inventoryReceipt', maxCount: 1 }]),
+    formFileHandler([{ name: 'inventoryReceipt' }]),
+    ProfileIndex.update_profile_by_user_id
   )
   .delete(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions(PermissionsE.DELETE_USER_PROFILE),
-    ProfileIndex.delete_profile
+    auth(),
+   
+    ProfileIndex.delete_profile_by_user_id
   );
 
 export default profileRouter;

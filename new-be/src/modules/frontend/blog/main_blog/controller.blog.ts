@@ -1,18 +1,18 @@
 import { ApiError } from "@modules/errors";
 import { imageDeleteHandler } from "@modules/utils/file_handler/files_handler";
-import { NextFunction, Request, Response } from "express";
-import { CrudController } from "expressbolt";
+import { Request, Response } from "express";
+import { CrudService } from "expressbolt";
 import httpStatus from "http-status";
-import { Crud } from "../../../general_factory/crud";
-import { BlogBodyI, BlogDocI, BlogI } from "../interface_blog/interface.blog";
+
+import { catchAsync } from "@modules/utils";
+import { BlogBodyI, BlogI } from "../interface_blog/interface.blog";
 import { BLOG } from "./model.blog";
 
-export const createBlog = async (
+export const createBlog = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  try {
+
     const body: BlogBodyI = request.body;
 
 
@@ -21,62 +21,59 @@ export const createBlog = async (
       created_by: request.user.id,
     };
 
-    const crud_blog = new Crud(request, response, next);
-    crud_blog.create<BlogI, BlogDocI>(
-      { model: BLOG, exempt: "" },
-      { ...gotten_body,createdBy: request.user.id },
-      {
+  const crud_blog = CrudService.create<BlogI>({
+       modelData:  { Model: BLOG, select: [] },
+      data:{ ...gotten_body,createdBy: request.user.id },
+      check:{
         title: gotten_body.title,
       }
-    );
-  } catch (error) {
-    next(error);
-  }
-};
+  }) 
+  response.status(201).send(crud_blog)
 
-export const getOneBlog = async (
+  
+  
+});
+
+export const getOneBlog = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  const crud_blog = new Crud(request, response, next);
-  crud_blog.getOne<BlogDocI>(
-    { model: BLOG, exempt: "-__v -created_by" },
-    { _id: request.params['id'] },
-    {}
-  );
-  const getBlog = new CrudController({ next, request, response, env: "production", });
-  await getBlog.getOne<BlogI>({
-    modelData: { Model: BLOG, select: [] },
-    data: { _id: request.params['id'] },
-    populate: {
+
+
+
+  const crud_blog = await CrudService.getOne<BlogI>({
+       modelData: { Model: BLOG, select:[ "-__v","-createdBy"] },
+    data:{ _id: request.params['id'] },
+    populate:{
       path: 'createdBy',
       fields: ['firstName','lastName'],
     },
-  });
-};
+  })   
+  
+response.send(crud_blog)
+});
 
 export const getManyBlog = async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
-  console.log("inside get many blogs");
 
-  const crud_blog = new Crud(request, response, next);
-  crud_blog.getMany<BlogDocI>(
-    { model: BLOG, exempt: "-__v -created_at -updated_at -created_by" },
-    request.query,
-    {},
 
-    {}
-  );
+  const crud_blog =CrudService.getMany<BlogI>
+    ({
+      modelData:  { Model: BLOG, select: ["-__v",  "-createdBy"] },
+    query:request.query,
+    filter:{},
+
+    populate:{}
+  
+    })
+  response.send(crud_blog)
 };
 
-export const updateBlog = async (
+export const updateBlog = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
   const body: BlogBodyI = request.body;
   if (body.image) {
@@ -85,25 +82,24 @@ export const updateBlog = async (
     get_blog.image ? imageDeleteHandler(get_blog.image) : "";
   }
 
-  const crud_blog = new Crud(request, response, next);
-  crud_blog.update<BlogBodyI, BlogDocI>(
-    { model: BLOG, exempt: "-__v" },
-    { ...body },
-    { _id: request.params['id'] }
-  );
-};
-export const deleteBlog = async (
+  const crud_blog =  CrudService.update<BlogI>(
+    {modelData:{ Model: BLOG, select: ["-__v"] },
+     data:{ ...body },
+     filter:{ _id: request.params['id'] }
+    });
+  response.send(crud_blog)
+});
+export const deleteBlog = catchAsync(async (
   request: Request,
   response: Response,
-  next: NextFunction
 ) => {
   const get_blog = await BLOG.findById(request.params['id']);
   if (!get_blog) throw new ApiError(httpStatus.NOT_FOUND,"blog not found");
   get_blog.image ? imageDeleteHandler(get_blog.image) : "";
 
-  const crud_blog = new Crud(request, response, next);
-  crud_blog.delete<BlogDocI>(
-    { model: BLOG, exempt: "-__v" },
-    { _id: request.params['id'] }
+  const crud_blog = CrudService.delete<BlogI>({
+   modelData: { Model: BLOG, select: ["-__v"] },
+    data:{ _id: request.params['id'] }}
   );
-};
+  response.send(crud_blog)
+});

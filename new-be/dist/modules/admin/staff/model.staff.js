@@ -8,6 +8,11 @@ const staffSchema = new Schema({
         ref: 'USERS',
     },
     firstName: { type: String, required: true },
+    branchId: {
+        type: Schema.Types.ObjectId,
+        ref: "BRANCH",
+        required: true
+    },
     lastName: { type: String, required: true },
     position: { type: String, required: true },
     department: { type: String, required: true },

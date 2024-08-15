@@ -4,7 +4,7 @@ import { CountryI } from "@modules/admin/shipping/interface_shipping/interface.s
 import { easyReferenceGenerator, GeneratekeyE, GeneratePrefixType } from "@modules/utils/referenceGenerator";
 import { CrudService } from "expressbolt";
 import { Types } from "mongoose";
-import countries from '../../admin/shipping/countries_states.json';
+import { shipping } from '../../admin/shipping/countries_states';
 import { branchBodyT, BranchI } from "../interface_branch/interface.branch";
 import { BRANCH } from "../models/model.branch";
 import { WORKING_HOURS } from "../models/model.hours";
@@ -12,7 +12,7 @@ import { WORKING_HOURS } from "../models/model.hours";
 
 
 export function generateBranchReference(data:{country: string, state: string}):string {
-const cs: CountryI[] = JSON.parse(JSON.stringify(countries))
+const cs: CountryI[] = JSON.parse(JSON.stringify(shipping))
     
     const getCountry = cs.find((c) => data.country.toLowerCase() === c.name.toLowerCase())
     const countryShortCode = getCountry?.iso2.toLowerCase()

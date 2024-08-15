@@ -19,15 +19,26 @@ export var GeneratekeyE;
 export var GeneratePrefixType;
 (function (GeneratePrefixType) {
     GeneratePrefixType["NONE"] = "";
-    GeneratePrefixType["VIRTUAL_ACCOUNT"] = "VIR-ACCT";
-    GeneratePrefixType["TRANSFER"] = "TRANS";
-    GeneratePrefixType["WITHDRAWAL"] = "WITH";
-    GeneratePrefixType["DEPOSIT"] = "DEP";
-    GeneratePrefixType["BILL"] = "BILL";
-    GeneratePrefixType["GIFT_CARD"] = "GTFX";
-    GeneratePrefixType["PSA"] = "PSA";
     GeneratePrefixType["CHAT"] = "CHAT";
     GeneratePrefixType["REFERRAL"] = "REF";
+    GeneratePrefixType["ORDER"] = "ORD";
+    GeneratePrefixType["PAYMENT"] = "PAY";
+    GeneratePrefixType["VOUCHER"] = "VOUCH";
+    GeneratePrefixType["BRANCH"] = "BCH";
+    GeneratePrefixType["INVENTORY"] = "INV";
+    GeneratePrefixType["PRODUCT"] = "PROD";
+    GeneratePrefixType["CATEGORY"] = "CAT";
+    GeneratePrefixType["SUB_CATEGORY"] = "SUBCAT";
+    GeneratePrefixType["CUSTOMER"] = "CUST";
+    GeneratePrefixType["SUPPLIER"] = "SUP";
+    GeneratePrefixType["USER"] = "USER";
+    GeneratePrefixType["ROLE"] = "ROLE";
+    GeneratePrefixType["PERMISSION"] = "PERM";
+    GeneratePrefixType["REFUND"] = "REFUND";
+    GeneratePrefixType["RETURN"] = "RETURN";
+    GeneratePrefixType["DISCOUNT"] = "DISCOUNT";
+    GeneratePrefixType["STOCK"] = "STOCK";
+    GeneratePrefixType["STOCK_TRANSFER"] = "STOCK_TRS";
 })(GeneratePrefixType || (GeneratePrefixType = {}));
 /**
  * The function `generateAlphanumericReference` generates a random alphanumeric reference of a

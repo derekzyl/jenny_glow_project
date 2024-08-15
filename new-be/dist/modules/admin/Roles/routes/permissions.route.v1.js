@@ -1,8 +1,8 @@
 import { auth } from '../../../auth';
 import { validate } from '../../../validate';
-import express from 'express';
+import { Router } from 'express';
 import { permissionsController, permissionsValidation } from '..';
-const router = express.Router();
+const router = Router();
 router
     .route('/')
     .get(validate(permissionsValidation.getPermissions), permissionsController.getAllPermissionsController)

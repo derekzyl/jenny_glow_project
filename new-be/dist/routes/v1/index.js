@@ -1,28 +1,19 @@
-import fxV1 from '../../modules/admin/exchangeWallets/routes/route.fx.v1';
 import permissionRoutesV1 from '../../modules/admin/Roles/routes/permissions.route.v1';
 import rolesRoutesV1 from '../../modules/admin/Roles/routes/roles.route.v1';
 import staffsV1 from '../../modules/admin/staff/routes/route.staff.v1';
 import statisticsRoutesV1 from '../../modules/admin/statistics/router.statistics.v1';
 import systemRoutesV1 from '../../modules/admin/system/route.system.v1';
 import authRouteV1 from '../../modules/auth/routes/auth.route.v1';
-import billPaymentRoutesV1 from '../../modules/billPayment/routes/bill-payment.route.v1';
-import exchangeRoutesV1 from '../../modules/exchange/routes/exchange.route.v1';
-import giftcardOrderRoutesV1 from '../../modules/exchange/routes/giftcard.exchange.v1';
-import orderRoutesV1 from '../../modules/exchange/routes/order.route.v1';
-import kycRouteV1 from '../../modules/kyc/routes/kyc.route.v1';
 import notificationRouterV1 from '../../modules/notification/routes/notification.route.v1';
-import virtualAccountRouterV1 from '../../modules/subVirtualAccount/routes/virtual-sub-account.route.v1';
-import transferRoutesV1 from '../../modules/tranfers/routes/transfers.v1';
 import transactionsRoutesV1 from '../../modules/transactions/routes/transactions.route.v1';
-import userRouteV1 from '../../modules/user/routes/user.route.v1';
-import currencyRoutesV1 from '../../modules/wallet/routes/currency.route.v1';
-import giftcardMerchantRoutesV1 from '../../modules/wallet/routes/giftcard.merchant.route.v1';
-import giftcardRoutesV1 from '../../modules/wallet/routes/giftcard.routes.v1';
-import beneficiaryRoutesV1 from '../../modules/beneficiaries/routes/beneficiary.route.v1';
+import adminRouter from '../../modules/admin/index.admin';
 import chatRoutesV1 from '../../modules/chat/routes/chat.route.v1';
+import inventoryRouter from '../../modules/inventory/route.inventory';
+import { productRouter, productVariantRouter } from '../../modules/product/main_product/route.product';
 import referralRoutesV1 from '../../modules/referral/routes/referral.route.v1';
-import walletRoutesV1 from '../../modules/wallet/routes/wallet.route.v1';
-import webhookRouterV1 from '../../modules/webhooks/webhook.route.v1';
+import { reviewRouter } from '../../modules/review/main_review/route.review';
+import { stockRouter, stockTransferRouter } from '../../modules/stock/routes';
+import userRouter from '../../modules/user/index.user';
 import express from 'express';
 import config from '../../config/config';
 import devRoute from './dev.route.v1';
@@ -40,63 +31,39 @@ const defaultIRoute = [
     },
     {
         path: '/users',
-        route: userRouteV1,
+        route: userRouter,
     },
     {
-        path: '/kyc',
-        route: kycRouteV1,
+        path: '/product',
+        route: productRouter,
     },
     {
-        path: '/currencies',
-        route: currencyRoutesV1,
+        path: '/inventory',
+        route: inventoryRouter,
     },
     {
-        path: '/wallets',
-        route: walletRoutesV1,
+        path: '/product-variant',
+        route: productVariantRouter,
     },
     {
-        path: '/orders',
-        route: orderRoutesV1,
-    },
-    {
-        path: '/giftcard-orders',
-        route: giftcardOrderRoutesV1,
-    },
-    {
-        path: '/exchange',
-        route: exchangeRoutesV1,
+        path: '/admin',
+        route: adminRouter,
     },
     {
         path: '/transactions',
         route: transactionsRoutesV1,
     },
     {
-        path: '/bills',
-        route: billPaymentRoutesV1,
+        path: '/stock',
+        route: stockRouter,
     },
     {
-        path: '/virtual-accounts',
-        route: virtualAccountRouterV1,
+        path: '/stock-transfer',
+        route: stockTransferRouter,
     },
     {
         path: '/staffs',
         route: staffsV1,
-    },
-    {
-        path: '/fx',
-        route: fxV1,
-    },
-    {
-        path: '/giftcards',
-        route: giftcardRoutesV1,
-    },
-    {
-        path: '/giftcard-merchants',
-        route: giftcardMerchantRoutesV1,
-    },
-    {
-        path: '/transfer',
-        route: transferRoutesV1,
     },
     {
         path: '/roles',
@@ -111,10 +78,6 @@ const defaultIRoute = [
         route: systemRoutesV1,
     },
     {
-        path: '/webhook',
-        route: webhookRouterV1,
-    },
-    {
         path: '/notification',
         route: notificationRouterV1,
     },
@@ -127,8 +90,8 @@ const defaultIRoute = [
         route: chatRoutesV1,
     },
     {
-        path: '/beneficiary',
-        route: beneficiaryRoutesV1,
+        path: '/review',
+        route: reviewRouter,
     },
     {
         path: '/referral',

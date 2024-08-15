@@ -1,25 +1,26 @@
 import { auth, authValidation } from '../../../auth';
 import { validate } from '../../../validate';
-import express from 'express';
+import { Router } from 'express';
 import { staffController, staffValidation } from '..';
 import { allPermissions } from '../../../setting/roles';
-const router = express.Router();
-router
+const staffRouter = Router();
+staffRouter
     .route('/')
-    .get(auth(allPermissions.Staffs.GetAll), validate(staffValidation.getStaffs), staffController.getManyStaffsController)
-    .post(auth(allPermissions.Staffs.Create), validate(staffValidation.createStaff), staffController.createStaffController);
-router
+    .get(auth(allPermissions.Staff.GetAll), validate(staffValidation.getStaffs), staffController.getManyStaffsController)
+    .post(auth(allPermissions.Staff.Create), validate(staffValidation.createStaff), staffController.createStaffController);
+staffRouter
     .route('/assign/user-as-staff')
-    .post(auth(allPermissions.Staffs.Create), validate(staffValidation.createStaff), staffController.makeExistingUserStaff);
-router
+    .post(auth(allPermissions.Staff.Create), validate(staffValidation.createStaff), staffController.makeExistingUserStaff);
+staffRouter
     .route('/:id')
-    .get(auth(allPermissions.Staffs.Get), validate(staffValidation.getStaff), staffController.getOneStaffByIdController)
-    .patch(auth(allPermissions.Staffs.Update), validate(staffValidation.updateStaffById), staffController.updateOneStaffByIdController)
-    .delete(auth(allPermissions.Staffs.Delete), validate(staffValidation.deleteStaff), staffController.deleteStaffByIdController);
-router
+    .get(auth(allPermissions.Staff.Get), validate(staffValidation.getStaff), staffController.getOneStaffByIdController)
+    .patch(auth(allPermissions.Staff.Update), validate(staffValidation.updateStaffById), staffController.updateOneStaffByIdController)
+    .delete(auth(allPermissions.Staff.Delete), validate(staffValidation.deleteStaff), staffController.deleteStaffByIdController);
+staffRouter
     .route('/user/data')
     .get(auth(), staffController.getOneStaffByUserId)
     .patch(auth(), validate(staffValidation.updateStaffByUser), staffController.updateOneStaffByUserIdController);
-router.route('/staff/login').post(validate(authValidation.login), staffController.staffLogin);
-export default router;
+staffRouter.route('/:id/branch').get(auth(), staffController.getStaffByBranchId);
+staffRouter.route('/staff/login').post(validate(authValidation.login), staffController.staffLogin);
+export default staffRouter;
 //# sourceMappingURL=route.staff.v1.js.map

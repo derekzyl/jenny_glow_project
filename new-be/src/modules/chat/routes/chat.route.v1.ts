@@ -13,7 +13,7 @@ router.get('/:id', auth(/* permission to access chat */), validate(chatValidatio
 // Delete Chat By Id
 router.delete(
   '/:id',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.deleteChatById),
   chatController.deleteChatById
 );
@@ -64,25 +64,25 @@ router.get(
 // Other Chat functionalities (implement validation as needed)
 router.patch(
   '/:chatId/transfer',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.transferChat),
   chatController.transferChat
 );
 router.patch(
   '/:id/staff',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.addStaffToChat),
   chatController.addStaffToChat
 );
 router.patch(
   '/:id/close',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.closeChat),
   chatController.closeChat
 );
 router.get(
   '/:id/details',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.getChatAndMessagesById),
   chatController.getChatAndMessagesById
 );
@@ -100,7 +100,7 @@ router.get(
 );
 router.get(
   '/',
-  auth(...Object.values(allPermissions.Chats), allPermissions.SuperAdmin),
+  auth(...Object.values(allPermissions.Chat), allPermissions.SuperAdmin),
   validate(chatValidations.getAllChats),
   chatController.getManyChat
 );

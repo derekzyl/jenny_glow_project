@@ -1,55 +1,39 @@
 import { Router } from "express";
 
 import { VatIndex } from "../index.vat";
-import { AuthIndex } from "../../../auth/index.auth";
-import { GeneralIndex } from "../../../general_factory/index.factory";
-import { PermissionsE } from "../../../general_factory/interface/general_factory";
+
+import { auth } from "@modules/auth";
 
 const vatRouter = Router();
 
 vatRouter
   .route("/")
   .post(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions([
-      PermissionsE.CREATE_VAT,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+    auth(),
+ 
     VatIndex.create_vat
   )
   .get(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions([
-      PermissionsE.VIEW_VAT,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+    auth(),
+ 
     VatIndex.get_all_vat
   );
 vatRouter
   .route("/:id")
   .get(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions([
-      PermissionsE.VIEW_VAT,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+    auth(),
+
 
     VatIndex.get_one_vat
   )
   .patch(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions([
-      PermissionsE.EDIT_VAT,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+    auth(),
+
     VatIndex.update_vat
   )
   .delete(
-    AuthIndex.protector,
-    GeneralIndex.getUserPermissions([
-      PermissionsE.DELETE_VAT,
-      PermissionsE.SUPER_ADMIN,
-    ]),
+    auth(),
+
     VatIndex.delete_vat
   );
 

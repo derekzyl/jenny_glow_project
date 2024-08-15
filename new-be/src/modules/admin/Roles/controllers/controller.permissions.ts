@@ -62,7 +62,7 @@ export const getRolesFromUserRoleNameController = catchAsync(async (req: Request
 });
 
 
-export const getAllPermissionsRaw = catchAsync(async (req: Request, res: Response) => { 
+export const getAllPermissionsRaw = catchAsync(async (_req: Request, res: Response) => { 
 
 
     res.status(httpStatus.OK).send(responseMessage({message:"All permissions", data:allPermissions, success_status:true}));  

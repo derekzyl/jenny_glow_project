@@ -6,6 +6,7 @@ import { isCircular } from '../utils/remove';
 import httpStatus from 'http-status';
 import passport from 'passport';
 import ApiError from '../errors/ApiError';
+import { allPermissions } from '../setting/roles';
 const verifyCallback = (req, resolve, reject, requiredPermissions) => async (err, user, info) => {
     if (err || info || !user) {
         return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
@@ -31,7 +32,8 @@ const verifyCallback = (req, resolve, reject, requiredPermissions) => async (err
     resolve();
 };
 const authMiddleware = (...requiredPermissions) => async (req, res, next) => new Promise((resolve, reject) => {
-    passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredPermissions))(req, res, next);
+    const newRequiredPermissions = [...requiredPermissions, allPermissions.SuperAdmin, allPermissions.Admin];
+    passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, newRequiredPermissions))(req, res, next);
 })
     .then(() => next())
     .catch((err) => {
